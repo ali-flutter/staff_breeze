@@ -14,9 +14,9 @@
     </queries>
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="staff_breeze"
+        android:label="Staff Breeze"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/icon_luncher">
         <activity
             android:name=".MainActivity"
             android:exported="true"

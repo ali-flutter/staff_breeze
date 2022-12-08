@@ -218,7 +218,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                 SizedBox(
                                   height: 300.h,
                                 ),
-                                const TextFieldWidget(hintText: 'Payment per hour'),
+                                const TextFieldWidget(hintText: 'Payment per hour',keyBoardType: TextInputType.number,),
                               ],
                             ),
                           ),

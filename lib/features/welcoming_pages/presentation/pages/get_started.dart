@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:staff_breeze/core/common_widgets/app_buttons.dart';
 import 'package:staff_breeze/router/app_routes.dart';
@@ -25,52 +26,14 @@ class GetStartedPage extends StatelessWidget {
             ),
             SizedBox(height: Sizer.h(context, 0.25),),
             SizedBox(
-              height: Sizer.h(context, 0.23),
-              width: Sizer.w(context, 0.5),
+              height: (154.08).w,//Sizer.h(context, 0.23),
+              width: (154.08.w),
               child: CircleAvatar(
                 backgroundColor: AppColors.mediumPrimary,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: Sizer.h(context, 0.07),
-                    ),
-                    SizedBox(
-                        height: Sizer.h(context, 0.025),
-                        width: Sizer.w(context, 0.19),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: Sizer.w(context, 0.025),
-                              right: Sizer.w(context, 0.03),
-                              //top:Sizer.h(context,0.02)
-                          ),
-                          child: Image.asset(AppImages.logo),
-                        )),
-                    SizedBox(
-                        width: Sizer.w(context, 0.19),
-                        child: Padding(
-                          padding:  EdgeInsets.only(
-                              left: Sizer.w(context, 0.03),
-                              right: Sizer.w(context, 0.03),
-                              top:Sizer.h(context,0.01),
-
-
-                          ),
-                          child: Image.asset(AppImages.logo),
-                        )),
-                    SizedBox(
-                        width: Sizer.w(context, 0.19),
-                        child: Padding(
-                          padding:  EdgeInsets.only(
-                            left: Sizer.w(context, 0.03),
-                              right: Sizer.w(context, 0.03),
-                              top:Sizer.h(context,0.01),
-
-                          ),
-                          child: Image.asset(AppImages.logo),
-                        )),
-                  ],
-                ),
+                child: SizedBox(
+                    height: (52.81).h,//Sizer.h(context, 0.23),
+                    width: (37.25).w,
+                    child: SvgPicture.asset(AppImages.getStarted))
               ),
             ),
             SizedBox(

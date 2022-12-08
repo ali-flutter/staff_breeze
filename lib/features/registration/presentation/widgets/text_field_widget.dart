@@ -2,20 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:staff_breeze/style/app_text_style.dart';
 class TextFieldWidget extends StatelessWidget {
-  const TextFieldWidget({Key? key,required this.hintText,this.validator,this.onChanged,this.textInputAction= TextInputAction.next}) : super(key: key);
+  const TextFieldWidget({Key? key,
+    required this.hintText,
+    this.validator,
+    this.onChanged,
+    this.textInputAction= TextInputAction.next,
+    this.isDense=false,
+    this.keyBoardType,
+  }) : super(key: key);
   final String hintText;
   final textInputAction;
-
+   final bool isDense;
+   final TextInputType? keyBoardType;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
+       keyboardType: keyBoardType,
       textInputAction: textInputAction,
       decoration: InputDecoration(
         contentPadding:  EdgeInsets.symmetric(vertical: 8.h),
-        isDense: true,
+       // isDense: true,
         hintText: hintText,
         hintStyle: AppTextStyle.appHintStyle,
           focusedBorder: UnderlineInputBorder(

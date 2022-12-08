@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:staff_breeze/router/app_routes.dart';
@@ -14,7 +14,7 @@ class AppDrawer extends StatelessWidget {
       return Container(
         height: 734.h,
         width: 334.w,
-        decoration: BoxDecoration(
+        decoration:const BoxDecoration(
             color: Color(0xff181928),
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(90),
@@ -185,6 +185,45 @@ class AppDrawer extends StatelessWidget {
                           )
                         ],
                       ),
+                    ),SizedBox(
+                      height: 150.h,
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, NEW_PASSWORD);
+                          },
+                          child: Text(
+                            'Change Password',
+                            style: AppTextStyle.appHintStyle.copyWith(
+                                color: const Color(0xffFFFFFF).withOpacity(0.56),
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, REGISTER, (route) => false);
+                          },
+                          child: Text(
+                            'Log out',
+                            style: AppTextStyle.appHintStyle.copyWith(
+                                color: const Color(0xffFFFFFF).withOpacity(0.56),
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 30.h,),
                   ],

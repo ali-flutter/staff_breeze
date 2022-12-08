@@ -19,7 +19,6 @@ class CalendarDateWidget extends StatelessWidget {
         firstDate: firstDate,
         lastDate: lastDate,
         weekdayLabels: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
-
         weekdayLabelTextStyle: AppTextStyle.appHintStyle.copyWith(
             color: const Color(0xffFFFFFF).withOpacity(0.50),
             fontSize: 11.sp,
@@ -27,7 +26,6 @@ class CalendarDateWidget extends StatelessWidget {
 
         //yearTextStyle: TextStyle(color: Colors.amber),
         controlsHeight: 0,
-
         nextMonthIcon: const SizedBox(),
         lastMonthIcon: const SizedBox(),
         calendarViewMode: DatePickerMode.day,
@@ -38,7 +36,7 @@ class CalendarDateWidget extends StatelessWidget {
         selectedDayTextStyle: AppTextStyle.whiteBold.copyWith(
           fontSize: 13.sp,
         ),
-        calendarType: CalendarDatePicker2Type.range,
+        calendarType: CalendarDatePicker2Type.multi,
         controlsTextStyle: AppTextStyle.whiteBold.copyWith(
           color: const Color(0xff343D58),
         ),

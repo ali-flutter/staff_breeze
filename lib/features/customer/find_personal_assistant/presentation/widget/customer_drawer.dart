@@ -55,7 +55,7 @@ class CustomerDrawer extends StatelessWidget {
                   Text(
                     '@Aurélien Salomon',
                     style: AppTextStyle.appHintStyle.copyWith(
-                        color: Color(0xff707070),
+                        color:const Color(0xff707070),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400),
                   )
@@ -71,7 +71,8 @@ class CustomerDrawer extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.pushNamed(context, CUSTOMER_PROFILE);
+                     // Navigator.pop(context);
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.max,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,11 +14,9 @@ import 'package:staff_breeze/features/registration/presentation/cubit/sign_up_cu
 import 'package:staff_breeze/features/registration/presentation/widgets/shaker.dart';
 import 'package:staff_breeze/features/registration/presentation/widgets/text_field_widget.dart';
 import 'package:staff_breeze/injection_container/injection.dart';
-
 import 'package:staff_breeze/style/app_colors.dart';
 import 'package:staff_breeze/style/app_text_style.dart';
 import 'package:staff_breeze/style/dimensions_controller.dart';
-
 import '../../../../core/network_configration/result.dart';
 import '../../../../router/app_routes.dart';
 import '../../domain/entities/sign_in_entity.dart';
@@ -31,9 +30,8 @@ class SignUpWidget extends StatefulWidget {
 
 class _SignUpWidgetState extends State<SignUpWidget> {
   late GlobalKey<FormState> formKey;
-
-  late GlobalKey<ShakeWidgetState>firstNameShaker;
-  late GlobalKey<ShakeWidgetState>lastNameShaker;
+  late GlobalKey<ShakeWidgetState> firstNameShaker;
+  late GlobalKey<ShakeWidgetState> lastNameShaker;
   late GlobalKey<ShakeWidgetState> userNameShaker;
   late GlobalKey<ShakeWidgetState> emailShaker;
   late GlobalKey<ShakeWidgetState> passwordShaker;
@@ -42,11 +40,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   @override
   void initState() {
     super.initState();
-    firstNameShaker=GlobalKey<ShakeWidgetState>();
-
-    lastNameShaker=GlobalKey<ShakeWidgetState>();
+    firstNameShaker = GlobalKey<ShakeWidgetState>();
+    lastNameShaker = GlobalKey<ShakeWidgetState>();
     formKey = GlobalKey<FormState>();
-
     userNameShaker = GlobalKey<ShakeWidgetState>();
     emailShaker = GlobalKey<ShakeWidgetState>();
     passwordShaker = GlobalKey<ShakeWidgetState>();
@@ -61,166 +57,143 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         key: formKey,
         child: Column(
           children: [
-            SizedBox(
-              height: 28.h,
-              child: Consumer(
-                builder: (context, ref, _) => ShakeWidget(
-                  key: firstNameShaker,
-                  shakeOffset: 10,
-                  child: TextFieldWidget(
-                    hintText: 'First name',
-                    validator: (firstNameValidator) {
-                      if (firstNameValidator!='') {
-                        return null;
-                      } else {
-                        firstNameShaker.currentState!.animationController.forward();
-                        return 'First name field is required';
-                      }
-                    },
-                    onChanged: (firstName) => ref
-                        .watch(signUpFirstNameProvider.notifier)
-                        .state = firstName,
-                  ),
+            Consumer(
+              builder: (context, ref, _) => ShakeWidget(
+                key: firstNameShaker,
+                shakeOffset: 10,
+                child: TextFieldWidget(
+                  hintText: 'First name',
+                  validator: (firstNameValidator) {
+                    if (firstNameValidator != '') {
+                      return null;
+                    } else {
+                      firstNameShaker.currentState!.animationController
+                          .forward();
+                      return 'First name field is required';
+                    }
+                  },
+                  onChanged: (firstName) => ref
+                      .watch(signUpFirstNameProvider.notifier)
+                      .state = firstName,
                 ),
               ),
             ),
-            SizedBox(
-              height: 38.h,
-            ),
-            SizedBox(
-              height:28.h,
-              child: Consumer(
-                builder: (context, ref, _) => ShakeWidget(
-                  key: lastNameShaker,
-                  shakeOffset: 10,
-                  child: TextFieldWidget(
-                    hintText: 'Last name',
-                    validator: (last) {
-                      if (last!!='') {
-                        return null;
-                      } else {
-                        lastNameShaker.currentState!.animationController.forward();
-                        //lastNameKey.currentState!.animationController.forward();
-                        return 'Last name field is required.';
-                      }
-                    },
-                    onChanged: (lastName) => ref
-                        .watch(signUpLastNameProvider.notifier)
-                        .state = lastName,
-                  ),
+            SizedBox(height: 10.h),
+            Consumer(
+              builder: (context, ref, _) => ShakeWidget(
+                key: lastNameShaker,
+                shakeOffset: 10,
+                child: TextFieldWidget(
+                  hintText: 'Last name',
+                  validator: (last) {
+                    if (last! != '') {
+                      return null;
+                    } else {
+                      lastNameShaker.currentState!.animationController
+                          .forward();
+                      //lastNameKey.currentState!.animationController.forward();
+                      return 'Last name field is required.';
+                    }
+                  },
+                  onChanged: (lastName) => ref
+                      .watch(signUpLastNameProvider.notifier)
+                      .state = lastName,
                 ),
               ),
             ),
-             SizedBox(
-               height: 38.h,
-             ),
-            SizedBox(
-              height: 28.h,
-              child: Consumer(
-                builder: (context, ref, _) => ShakeWidget(
-                  key: userNameShaker,
-                  shakeOffset: 10,
-                  child: TextFieldWidget(
-                    hintText: 'User name',
-                    validator: (userNameValue) {
-                      if (userNameValue!='') {
-                        return null;
-                      } else {
-                        userNameShaker.currentState!.animationController.forward();
-                        return 'User name field is required';
-                      }
-                    },
-                    onChanged: (userName) => ref
-                        .watch(signUpUserNameProvider.notifier)
-                        .state = userName,
-                  ),
+            SizedBox(height: 10.h),
+            Consumer(
+              builder: (context, ref, _) => ShakeWidget(
+                key: userNameShaker,
+                shakeOffset: 10,
+                child: TextFieldWidget(
+                  hintText: 'User name',
+                  validator: (userNameValue) {
+                    if (userNameValue != '') {
+                      return null;
+                    } else {
+                      userNameShaker.currentState!.animationController
+                          .forward();
+                      return 'User name field is required';
+                    }
+                  },
+                  onChanged: (userName) => ref
+                      .watch(signUpUserNameProvider.notifier)
+                      .state = userName,
                 ),
               ),
             ),
-            SizedBox(
-              height: 38.h,
-            ),
-            SizedBox(
-              height: 28.h,
-              child: Consumer(
-                builder: (context, ref, _) => ShakeWidget(
-                  key: emailShaker,
-                  shakeOffset: 10,
-                  child: TextFieldWidget(
-                    hintText: 'Email',
-                    validator: (emailValue) {
-                      if (emailValue!.isValidEmail) {
-                        return null;
-                      } else {
-                        emailShaker.currentState!.animationController.forward();
-                        return 'Please, enter a valid email.';
-                      }
-                    },
-                    onChanged: (email) =>
-                        ref.watch(signUpEmailProvider.notifier).state = email,
-                  ),
+            SizedBox(height: 10.h),
+            Consumer(
+              builder: (context, ref, _) => ShakeWidget(
+                key: emailShaker,
+                shakeOffset: 10,
+                child: TextFieldWidget(
+                  hintText: 'Email',
+                  validator: (emailValue) {
+                    if (emailValue!.trim().isValidEmail) {
+                      return null;
+                    } else {
+                      emailShaker.currentState!.animationController.forward();
+                      return 'Please, enter a valid email.';
+                    }
+                  },
+                  onChanged: (email) =>
+                      ref.watch(signUpEmailProvider.notifier).state = email,
                 ),
               ),
             ),
-            SizedBox(height:38.h),
-            SizedBox(
-              height: 28.h,
-              child: Consumer(
-                builder: (context, ref, _) => ShakeWidget(
-                  key: passwordShaker,
-                  shakeOffset: 10,
-                  child: TextFieldWidget(
-                    hintText: 'Password',
-                    validator: (passwordValue) {
-                    if(passwordValue==''){
-                        passwordShaker.currentState!.animationController.forward();
-                        return 'Password field is required';
-                      }else if (passwordValue!.length > 6) {
-                        return null;
-                      }  else {
-                        passwordShaker.currentState!.animationController.forward();
-                        return 'Password field should contain at least 6 characters';
-                      }
-                    },
-                    onChanged: (password) => ref
-                        .watch(signUpPasswordProvider.notifier)
-                        .state = password,
-                  ),
+            SizedBox(height: 10.h),
+            Consumer(
+              builder: (context, ref, _) => ShakeWidget(
+                key: passwordShaker,
+                shakeOffset: 10,
+                child: TextFieldWidget(
+                  hintText: 'Password',
+                  validator: (passwordValue) {
+                    print(passwordValue);
+                    if (passwordValue == '') {
+                      passwordShaker.currentState!.animationController
+                          .forward();
+                      return 'Password field is required';
+                    } else if (passwordValue!.length < 6) {
+                      print('i go here');
+                      passwordShaker.currentState!.animationController
+                          .forward();
+                      return 'Password field should contain at least 6 characters';
+                    } else {}
+                  },
+                  onChanged: (password) => ref
+                      .watch(signUpPasswordProvider.notifier)
+                      .state = password,
                 ),
               ),
             ),
-            SizedBox(
-              height: 38.h,
-            ),
-            SizedBox(
-              height: 28.h,
-              child: Consumer(
-                builder: (context, ref, _) => ShakeWidget(
-                  key: confirmPasswordShaker,
-                  shakeOffset: 10,
-                  child: TextFieldWidget(
-                    textInputAction: TextInputAction.done,
-                    hintText: 'Confirm password',
-                    validator: (confirmPasswordValue) {
-                      if (confirmPasswordValue ==
-                          ref.watch(signUpPasswordProvider)) {
-                        return null;
-                      } else {
-                        confirmPasswordShaker.currentState!.animationController
-                            .forward();
-                        return 'Passwords do not match';
-                      }
-                    },
-                    onChanged: (passwordConfirmation) => ref
-                        .watch(signUpConfirmPasswordProvider.notifier)
-                        .state = passwordConfirmation,
-                  ),
+            SizedBox(height: 10.h),
+            Consumer(
+              builder: (context, ref, _) => ShakeWidget(
+                key: confirmPasswordShaker,
+                shakeOffset: 10,
+                child: TextFieldWidget(
+                  textInputAction: TextInputAction.done,
+                  hintText: 'Confirm password',
+                  validator: (confirmPasswordValue) {
+                    if (confirmPasswordValue ==
+                        ref.watch(signUpPasswordProvider)) {
+                      return null;
+                    } else {
+                      confirmPasswordShaker.currentState!.animationController
+                          .forward();
+                      return 'Passwords do not match';
+                    }
+                  },
+                  onChanged: (passwordConfirmation) => ref
+                      .watch(signUpConfirmPasswordProvider.notifier)
+                      .state = passwordConfirmation,
                 ),
               ),
             ),
-            SizedBox(
-               height: 57.h, // Sizer.h(context, 0.1),
-             ),
+            SizedBox(height: 57.h),
             Consumer(builder: (context, ref, _) {
               return BlocConsumer<SignUpCubit, Result<SignUpEntity>>(
                 listener: (context, state) {
@@ -274,16 +247,21 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             buttonTextStyle: AppTextStyle.buttonTextStyle
                                 .copyWith(color: Colors.white),
                             onPressed: () {
+                              if (FocusScope.of(context).hasPrimaryFocus) {
+                                FocusScope.of(context).unfocus();
+                              }
                               if (formKey.currentState!.validate()) {
                                 if (ref.watch(signUpAccountTypeIdProvider) ==
                                     0) {
-                                  Navigator.pushNamed(
-                                      context, FIND_PERSONAL_ASSISTANT);
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      FIND_PERSONAL_ASSISTANT,
+                                      (route) => false);
                                 } else if (ref
                                         .watch(signUpAccountTypeIdProvider) ==
                                     1) {
-                                  Navigator.pushNamed(
-                                      context, COMPLETE_REGISTRATION) ;
+                                  Navigator.pushNamedAndRemoveUntil(context,
+                                      COMPLETE_REGISTRATION, (route) => false);
                                 }
                                 /* BlocProvider.of<SignUpCubit>(context).signUp(
                                   name: '${ref.watch(signUpFirstNameProvider)}'+' ${ref.watch(signUpLastNameProvider)}',
@@ -325,6 +303,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       buttonTextStyle: AppTextStyle.buttonTextStyle
                           .copyWith(color: Colors.white),
                       onPressed: () {
+                        if (FocusScope.of(context).hasPrimaryFocus) {
+                          FocusScope.of(context).unfocus();
+                        }
                         if (formKey.currentState!.validate()) {
                           BlocProvider.of<SignUpCubit>(context).signUp(
                               name: '${ref.watch(signUpFirstNameProvider)}' +

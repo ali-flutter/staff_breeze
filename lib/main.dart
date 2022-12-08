@@ -10,7 +10,12 @@ import 'package:staff_breeze/style/app_theme.dart';
 
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(const MyApp());
 }
 

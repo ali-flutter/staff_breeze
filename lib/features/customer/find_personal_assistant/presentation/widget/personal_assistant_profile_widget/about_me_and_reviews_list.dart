@@ -36,7 +36,7 @@ class _AboutMeReviewsListState extends State<AboutMeReviewsList> {
         return Padding(
           padding:  EdgeInsets.symmetric(vertical: 20.h),
           child: ReviewItem(
-              image:reviewersImages()[i],
+              image:AppImages.reviewer_one,//reviewersImages()[i],
               reviewerName: getReviewrName()[i],
               reviewsContent: '                    He is so good',
               trailing: IconButton(
@@ -62,8 +62,8 @@ List getReviewrName(){
     List names=['Renato Sanchez','Alex Montari','Remy San','Diego Font','Roman Star'];
     return names;
   }
-List reviewersImages(){
+/*List reviewersImages(){
     List images=[AppImages.blueGirl,AppImages.pinkeyGirl,AppImages.reviewer_one,AppImages.reviewer_four,AppImages.yellowMan,];
     return images;
-}
+}*/
 }

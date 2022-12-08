@@ -17,7 +17,6 @@ import 'package:staff_breeze/injection_container/injection.dart';
 import 'package:staff_breeze/router/app_routes.dart';
 import 'package:staff_breeze/style/app_colors.dart';
 import 'package:staff_breeze/style/app_text_style.dart';
-
 import '../../../customer/find_personal_assistant/presentation/pages/find_personal_assistant_page.dart';
 
 class SignInWidget extends StatefulWidget {
@@ -56,7 +55,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                 child: TextFieldWidget(
                   hintText: 'Email',
                   validator: (emailValue) {
-                    if (emailValue!.isValidEmail) {
+                    if (emailValue!.trim().isValidEmail) {
                       return null;
                     } else {
                       shakeEmailKey.currentState!.animationController.forward();
@@ -76,7 +75,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                 child: TextFieldWidget(
                   hintText: 'Password',
                   validator: (passwordValue) {
-                    if (passwordValue!.emptyFieldsChecker) {
+                    if (passwordValue! != '') {
                       return null;
                     } else {
                       shakePasswordKey.currentState!.animationController
@@ -87,6 +86,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                   onChanged: (password) => ref
                       .watch(singInPasswordProvider.notifier)
                       .state = password,
+                  textInputAction: TextInputAction.done,
                 ),
               ),
             ),
@@ -94,46 +94,46 @@ class _SignInWidgetState extends State<SignInWidget> {
             Consumer(builder: (context, ref, _) {
               return BlocConsumer<SignInCubit, Result<SignInEntity>>(
                 listener: (context, state) {
-                  state.when(() => null,
-                      loading: () => null,
-                      initial: () => null,
-                      error: (error, s) => QuickAlert.show(
-                            context: context,
-                            showCancelBtn: true,
-                            type: QuickAlertType.error,
-                            backgroundColor: AppColors.scaffoldBackgroundColor,
-
-                            cancelBtnText: 'Cancel',
-                            cancelBtnTextStyle:
-                                AppTextStyle.buttonTextStyle.copyWith(
-                              color: Colors.black45,
-                            ),
-                            confirmBtnText: 'Retry',
-                            confirmBtnTextStyle: AppTextStyle.buttonTextStyle
-                                .copyWith(color: Colors.black45),
-                            text: error,
-                            onCancelBtnTap: () => Navigator.of(context).pop(),
-                            confirmBtnColor: AppColors.scaffoldBackgroundColor,
-                            onConfirmBtnTap: () {
-                                Navigator.of(context).pop();
-                              BlocProvider.of<SignInCubit>(context).signIn(
-                                email: ref.watch(signInEmailProvider),
-                                password: ref.watch(singInPasswordProvider),
-                              );
-                            },
-                          ),
-                      success: (response) {
-                        if (response.runtimeType == SignInEntity ||
-                            response != null) {
-                          if (response.user.role_id == 0) {
-                            Navigator.pushReplacementNamed(
-                                context, FIND_PERSONAL_ASSISTANT);
-                          } else if (response.user.role_id == 1) {
-                            Navigator.pushReplacementNamed(
-                                context, PERSONAL_ASSISTANT_HOMEPAGE);
-                          }
-                        } else {}
-                      });
+                  state.when(
+                    () => null,
+                    loading: () => null,
+                    initial: () => null,
+                    error: (error, s) => QuickAlert.show(
+                      context: context,
+                      showCancelBtn: true,
+                      type: QuickAlertType.error,
+                      backgroundColor: AppColors.scaffoldBackgroundColor,
+                      cancelBtnText: 'Cancel',
+                      cancelBtnTextStyle: AppTextStyle.buttonTextStyle.copyWith(
+                        color: Colors.black45,
+                      ),
+                      confirmBtnText: 'Retry',
+                      confirmBtnTextStyle: AppTextStyle.buttonTextStyle
+                          .copyWith(color: Colors.black45),
+                      text: error,
+                      onCancelBtnTap: () => Navigator.of(context).pop(),
+                      confirmBtnColor: AppColors.scaffoldBackgroundColor,
+                      onConfirmBtnTap: () {
+                        Navigator.of(context).pop();
+                        BlocProvider.of<SignInCubit>(context).signIn(
+                          email: ref.watch(signInEmailProvider),
+                          password: ref.watch(singInPasswordProvider),
+                        );
+                      },
+                    ),
+                    success: (response) {
+                      if (response.runtimeType == SignInEntity ||
+                          response != null) {
+                        if (response.user.role_id == 0) {
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              FIND_PERSONAL_ASSISTANT, (route) => false);
+                        } else if (response.user.role_id == 1) {
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              PERSONAL_ASSISTANT_HOMEPAGE, (route) => false);
+                        }
+                      } else {}
+                    },
+                  );
                 },
                 builder: (context, state) => state.when(
                   () => const SizedBox(),
@@ -147,10 +147,20 @@ class _SignInWidgetState extends State<SignInWidget> {
                       buttonTextStyle: AppTextStyle.buttonTextStyle
                           .copyWith(color: Colors.white),
                       onPressed: () {
+                        if(FocusScope.of(context).hasPrimaryFocus){
+                          FocusScope.of(context).unfocus();
+                        }
                         if (formKey.currentState!.validate()) {
-                          BlocProvider.of<SignInCubit>(context).signIn(
+                          if (ref.watch(signUpAccountTypeIdProvider) == 0) {
+                            Navigator.pushNamedAndRemoveUntil(context,
+                                FIND_PERSONAL_ASSISTANT, (route) => false);
+                          } else {
+                            Navigator.pushNamedAndRemoveUntil(context,
+                                PERSONAL_ASSISTANT_HOMEPAGE, (route) => false);
+                          }
+                          /* BlocProvider.of<SignInCubit>(context).signIn(
                               email: ref.watch(signInEmailProvider),
-                              password: ref.watch(singInPasswordProvider));
+                              password: ref.watch(singInPasswordProvider));*/
                         } else {}
                       },
                     ),
@@ -163,6 +173,9 @@ class _SignInWidgetState extends State<SignInWidget> {
                     buttonTextStyle: AppTextStyle.buttonTextStyle
                         .copyWith(color: Colors.white),
                     onPressed: () {
+                      if(FocusScope.of(context).hasPrimaryFocus){
+                        FocusScope.of(context).unfocus();
+                      }
                       /// TODO I will enable it when Im ready to test registration
                       if (formKey.currentState!.validate()) {
                         BlocProvider.of<SignInCubit>(context).signIn(
@@ -179,7 +192,6 @@ class _SignInWidgetState extends State<SignInWidget> {
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, FORGOT_PASSWORD);
-
               },
               child: Text(
                 'FORGOT PASSWORD',

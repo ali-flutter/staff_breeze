@@ -106,17 +106,17 @@ class ContactPersonalAssistant extends StatelessWidget {
                           children: [SizedBox(
                             height: 33.h,
                           ),
-                           TextFieldWidget(hintText: 'Name'),
+                           TextFieldWidget(hintText: 'Name', isDense: true,),
                             SizedBox(height: 25 .h,),
-                            TextFieldWidget(hintText: 'Email'),
-                            SizedBox(height: 25.h,),
-                            TextFieldWidget(hintText: 'Message'),
-                            SizedBox(height: 10.h,),
-                            TextFieldWidget(hintText: ''),
-                            SizedBox(height: 10.h,),
-                            TextFieldWidget(hintText: ''),
-                            SizedBox(height: 10.h,),
-                            TextFieldWidget(hintText: '')
+                            TextFieldWidget(hintText: 'Email', isDense: true,),
+                            SizedBox(height: 35.h,),
+                            TextFieldWidget(hintText: 'Message', isDense: true,),
+                            SizedBox(height: 1.h,),
+                            TextFieldWidget(hintText: '', isDense: true,),
+                            SizedBox(height: 1.h,),
+                            TextFieldWidget(hintText: '', isDense: true,),
+                            SizedBox(height: 1.h,),
+                           // TextFieldWidget(hintText: '', isDense: true,)
 
 
                           ],

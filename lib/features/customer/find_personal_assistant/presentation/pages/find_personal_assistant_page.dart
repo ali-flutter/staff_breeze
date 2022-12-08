@@ -1,120 +1,356 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/statecontroller/find%20personal_assistant_state_controller.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/widget/customer_info_bar.dart';
+import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/widget/personal_assistants_grid_view.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/widget/search_filters_assistants.dart';
+import 'package:staff_breeze/features/personal_assistant/presentation/pages/personal_assistant_home_page.dart';
 import 'package:staff_breeze/style/app_colors.dart';
 import 'package:staff_breeze/style/app_images.dart';
+import 'package:staff_breeze/style/app_text_style.dart';
 import 'package:staff_breeze/style/dimensions_controller.dart';
-
 import '../../../../../router/app_routes.dart';
 import '../widget/customer_drawer.dart';
 
 class FindPersonalAssistant extends StatefulWidget {
   const FindPersonalAssistant({Key? key}) : super(key: key);
 
-  @override
   State<FindPersonalAssistant> createState() => _FindPersonalAssistantState();
 }
 
+@override
 class _FindPersonalAssistantState extends State<FindPersonalAssistant> {
-  bool keyboardState = false;
+  List<String> languages = [
+    'English',
+    'French',
+    'Arabic',
+    'Turkish',
+    'Spanish',
+    'Italian'
+  ];
+  List<String> genders = ['Male', 'Female'];
+  List<String> location = [
+    'UAE',
+    'Lebanon',
+    'Syria',
+    'Jordan',
+    'Germany',
+    'France',
+    'Netherlands',
+    'Belgium'
+  ];
+  List<String> rate = ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'];
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (WidgetsBinding.instance.window.viewInsets.bottom > 0.0) {
-      setState(() {
-        keyboardState = true;
-      });
-      print('keyboardState IS $keyboardState');
-    } else {
-      setState(() {
-        keyboardState = false;
-      });
-      print(keyboardState);
-    }
-  }
-  GlobalKey<ScaffoldState>_key=GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _key,
-      drawer: CustomerDrawer(),
+      drawer: const CustomerDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: !keyboardState
-          ? GestureDetector(
-        onTap: (){Navigator.of(context).pushNamed(CUSTOMER_PROFILE);},
-            child: Container(
-                height: 82.h,
-                width: 82.w,
-                decoration: const BoxDecoration(
-                  color: AppColors.scaffoldBackgroundColor,
+      floatingActionButton: Visibility(
+        visible: FocusScope.of(context).hasPrimaryFocus,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed(CUSTOMER_PROFILE);
+          },
+          child: Container(
+            height: 82.h,
+            width: 82.w,
+            decoration: const BoxDecoration(
+              color: AppColors.scaffoldBackgroundColor,
+              shape: BoxShape.circle,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.primaryColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xff6D7EB4).withOpacity(0.65),
-                          offset: const Offset(4, 10),
-                          blurRadius: 20,
-                          spreadRadius: 2,
-                        ),
-                      ],
+                  color: AppColors.primaryColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff6D7EB4).withOpacity(0.65),
+                      offset: const Offset(4, 10),
+                      blurRadius: 20,
+                      spreadRadius: 2,
                     ),
-                    child: Center(
-                        child: SizedBox(
-                      height: (23.1).h,
-                      width: 20.w,
-                      child: SvgPicture.asset(
-                        AppImages.profileIcon,
-                        fit: BoxFit.fill,
-                        color: Colors.white,
-                      ),
-                    )),
-                  ),
+                  ],
                 ),
+                child: Center(
+                    child: SizedBox(
+                  height: (23.1).h,
+                  width: 20.w,
+                  child: SvgPicture.asset(
+                    AppImages.profileIcon,
+                    fit: BoxFit.fill,
+                    color: Colors.white,
+                  ),
+                )),
               ),
-          )
-          : null,
+            ),
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
         notchMargin: 0,
         color: AppColors.scaffoldBackgroundColor,
         shape: const CircularNotchedRectangle(),
         child: Container(
-          height: 70.h,
+          height: 35.h,
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Sizer.w(context, 0.04)),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: Sizer.h(context, 0.05),
+        child: Consumer(builder: (context, ref, _) {
+          return Stack(
+            children: [
+              Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: Sizer.w(context, 0.04)),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: Sizer.h(context, 0.05),
+                      ),
+                      CustomerInfoBar(
+                        onPressed: () {
+                          _key.currentState!.openDrawer();
+                        },
+                      ),
+                      ref.watch(searchBarHeightProvider) == 48.h
+                          ? SizedBox(
+                              height: Sizer.h(context, 0.03),
+                            )
+                          : SizedBox(
+                              height: Sizer.h(context, 0.01),
+                            ),
+                      const SearchFiltersAndPersonalAssistantList()
+                      //  PersonalAssistantGridView(),
+                    ],
+                  ),
                 ),
-                CustomerInfoBar(
-                  onPressed: (){
+              ),
 
-                  _key.currentState!.openDrawer();
+              //languages filter
+              ref.watch(showLanguagesFilterProvider)
+                  ? Column(
+                      children: [
+                        SizedBox(height: Sizer.h(context, 0.265)),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: Sizer.w(context, 0.05),
+                            ),
+                            Container(
+                              height: 152.h,
+                              width: 100.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: AppColors.primaryColor.withOpacity(.91),
+                              ),
+                              child: ListView(
+                                physics: const BouncingScrollPhysics(
+                                    parent: AlwaysScrollableScrollPhysics()),
+                                children: languages
+                                    .map(
+                                      (language) => GestureDetector(
+                                        onTap: () {
+                                          ref
+                                              .watch(showLanguagesFilterProvider
+                                                  .notifier)
+                                              .state = false;
+                                        },
+                                        child: SizedBox(
+                                          width: 100.w,
+                                          height: 30.h,
+                                          child: Center(
+                                            child: Text(
+                                              language,
+                                              style: AppTextStyle.whiteBold
+                                                  .copyWith(
+                                                      fontSize: 13.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  : Container(),
 
-                  },
-                ),
-                SizedBox(
-                  height: Sizer.h(context, 0.03),
-                ),
-                const SearchFiltersAndPersonalAssistantList(),
-              ],
-            ),
-          ),
-        ),
+              //Genders filter
+              ref.watch(showGenderFilterProvider)
+                  ? Column(
+                      children: [
+                        SizedBox(height: Sizer.h(context, 0.265)),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 120.w,
+                            ),
+                            Container(
+                              height: 52.h,
+                              width: 80.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColors.primaryColor.withOpacity(.91),
+                              ),
+                              child: ListView(
+                                physics: const BouncingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics(),
+                                ),
+                                children: genders
+                                    .map((gender) => GestureDetector(
+                                          onTap: () {
+                                            ref.watch(showGenderFilterProvider
+                                                    .notifier)
+                                                .state = false;
+                                          },
+                                          child: SizedBox(
+                                            width: 80.w,
+                                            height: 25.h,
+                                            child: Center(
+                                              child: Text(
+                                                gender,
+                                                style: AppTextStyle.whiteBold
+                                                    .copyWith(
+                                                        fontSize: 13.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                              ),
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  : Container(),
+
+              // location filter
+              ref.watch(showLocationFilterProvider)
+                  ? Column(
+                      children: [
+                        SizedBox(height: Sizer.h(context, 0.265)),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: Sizer.w(context, 0.55),
+                            ),
+                            Container(
+                              height: 152.h,
+                              width: 70.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColors.primaryColor.withOpacity(.91),
+                              ),
+                              child: ListView(
+                                physics: const BouncingScrollPhysics(
+                                    parent: AlwaysScrollableScrollPhysics()),
+                                children: location
+                                    .map((loca) => GestureDetector(
+                                          onTap: () {
+                                            ref
+                                                .watch(
+                                                    showLocationFilterProvider
+                                                        .notifier)
+                                                .state = false;
+                                          },
+                                          child: SizedBox(
+                                            width: 100.w,
+                                            height: 30.h,
+                                            child: Center(
+                                              child: Text(
+                                                loca,
+                                                style: AppTextStyle.whiteBold
+                                                    .copyWith(
+                                                        fontSize: 13.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                              ),
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  : Container(),
+
+              // Rate filter
+              ref.watch(showRateFilterProvider)
+                  ? Column(
+                      children: [
+                        SizedBox(height: Sizer.h(context, 0.265)),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: Sizer.w(context, 0.75),
+                            ),
+                            Container(
+                              height: 152.h,
+                              width: 70.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColors.primaryColor.withOpacity(.91),
+                              ),
+                              child: ListView(
+                                physics: const BouncingScrollPhysics(
+                                    parent: AlwaysScrollableScrollPhysics()),
+                                children: rate
+                                    .map((rate) => GestureDetector(
+                                          onTap: () {
+                                            ref
+                                                .watch(showRateFilterProvider
+                                                    .notifier)
+                                                .state = false;
+                                          },
+                                          child: SizedBox(
+                                            width: 100.w,
+                                            height: 30.h,
+                                            child: Center(
+                                              child: Text(
+                                                rate,
+                                                style: AppTextStyle.whiteBold
+                                                    .copyWith(
+                                                        fontSize: 13.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                              ),
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  : Container(),
+            ],
+          );
+        }),
       ),
     );
   }

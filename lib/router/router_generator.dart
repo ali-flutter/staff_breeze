@@ -56,7 +56,7 @@ class RouteGenerator{
       case SUMMARY_PAGE:
         return MaterialPageRoute(builder: (context)=>const SummaryPage());
       case PAYMENT_PAGE:
-        return MaterialPageRoute(builder: (context)=>const PaymentPage());
+        return MaterialPageRoute(builder: (context)=> PaymentPage());
       case PERSONAL_ASSISTANT_HOMEPAGE:
         return MaterialPageRoute(builder: (context)=> PersonalAssistantHomePage());
       case NOTIFICATIONS:

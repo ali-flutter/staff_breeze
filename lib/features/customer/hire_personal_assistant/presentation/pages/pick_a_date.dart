@@ -86,7 +86,7 @@ class _PickDatePageState extends State<PickDatePage> {
         color: AppColors.scaffoldBackgroundColor,
         shape: const CircularNotchedRectangle(),
         child: Container(
-          height: 70.h,
+          height: 30.h,
         ),
       ),
       backgroundColor: AppColors.scaffoldBackgroundColor,
@@ -122,7 +122,7 @@ class _PickDatePageState extends State<PickDatePage> {
                 ],
               ),
               SizedBox(
-                height: 41.h,
+                height: 20.h,
               ),
               Flexible(
                 child: Container(
@@ -131,7 +131,7 @@ class _PickDatePageState extends State<PickDatePage> {
                       physics:const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                       children: [
                         SizedBox(
-                          height: 36.h,
+                          height: 16.h,
                         ),
                         Padding(
                           padding: EdgeInsets.only(left: 56.w),
@@ -151,14 +151,14 @@ class _PickDatePageState extends State<PickDatePage> {
                               DateTime.now().year, DateTime.now().month, 30),
                         ),
                         Divider(
-                          color: Color(0xffFFFFFF).withOpacity(0.1),
+                          color:const Color(0xffFFFFFF).withOpacity(0.1),
                           thickness: 1.h,
                         ),
 
                         ///START OF THE SECOND CALENDER WIDGET {THE NEXT MONTH}`
 
                         SizedBox(
-                          height: 36.h,
+                          height: 16.h,
                         ),
                         Padding(
                           padding: EdgeInsets.only(left: 56.w),

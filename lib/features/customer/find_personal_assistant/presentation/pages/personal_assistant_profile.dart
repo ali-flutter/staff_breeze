@@ -104,7 +104,7 @@ class _PersonalAssistantProfileState extends State<PersonalAssistantProfile> {
         color: AppColors.scaffoldBackgroundColor,
         shape: const CircularNotchedRectangle(),
         child: Container(
-          height: 70.h,
+          height: 30.h,
         ),
       ),
       backgroundColor: Colors.white,
@@ -117,7 +117,8 @@ class _PersonalAssistantProfileState extends State<PersonalAssistantProfile> {
                 return Stack(
                   children: [
                     Container(
-                      height: 320.h, //Sizer.h(context, 0.32),
+                      height: MediaQuery.of(context).padding.top *
+                          10.4, //320.h, //Sizer.h(context, 0.32),
                       width: MediaQuery.of(context).size.width * 1,
                       decoration: BoxDecoration(
                         image: DecorationImage(
@@ -130,20 +131,22 @@ class _PersonalAssistantProfileState extends State<PersonalAssistantProfile> {
                       ),
                     ),
                     Container(
-                        height: 320.h, //Sizer.h(context, 0.32),
-                        width: MediaQuery.of(context).size.width * 1,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(AppImages.shadow),
-                            fit: BoxFit.cover,
-                          ),
+                      height: MediaQuery.of(context).padding.top *
+                          10.4, //320.h, //Sizer.h(context, 0.32),
+                      width: MediaQuery.of(context).size.width * 1,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(AppImages.shadow),
+                          fit: BoxFit.cover,
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 24.w, right: 21.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 24.w, right: 21.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            /* SizedBox(
                                 height: 56.h,
                               ),
                               IconButton(
@@ -155,60 +158,78 @@ class _PersonalAssistantProfileState extends State<PersonalAssistantProfile> {
                                 iconSize: 26.sp,
                               ),
                               SizedBox(
-                                height: 120.h,
+                                height: 80.h,
+                              ),*/
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(Icons.arrow_back),
+                              color: Colors.white,
+                              iconSize: 26.sp,
+                            ),
+                            SizedBox(
+                              height: Sizer.h(context, 0.14),
+                            ),
+                            Text(ref.watch(chosenPersonalAssistantName),
+                              style: AppTextStyle.whiteBold.copyWith(
+                                fontSize: 30.sp,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Text(
-                                ref.watch(chosenPersonalAssistantName),
-                                style: AppTextStyle.whiteBold.copyWith(
-                                  fontSize: 30.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              /* SizedBox(
+                            ),
+                            /* SizedBox(
                                 height: 7.h,
                               ),*/
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  //Stars widget
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: stars
-                                        .map(
-                                          (singleStar) => Padding(
-                                            padding: EdgeInsets.only(left: 9.w),
-                                            child: SizedBox(
-                                              height: 17.5.h,
-                                              width: 16.w,
-                                              child: SvgPicture.asset(
-                                                singleStar,
-                                                fit: BoxFit.cover,
-                                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                //Stars widget
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: stars
+                                      .map(
+                                        (singleStar) => Padding(
+                                          padding: EdgeInsets.only(right: 9.w),
+                                          child: SizedBox(
+                                            height: 22.5.h,
+                                            width: 16.w,
+                                            child: SvgPicture.asset(
+                                              singleStar,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-                                        )
-                                        .toList(),
-                                  ),
-                                  // hire button Widget
-                                  AppButtons(
-                                    buttonText: 'HIRE',
-                                    buttonColor: AppColors.primaryColor,
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, PICK_A_DATE);
-                                    },
-                                    height: 32.h,
-                                    width: 114.w,
-                                    buttonTextStyle:
-                                        AppTextStyle.whiteBold.copyWith(
-                                      fontSize: 12.sp,
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                                // hire button Widget
+                                Column(
+                                  children: [
+                                    AppButtons(
+                                      buttonText: 'HIRE',
+                                      buttonColor: AppColors.primaryColor,
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, PICK_A_DATE);
+                                      },
+                                      height: 32.h,
+                                      width: 114.w,
+                                      buttonTextStyle:
+                                          AppTextStyle.whiteBold.copyWith(
+                                        fontSize: 12.sp,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ))
+                                    SizedBox(
+                                      height: 10.h,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 );
               }),

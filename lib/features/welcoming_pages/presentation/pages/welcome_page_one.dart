@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,10 +55,15 @@ class WelcomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(height: 76.h),
-                        SizedBox(
-                            height: 238.h,
-                            width: 238.w,
-                            child: const AppLogo()),
+                     /*  ApplicationLogo(),*/
+                       Padding(
+                         padding:  EdgeInsets.only(left: 90.w,top: 20.h),
+                         child: SizedBox(
+                                height: 238.h,
+                                width: 238.w,
+                              child: ApplicationLogo()//const AppLogo()
+                         ),
+                       ),
                         SizedBox(
                           height: 8.h,
                         ),
@@ -172,32 +176,33 @@ class WelcomePage extends StatelessWidget {
                                           .watch(signUpAccountTypeIdProvider
                                               .notifier)
                                           .state = 0;
-                                     Navigator.pushNamed(context, REGISTER);
+                                      Navigator.pushNamed(context, REGISTER);
                                     },
                                     height: 49.h,
-                                    width: 216.w)),
+                                    width: 216.w,)),
                             SizedBox(
                               height: 12.h,
                             ),
                             Consumer(
-                                builder: (context, ref, _) => AppButtons(
-                                      buttonTextStyle:
-                                          AppTextStyle.buttonTextStyle.copyWith(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12.sp),
-                                      buttonText: 'PERSONAL ASSISTANTS',
-                                      buttonColor: const Color(0xff6D7EB4),
-                                      onPressed: () {
-                                        ref
-                                            .watch(signUpAccountTypeIdProvider
-                                                .notifier)
-                                            .state = 1;
-                                      Navigator.pushNamed(context,REGISTER);
-                                      },
-                                      height: 49.h,
-                                      width: 216.w,
-                                    ),),
+                              builder: (context, ref, _) => AppButtons(
+                                buttonTextStyle: AppTextStyle.buttonTextStyle
+                                    .copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12.sp),
+                                buttonText: 'PERSONAL ASSISTANTS',
+                                buttonColor: const Color(0xff6D7EB4),
+                                onPressed: () {
+                                  ref
+                                      .watch(
+                                          signUpAccountTypeIdProvider.notifier)
+                                      .state = 1;
+                                  Navigator.pushNamed(context, REGISTER);
+                                },
+                                height: 49.h,
+                                width: 216.w,
+                              ),
+                            ),
                           ],
                         )
                       ],
