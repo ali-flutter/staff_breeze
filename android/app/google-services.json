@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "400335629937",
+    "project_id": "staff-breeze",
+    "storage_bucket": "staff-breeze.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400335629937:android:d0bdbc2e3ab896529835d0",
+        "android_client_info": {
+          "package_name": "com.example.staff_breeze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "400335629937-36rolspm8rbant1t7imsdsnkl5m89r2h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.staff_breeze",
+            "certificate_hash": "df4f946a6ff98550f94e5303157f063501f515b1"
+          }
+        },
+        {
+          "client_id": "400335629937-i9tdcnper594avtqilomelpps05concq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL_ff5hfkZs8u8WNNQv1zaORLsSVRMdfo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "400335629937-i9tdcnper594avtqilomelpps05concq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

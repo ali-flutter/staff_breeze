@@ -8,5 +8,7 @@ final signUpLastNameProvider=StateProvider<String>((ref) => '');
 final signUpEmailProvider=StateProvider<String>((ref) => '');
 final signUpPasswordProvider=StateProvider<String>((ref) => '');
 final signUpConfirmPasswordProvider=StateProvider<String>((ref) => '');
+final signUpObscurePasswordProvider=StateProvider<bool>((ref)=>true);
+final signUpObscurePasswordConfirmationProvider=StateProvider<bool>((ref)=>true);
 /// [Account type id] provider
 final signUpAccountTypeIdProvider=StateProvider<int>((ref) => 0);

@@ -74,6 +74,13 @@ class _SignInWidgetState extends State<SignInWidget> {
                 shakeOffset: 10,
                 child: TextFieldWidget(
                   hintText: 'Password',
+                  obscureText: ref.watch(signInObscurePasswordProvider),
+                  suffixIcon: IconButton(
+                    icon:Icon(Icons.remove_red_eye),
+                    onPressed: (){
+                      ref.watch(signInObscurePasswordProvider.notifier).state=!ref.watch(signInObscurePasswordProvider);
+                    },
+                  ),
                   validator: (passwordValue) {
                     if (passwordValue! != '') {
                       return null;

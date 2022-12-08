@@ -9,10 +9,14 @@ class TextFieldWidget extends StatelessWidget {
     this.textInputAction= TextInputAction.next,
     this.isDense=false,
     this.keyBoardType,
+    this.suffixIcon,
+    this.obscureText=false,
   }) : super(key: key);
   final String hintText;
+  final bool obscureText;
   final textInputAction;
    final bool isDense;
+    final  Widget? suffixIcon;
    final TextInputType? keyBoardType;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
@@ -21,9 +25,12 @@ class TextFieldWidget extends StatelessWidget {
     return TextFormField(
        keyboardType: keyBoardType,
       textInputAction: textInputAction,
+      obscureText:obscureText ,
       decoration: InputDecoration(
+
         contentPadding:  EdgeInsets.symmetric(vertical: 8.h),
-       // isDense: true,
+        suffixIcon: suffixIcon,
+        // isDense: true,
         hintText: hintText,
         hintStyle: AppTextStyle.appHintStyle,
           focusedBorder: UnderlineInputBorder(

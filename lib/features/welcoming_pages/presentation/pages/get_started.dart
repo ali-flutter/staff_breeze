@@ -17,43 +17,47 @@ class GetStartedPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: SizedBox(
-        width: Sizer.w(context, 1),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height:MediaQuery.of(context).padding.top,
-            ),
-            SizedBox(height: Sizer.h(context, 0.25),),
-            SizedBox(
-              height: (154.08).w,//Sizer.h(context, 0.23),
-              width: (154.08.w),
-              child: CircleAvatar(
-                backgroundColor: AppColors.mediumPrimary,
-                child: SizedBox(
-                    height: (52.81).h,//Sizer.h(context, 0.23),
-                    width: (37.25).w,
-                    child: SvgPicture.asset(AppImages.getStarted))
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: SizedBox(
+          width: Sizer.w(context, 1),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height:MediaQuery.of(context).padding.top,
               ),
-            ),
-            SizedBox(
-              height: Sizer.h(context, 0.03),
-            ),
-            SizedBox(child: SvgPicture.asset(AppImages.staff_breeze)),
-            SizedBox(
-              height: Sizer.h(context, 0.2),
-            ),
-            AppButtons(
-              height:Sizer.h(context, 0.062) ,
-              width:Sizer.w(context, 0.5) ,
-                buttonText: 'GET STARTED',
-                buttonColor: AppColors.mediumPrimary,
-                onPressed: () {/*
-                print(context.router.current.name);*/
-               //  AutoRouter.of(context).pushNamed('welcome');
-                Navigator.pushNamed(context,WELCOME_PAGE);
-                },)
-          ],
+              SizedBox(height: Sizer.h(context, 0.25),),
+              SizedBox(
+                height: (154.08).w,//Sizer.h(context, 0.23),
+                width: (154.08.w),
+                child: CircleAvatar(
+                  backgroundColor: AppColors.mediumPrimary,
+                  child: SizedBox(
+                      height: (52.81).h,//Sizer.h(context, 0.23),
+                      width: (37.25).w,
+                      child: SvgPicture.asset(AppImages.getStarted))
+                ),
+              ),
+              SizedBox(
+                height: Sizer.h(context, 0.03),
+              ),
+              SizedBox(child: SvgPicture.asset(AppImages.staff_breeze)),
+              SizedBox(
+                height: Sizer.h(context, 0.2),
+              ),
+              AppButtons(
+                height:Sizer.h(context, 0.062) ,
+                width:Sizer.w(context, 0.5) ,
+                  buttonText: 'GET STARTED',
+                  buttonColor: AppColors.mediumPrimary,
+                  onPressed: () {/*
+                  print(context.router.current.name);*/
+                 //  AutoRouter.of(context).pushNamed('welcome');
+                  Navigator.pushNamed(context,WELCOME_PAGE);
+                  },)
+            ],
+          ),
         ),
       ),
     );

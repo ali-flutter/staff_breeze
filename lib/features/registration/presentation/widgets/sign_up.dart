@@ -150,6 +150,14 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 shakeOffset: 10,
                 child: TextFieldWidget(
                   hintText: 'Password',
+                  textInputAction: TextInputAction.next,
+                  obscureText: ref.watch(signUpObscurePasswordProvider),
+                  suffixIcon: IconButton(
+                    icon:Icon(Icons.remove_red_eye),
+                    onPressed: (){
+                      ref.watch(signUpObscurePasswordProvider.notifier).state=!ref.watch(signUpObscurePasswordProvider);
+                    },
+                  ),
                   validator: (passwordValue) {
                     print(passwordValue);
                     if (passwordValue == '') {
@@ -177,6 +185,13 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 child: TextFieldWidget(
                   textInputAction: TextInputAction.done,
                   hintText: 'Confirm password',
+                  obscureText: ref.watch(signUpObscurePasswordConfirmationProvider),
+                  suffixIcon: IconButton(
+                    icon:Icon(Icons.remove_red_eye),
+                    onPressed: (){
+                      ref.watch(signUpObscurePasswordConfirmationProvider.notifier).state=!ref.watch(signUpObscurePasswordConfirmationProvider);
+                    },
+                  ),
                   validator: (confirmPasswordValue) {
                     if (confirmPasswordValue ==
                         ref.watch(signUpPasswordProvider)) {
