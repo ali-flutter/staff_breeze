@@ -104,7 +104,7 @@ class _ApplicationLogoState extends State<ApplicationLogo> {
         ripplesCount: 3,
         repeat: true,
         color: AppColors.primaryColor,
-        duration: Duration(seconds: 4),
+        duration:const Duration(milliseconds: 2000),
         child: SizedBox(
           height: (140.w),
           width: (140.w),
@@ -114,35 +114,7 @@ class _ApplicationLogoState extends State<ApplicationLogo> {
               child: SizedBox(
                   height: (52.81).h,//Sizer.h(context, 0.23),
                   width: (37.25).w,
-                  child: SvgPicture.asset(AppImages.getStarted,color: Color(0xffD5DBEE),))/* Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 43.6.h,
-                  ),
-                  SizedBox(
-                    width: (37.25.w),
-                    height: (13.56.h),
-                    child: SvgPicture.asset(AppImages.logoWhite),
-                  ),
-                  SizedBox(
-                    height: 6.1.h,
-                  ),
-                  SizedBox(
-                    width: (37.25.w),
-                    height: (13.56.h),
-                    child: SvgPicture.asset(AppImages.logoWhite),
-                  ),
-                  SizedBox(
-                    height: 6.1.h,
-                  ),
-                  SizedBox(
-                    width: (37.25.w),
-                    height: (13.56.h),
-                    child: SvgPicture.asset(AppImages.logoWhite),
-                  ),
-                ],
-              ),*/
+                  child: SvgPicture.asset(AppImages.getStarted,color:const Color(0xffD5DBEE),))
             ),
           ),
         ),

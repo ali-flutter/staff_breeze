@@ -55,7 +55,8 @@ class GetStartedPage extends StatelessWidget {
                   print(context.router.current.name);*/
                  //  AutoRouter.of(context).pushNamed('welcome');
                   Navigator.pushNamed(context,WELCOME_PAGE);
-                  },)
+                  },),
+              SizedBox(height: 12.h,)
             ],
           ),
         ),
