@@ -683,6 +683,7 @@ class _PersonalAssistantHomePageState extends State<PersonalAssistantHomePage>
                                                 horizontal: 24.w,
                                                 vertical: 24.h),
                                             child: ReviewItem(
+                                              createdAt: '',
                                                 expandingBoolean:
                                                     tappedReviews[i],
                                                 height: tappedReviews[i] == true

@@ -11,6 +11,7 @@ Future<Result<ResultType>> handleResponse<ResponseType, ResultType>(
     Callback callback, ResultType Function(ResponseType) mapToEntity) async {
   try {
     ResponseType response = await callback();
+
     ResultType entity = mapToEntity(response);
     return Result<ResultType>.success(entity);
   } on DioError catch (e) {
@@ -23,7 +24,9 @@ Future<Result<ResultType>> handleResponse<ResponseType, ResultType>(
   } on FormatException catch (e) {
     return Result.error("Bad response format: $e");
   } catch (e, stacktrace) {
-    print("Exception: $e, stacktrace: $stacktrace");
+   /*  if (e.toString().contains("type")) {
+      return Result.error('Invalid credentials');
+    } */
     return Result.error("Something went wrong - $e");
   }
 }

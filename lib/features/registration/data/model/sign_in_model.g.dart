@@ -7,14 +7,16 @@ part of 'sign_in_model.dart';
 // **************************************************************************
 
 SignInModel _$SignInModelFromJson(Map<String, dynamic> json) => SignInModel(
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
-      accessToken: json['accessToken'] as String?,
+      code: json['code'] as String,
+      message: json['message'] as String,
+      data: User.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SignInModelToJson(SignInModel instance) =>
     <String, dynamic>{
-      'user': instance.user,
-      'accessToken': instance.accessToken,
+      'code': instance.code,
+      'message': instance.message,
+      'data': instance.data,
     };
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
@@ -23,14 +25,16 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       countryId: json['countryId'] as int?,
       name: json['name'] as String?,
       email: json['email'] as String?,
-      emailVerifiedAt: json['emailVerifiedAt'] as String?,
+      email_verified_at: json['email_verified_at'] as String?,
       role_id: json['role_id'] as int?,
       isMale: json['isMale'] as int?,
       about: json['about'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       profileImage: json['profileImage'] as String?,
       deviceToken: json['deviceToken'] as String?,
-    );
+      complete: json['complete'] as int?,
+      location: json['location'] as String?,
+    )..accessToken = json['accessToken'] as String?;
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
@@ -38,11 +42,14 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'countryId': instance.countryId,
       'name': instance.name,
       'email': instance.email,
-      'emailVerifiedAt': instance.emailVerifiedAt,
+      'email_verified_at': instance.email_verified_at,
       'role_id': instance.role_id,
       'isMale': instance.isMale,
       'about': instance.about,
+      'location': instance.location,
       'phoneNumber': instance.phoneNumber,
       'profileImage': instance.profileImage,
       'deviceToken': instance.deviceToken,
+      'complete': instance.complete,
+      'accessToken': instance.accessToken,
     };

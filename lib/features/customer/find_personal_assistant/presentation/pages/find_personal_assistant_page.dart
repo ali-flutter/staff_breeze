@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:staff_breeze/core/network_configration/result.dart';
+import 'package:staff_breeze/features/customer/find_personal_assistant/domain/entities/get_used_languages_entity.dart';
+import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/cubit/get_assistants_cubit.dart';
+import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/cubit/get_used_languages_cubit.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/statecontroller/find%20personal_assistant_state_controller.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/widget/customer_info_bar.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/widget/personal_assistants_grid_view.dart';
@@ -152,35 +157,104 @@ class _FindPersonalAssistantState extends State<FindPersonalAssistant> {
                                 borderRadius: BorderRadius.circular(20),
                                 color: AppColors.primaryColor.withOpacity(.91),
                               ),
-                              child: ListView(
-                                physics: const BouncingScrollPhysics(
-                                    parent: AlwaysScrollableScrollPhysics()),
-                                children: languages
-                                    .map(
-                                      (language) => GestureDetector(
+                              child: BlocBuilder<GetUsedLanguagesCubit,
+                                  Result<GetUsedLanguagesEntity>>(
+                                builder: (context, state) => state.when(
+                                  () => Container(),
+                                  loading: () => const Center(
+                                      child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )),
+                                  initial: () => Container(),
+                                  error: (message, code) => Center(
+                                    child: Text(
+                                      message ?? 'Something went wrong',
+                                      style: AppTextStyle.whiteBold.copyWith(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ),
+                                  success: (response) => ListView.builder(
+                                    itemCount: response.data.length,
+                                    physics: const BouncingScrollPhysics(
+                                        parent:
+                                            AlwaysScrollableScrollPhysics()),
+                                    itemBuilder: (context, i) => Center(
+                                      child: InkWell(
                                         onTap: () {
-                                          ref
-                                              .watch(showLanguagesFilterProvider
-                                                  .notifier)
-                                              .state = false;
+                                          if (ref.watch(
+                                                  selectedLanguageFilterProvider) ==
+                                              response.data[i].id) {
+                                            print('je');
+                                            ref
+                                                .watch(
+                                                    selectedLanguageFilterProvider
+                                                        .notifier)
+                                                .state = null;
+                                            BlocProvider.of<GetAssistantsCubit>(
+                                                    context)
+                                                .getAllAssistants(
+                                                    language: ref.watch(
+                                                        selectedLanguageFilterProvider,
+                                                        ),
+                                                        is_male:ref.watch(selectedGenderFilterProvider) ,
+                                                        );
+                                            /*  ref
+                                                .watch(
+                                                    showLanguagesFilterProvider
+                                                        .notifier)
+                                                .state = false; */
+                                          } else {
+                                            ref
+                                                .watch(
+                                                    selectedLanguageFilterProvider
+                                                        .notifier)
+                                                .state = response.data[i].id;
+                                            print(ref.watch(
+                                                selectedLanguageFilterProvider));
+                                            BlocProvider.of<GetAssistantsCubit>(
+                                                    context)
+                                                .getAllAssistants(
+                                                    language: ref.watch(
+                                                        selectedLanguageFilterProvider),
+                                                        is_male:ref.watch(selectedGenderFilterProvider) ,);
+                                            ref
+                                                .watch(
+                                                    showLanguagesFilterProvider
+                                                        .notifier)
+                                                .state = false;
+                                          }
                                         },
-                                        child: SizedBox(
-                                          width: 100.w,
-                                          height: 30.h,
-                                          child: Center(
-                                            child: Text(
-                                              language,
-                                              style: AppTextStyle.whiteBold
-                                                  .copyWith(
-                                                      fontSize: 13.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 8.h),
+                                          child: Container(
+                                            width: 100.w,
+                                            decoration: BoxDecoration(
+                                                color: ref.watch(
+                                                            selectedLanguageFilterProvider) ==
+                                                        response.data[i].id
+                                                    ? const Color(0xff5F6998)
+                                                    : null,
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Center(
+                                              child: Text(
+                                                response.data[i].name,
+                                                style: AppTextStyle.whiteBold
+                                                    .copyWith(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    )
-                                    .toList(),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -214,7 +288,8 @@ class _FindPersonalAssistantState extends State<FindPersonalAssistant> {
                                 children: genders
                                     .map((gender) => GestureDetector(
                                           onTap: () {
-                                            ref.watch(showGenderFilterProvider
+                                            ref
+                                                .watch(showGenderFilterProvider
                                                     .notifier)
                                                 .state = false;
                                           },
@@ -222,13 +297,62 @@ class _FindPersonalAssistantState extends State<FindPersonalAssistant> {
                                             width: 80.w,
                                             height: 25.h,
                                             child: Center(
-                                              child: Text(
-                                                gender,
-                                                style: AppTextStyle.whiteBold
-                                                    .copyWith(
-                                                        fontSize: 13.sp,
-                                                        fontWeight:
-                                                            FontWeight.w500),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (gender == 'Male') {
+                                                    ref
+                                                        .watch(
+                                                            selectedGenderFilterProvider
+                                                                .notifier)
+                                                        .state = 1;
+                                                    BlocProvider.of<
+                                                                GetAssistantsCubit>(
+                                                            context)
+                                                        .getAllAssistants(
+                                                            language: ref.watch(
+                                                                selectedLanguageFilterProvider),
+                                                            is_male: ref.watch(
+                                                                selectedGenderFilterProvider));
+                                                    ref
+                                                        .watch(
+                                                            showGenderFilterProvider
+                                                                .notifier)
+                                                        .state = false;
+                                                  } else {
+                                                    ref
+                                                        .watch(
+                                                            selectedGenderFilterProvider
+                                                                .notifier)
+                                                        .state = 0;
+                                                    BlocProvider.of<
+                                                                GetAssistantsCubit>(
+                                                            context)
+                                                        .getAllAssistants(
+                                                            language: ref.watch(
+                                                                selectedLanguageFilterProvider),
+                                                            is_male: ref.watch(
+                                                                selectedGenderFilterProvider));
+                                                                ref
+                                                        .watch(
+                                                            showGenderFilterProvider
+                                                                .notifier)
+                                                        .state = false;
+                                                  }
+                                                  print(ref.watch(
+                                                      selectedGenderFilterProvider));
+                                                },
+                                                child: Center(
+                                                  child: Text(
+                                                    gender,
+                                                    style: AppTextStyle
+                                                        .whiteBold
+                                                        .copyWith(
+                                                            fontSize: 13.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),

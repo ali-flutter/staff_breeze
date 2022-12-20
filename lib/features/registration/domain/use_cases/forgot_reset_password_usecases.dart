@@ -14,6 +14,7 @@ ForgotResetPasswordUseCases({required this.forgotResetPasswordRepository});
 Future<Result<ForgotPasswordEntity>>sendForgotPasswordEmail({required String email}){
 return forgotResetPasswordRepository.sendForgotPasswordEmail(email:email);
 }
+// ignore: non_constant_identifier_names
 Future<Result<ResetPasswordEntity>>resetPassword({required String password,required String password_confirmation, required String code }){
  return forgotResetPasswordRepository.resetPassword(password: password,password_confirmation: password_confirmation,code: code);
 }

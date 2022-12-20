@@ -60,7 +60,7 @@ class _RegistrationClient implements RegistrationClient {
     required name,
     required email,
     required password,
-    required accountTypeId,
+    required role_id,
     required password_comfirmation,
   }) async {
     const _extra = <String, dynamic>{};
@@ -80,8 +80,8 @@ class _RegistrationClient implements RegistrationClient {
       password,
     ));
     _data.fields.add(MapEntry(
-      'role',
-      accountTypeId.toString(),
+      'role_id',
+      role_id.toString(),
     ));
     _data.fields.add(MapEntry(
       'password_confirmation',

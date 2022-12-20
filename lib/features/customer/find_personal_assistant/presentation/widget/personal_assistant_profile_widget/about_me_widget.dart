@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/statecontroller/personal_assistant_profile_state_controller.dart';
 
 import '../../../../../../style/app_text_style.dart';
 import '../../../../../../style/dimensions_controller.dart';
@@ -34,14 +36,19 @@ class AboutMeWidget extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
-            Text(
-              '''When I was 5 years old, my mother always told me that happiness was the key to life. When I went to school, they asked me what I wanted to be when I grew up. 
+            Consumer(
+              builder: (context,ref,_) {
+                return Text(
+                  ref.watch(chosenPersonalAssistantAboutProvider)??'Not Provided'
+                 /*  '''When I was 5 years old, my mother always told me that happiness was the key to life. When I went to school, they asked me what I wanted to be when I grew up. 
 
 Adress: London /ddljjslfhjljsd
-Language: English - Spanish''',style: AppTextStyle.regularGrey.copyWith(
-                color:const Color(0xffFFFFFF).withOpacity(0.64),
-                fontWeight:FontWeight.w500
-            ),)
+Language: English - Spanish''' */,style: AppTextStyle.regularGrey.copyWith(
+                    color:const Color(0xffFFFFFF).withOpacity(0.64),
+                    fontWeight:FontWeight.w500
+                ),);
+              }
+            )
           ],
         ),
       ),

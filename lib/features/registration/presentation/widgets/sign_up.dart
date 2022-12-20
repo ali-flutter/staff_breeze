@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +12,7 @@ import 'package:staff_breeze/features/customer/find_personal_assistant/presentat
 import 'package:staff_breeze/features/registration/domain/entities/sign_up_entity.dart';
 import 'package:staff_breeze/features/registration/presentation/business_logic/controller/sign_up_state_controller.dart';
 import 'package:staff_breeze/features/registration/presentation/business_logic/controller/validators.dart';
-import 'package:staff_breeze/features/registration/presentation/cubit/sign_up_cubit.dart';
+import 'package:staff_breeze/features/registration/presentation/business_logic/cubit/sign_up_cubit.dart';
 import 'package:staff_breeze/features/registration/presentation/widgets/shaker.dart';
 import 'package:staff_breeze/features/registration/presentation/widgets/text_field_widget.dart';
 import 'package:staff_breeze/injection_container/injection.dart';
@@ -153,19 +155,18 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   textInputAction: TextInputAction.next,
                   obscureText: ref.watch(signUpObscurePasswordProvider),
                   suffixIcon: IconButton(
-                    icon:Icon(Icons.remove_red_eye),
-                    onPressed: (){
-                      ref.watch(signUpObscurePasswordProvider.notifier).state=!ref.watch(signUpObscurePasswordProvider);
+                    icon: const Icon(Icons.remove_red_eye),
+                    onPressed: () {
+                      ref.watch(signUpObscurePasswordProvider.notifier).state =
+                          !ref.watch(signUpObscurePasswordProvider);
                     },
                   ),
                   validator: (passwordValue) {
-                    print(passwordValue);
                     if (passwordValue == '') {
                       passwordShaker.currentState!.animationController
                           .forward();
                       return 'Password field is required';
                     } else if (passwordValue!.length < 6) {
-                      print('i go here');
                       passwordShaker.currentState!.animationController
                           .forward();
                       return 'Password field should contain at least 6 characters';
@@ -185,11 +186,16 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 child: TextFieldWidget(
                   textInputAction: TextInputAction.done,
                   hintText: 'Confirm password',
-                  obscureText: ref.watch(signUpObscurePasswordConfirmationProvider),
+                  obscureText:
+                      ref.watch(signUpObscurePasswordConfirmationProvider),
                   suffixIcon: IconButton(
-                    icon:Icon(Icons.remove_red_eye),
-                    onPressed: (){
-                      ref.watch(signUpObscurePasswordConfirmationProvider.notifier).state=!ref.watch(signUpObscurePasswordConfirmationProvider);
+                    icon: const Icon(Icons.remove_red_eye),
+                    onPressed: () {
+                      ref
+                              .watch(signUpObscurePasswordConfirmationProvider
+                                  .notifier)
+                              .state =
+                          !ref.watch(signUpObscurePasswordConfirmationProvider);
                     },
                   ),
                   validator: (confirmPasswordValue) {
@@ -229,24 +235,28 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                               .copyWith(color: Colors.black45),
                           text: error,
                           confirmBtnColor: AppColors.scaffoldBackgroundColor,
-                          onConfirmBtnTap: () =>
-                              BlocProvider.of<SignUpCubit>(context).signUp(
-                                  name: '${ref.watch(signUpFirstNameProvider)}' +
-                                      ' ${ref.watch(signUpLastNameProvider)}',
-                                  email: ref.watch(signUpEmailProvider),
-                                  password: ref.watch(signUpPasswordProvider),
-                                  password_confirmation:
-                                      ref.watch(signUpConfirmPasswordProvider),
-                                  accountTypeId:
-                                      ref.watch(signUpAccountTypeIdProvider))),
+                          onConfirmBtnTap: () {
+                            BlocProvider.of<SignUpCubit>(context).signUp(
+                                name: '${ref.watch(signUpFirstNameProvider)}'
+                                    ' ${ref.watch(signUpLastNameProvider)}',
+                                email: ref.watch(signUpEmailProvider),
+                                password: ref.watch(signUpPasswordProvider),
+                                password_confirmation:
+                                    ref.watch(signUpConfirmPasswordProvider),
+                                role_id:
+                                    ref.watch(signUpAccountTypeIdProvider));
+                            Navigator.pop(context);
+                          }),
                       success: (response) {
-                        if (ref.watch(signUpAccountTypeIdProvider) == 0) {
-                          Navigator.pushReplacementNamed(
-                              context, FIND_PERSONAL_ASSISTANT);
-                        } else if (ref.watch(signUpAccountTypeIdProvider) ==
-                            1) {
-                          Navigator.pushReplacementNamed(
-                              context, PERSONAL_ASSISTANT_HOMEPAGE);
+                        ref.watch(userIdProvider.notifier).state =
+                            response.data.id;
+                        print(ref.watch(userIdProvider));
+                        if (response.data.role_id == "1") {
+                          return Navigator.pushNamedAndRemoveUntil(context,
+                              FIND_PERSONAL_ASSISTANT, (route) => false);
+                        } else if (response.data.role_id == "2") {
+                          return Navigator.pushNamedAndRemoveUntil(context,
+                              PERSONAL_ASSISTANT_HOMEPAGE, (route) => false);
                         }
                       });
                 },
@@ -266,7 +276,16 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                 FocusScope.of(context).unfocus();
                               }
                               if (formKey.currentState!.validate()) {
-                                if (ref.watch(signUpAccountTypeIdProvider) ==
+                                BlocProvider.of<SignUpCubit>(context).signUp(
+                                    name: '${ref.watch(signUpFirstNameProvider)}' +
+                                        ' ${ref.watch(signUpLastNameProvider)}',
+                                    email: ref.watch(signUpEmailProvider),
+                                    password: ref.watch(signUpPasswordProvider),
+                                    password_confirmation: ref
+                                        .watch(signUpConfirmPasswordProvider),
+                                    role_id:
+                                        ref.watch(signUpAccountTypeIdProvider));
+                                /*   if (ref.watch(signUpAccountTypeIdProvider) ==
                                     0) {
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
@@ -277,7 +296,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                     1) {
                                   Navigator.pushNamedAndRemoveUntil(context,
                                       COMPLETE_REGISTRATION, (route) => false);
-                                }
+                                } */
                                 /* BlocProvider.of<SignUpCubit>(context).signUp(
                                   name: '${ref.watch(signUpFirstNameProvider)}'+' ${ref.watch(signUpLastNameProvider)}',
                                   email: ref.watch(signUpEmailProvider),
@@ -304,8 +323,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             password: ref.watch(signUpPasswordProvider),
                             password_confirmation:
                                 ref.watch(signUpConfirmPasswordProvider),
-                            accountTypeId:
-                                ref.watch(signUpAccountTypeIdProvider));
+                            role_id: ref.watch(signUpAccountTypeIdProvider));
                       } else {}
                     },
                   ),
@@ -329,8 +347,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                               password: ref.watch(signUpPasswordProvider),
                               password_confirmation:
                                   ref.watch(signUpConfirmPasswordProvider),
-                              accountTypeId:
-                                  ref.watch(signUpAccountTypeIdProvider));
+                              role_id: ref.watch(signUpAccountTypeIdProvider));
                         } else {}
                       },
                     );

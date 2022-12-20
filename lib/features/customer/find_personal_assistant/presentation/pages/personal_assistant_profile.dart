@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:staff_breeze/core/common_widgets/app_buttons.dart';
+import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/cubit/get_reviews_cubit.dart';
 
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/statecontroller/personal_assistant_profile_state_controller.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/widget/personal_assistant_profile_widget/about_me_and_reviews_list.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/widget/personal_assistant_profile_widget/about_me_widget.dart';
+import 'package:staff_breeze/injection_container/injection.dart';
 import 'package:staff_breeze/router/app_routes.dart';
 
 import 'package:staff_breeze/style/app_text_style.dart';
@@ -121,11 +124,13 @@ class _PersonalAssistantProfileState extends State<PersonalAssistantProfile> {
                           10.4, //320.h, //Sizer.h(context, 0.32),
                       width: MediaQuery.of(context).size.width * 1,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                              ref.watch(chosenPersonalAssistantImage),
-                            ),
-                            fit: BoxFit.cover),
+                        image: ref.watch(chosenPersonalAssistantImage) != null
+                            ? DecorationImage(
+                                image: AssetImage(
+                                  ref.watch(chosenPersonalAssistantImage)!,
+                                ),
+                                fit: BoxFit.cover)
+                            : null,
                         color: const Color(
                             0xff515A75), //AppColors.primaryColor.withOpacity(0.3),
                       ),
@@ -171,7 +176,8 @@ class _PersonalAssistantProfileState extends State<PersonalAssistantProfile> {
                             SizedBox(
                               height: Sizer.h(context, 0.14),
                             ),
-                            Text(ref.watch(chosenPersonalAssistantName),
+                            Text(
+                              ref.watch(chosenPersonalAssistantName) ?? '',
                               style: AppTextStyle.whiteBold.copyWith(
                                 fontSize: 30.sp,
                                 fontWeight: FontWeight.bold,
@@ -267,7 +273,10 @@ class _PersonalAssistantProfileState extends State<PersonalAssistantProfile> {
                             return ref.watch(reviewsOrAboutMeProvider)
                                 ? SizedBox(
                                     height: Sizer.h(context, 0.445),
-                                    child: const AboutMeReviewsList(),
+                                    child: BlocProvider(
+                                      create: (context) =>getIt<GetReviewsCubit>(),
+                                      child: AboutMeReviewsList(),
+                                    ),
                                   )
                                 : const AboutMeWidget();
                           }),

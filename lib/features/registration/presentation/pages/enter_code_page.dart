@@ -73,6 +73,7 @@ late GlobalKey<ShakeWidgetState>_shakeWidget;
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 25.w),
                               child:  TextFormField(
+                                     textInputAction: TextInputAction.done,
                                     decoration: const InputDecoration(
                                       focusedBorder:
                                           UnderlineInputBorder(borderSide: BorderSide.none),

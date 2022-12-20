@@ -10,7 +10,7 @@ import 'package:staff_breeze/features/registration/domain/entities/sign_in_entit
 import 'package:staff_breeze/features/registration/presentation/business_logic/controller/sign_in_state_controller.dart';
 import 'package:staff_breeze/features/registration/presentation/business_logic/controller/sign_up_state_controller.dart';
 import 'package:staff_breeze/features/registration/presentation/business_logic/controller/validators.dart';
-import 'package:staff_breeze/features/registration/presentation/cubit/sign_in_cubit.dart';
+import 'package:staff_breeze/features/registration/presentation/business_logic/cubit/sign_in_cubit.dart';
 import 'package:staff_breeze/features/registration/presentation/widgets/shaker.dart';
 import 'package:staff_breeze/features/registration/presentation/widgets/text_field_widget.dart';
 import 'package:staff_breeze/injection_container/injection.dart';
@@ -76,9 +76,10 @@ class _SignInWidgetState extends State<SignInWidget> {
                   hintText: 'Password',
                   obscureText: ref.watch(signInObscurePasswordProvider),
                   suffixIcon: IconButton(
-                    icon:Icon(Icons.remove_red_eye),
-                    onPressed: (){
-                      ref.watch(signInObscurePasswordProvider.notifier).state=!ref.watch(signInObscurePasswordProvider);
+                    icon:const Icon(Icons.remove_red_eye),
+                    onPressed: () {
+                      ref.watch(signInObscurePasswordProvider.notifier).state =
+                          !ref.watch(signInObscurePasswordProvider);
                     },
                   ),
                   validator: (passwordValue) {
@@ -105,36 +106,41 @@ class _SignInWidgetState extends State<SignInWidget> {
                     () => null,
                     loading: () => null,
                     initial: () => null,
-                    error: (error, s) => QuickAlert.show(
-                      context: context,
-                      showCancelBtn: true,
-                      type: QuickAlertType.error,
-                      backgroundColor: AppColors.scaffoldBackgroundColor,
-                      cancelBtnText: 'Cancel',
-                      cancelBtnTextStyle: AppTextStyle.buttonTextStyle.copyWith(
-                        color: Colors.black45,
-                      ),
-                      confirmBtnText: 'Retry',
-                      confirmBtnTextStyle: AppTextStyle.buttonTextStyle
-                          .copyWith(color: Colors.black45),
-                      text: error,
-                      onCancelBtnTap: () => Navigator.of(context).pop(),
-                      confirmBtnColor: AppColors.scaffoldBackgroundColor,
-                      onConfirmBtnTap: () {
-                        Navigator.of(context).pop();
-                        BlocProvider.of<SignInCubit>(context).signIn(
-                          email: ref.watch(signInEmailProvider),
-                          password: ref.watch(singInPasswordProvider),
-                        );
-                      },
-                    ),
+                    error: (error, s) {
+                      
+                      return QuickAlert.show(
+                        context: context,
+                        showCancelBtn: true,
+                        type: QuickAlertType.error,
+                        backgroundColor: AppColors.scaffoldBackgroundColor,
+                        cancelBtnText: 'Cancel',
+                        cancelBtnTextStyle:
+                            AppTextStyle.buttonTextStyle.copyWith(
+                          color: Colors.black45,
+                        ),
+                        confirmBtnText: 'Retry',
+                        confirmBtnTextStyle: AppTextStyle.buttonTextStyle
+                            .copyWith(color: Colors.black45),
+                        text: error,
+                        onCancelBtnTap: () => Navigator.of(context).pop(),
+                        confirmBtnColor: AppColors.scaffoldBackgroundColor,
+                        onConfirmBtnTap: () {
+                          Navigator.of(context).pop();
+                          BlocProvider.of<SignInCubit>(context).signIn(
+                            email: ref.watch(signInEmailProvider),
+                            password: ref.watch(singInPasswordProvider),
+                          );
+                        },
+                      );
+                    },
                     success: (response) {
                       if (response.runtimeType == SignInEntity ||
                           response != null) {
-                        if (response.user.role_id == 0) {
+                        print(response);
+                        if (response.user.role_id == 1) {
                           Navigator.pushNamedAndRemoveUntil(context,
                               FIND_PERSONAL_ASSISTANT, (route) => false);
-                        } else if (response.user.role_id == 1) {
+                        } else if (response.user.role_id == 2) {
                           Navigator.pushNamedAndRemoveUntil(context,
                               PERSONAL_ASSISTANT_HOMEPAGE, (route) => false);
                         }
@@ -154,20 +160,20 @@ class _SignInWidgetState extends State<SignInWidget> {
                       buttonTextStyle: AppTextStyle.buttonTextStyle
                           .copyWith(color: Colors.white),
                       onPressed: () {
-                        if(FocusScope.of(context).hasPrimaryFocus){
+                        if (FocusScope.of(context).hasPrimaryFocus) {
                           FocusScope.of(context).unfocus();
                         }
                         if (formKey.currentState!.validate()) {
-                          if (ref.watch(signUpAccountTypeIdProvider) == 0) {
+                          /*  if (ref.watch(signUpAccountTypeIdProvider) == 0) {
                             Navigator.pushNamedAndRemoveUntil(context,
                                 FIND_PERSONAL_ASSISTANT, (route) => false);
                           } else {
                             Navigator.pushNamedAndRemoveUntil(context,
                                 PERSONAL_ASSISTANT_HOMEPAGE, (route) => false);
-                          }
-                          /* BlocProvider.of<SignInCubit>(context).signIn(
+                          }  */
+                          BlocProvider.of<SignInCubit>(context).signIn(
                               email: ref.watch(signInEmailProvider),
-                              password: ref.watch(singInPasswordProvider));*/
+                              password: ref.watch(singInPasswordProvider));
                         } else {}
                       },
                     ),
@@ -180,9 +186,10 @@ class _SignInWidgetState extends State<SignInWidget> {
                     buttonTextStyle: AppTextStyle.buttonTextStyle
                         .copyWith(color: Colors.white),
                     onPressed: () {
-                      if(FocusScope.of(context).hasPrimaryFocus){
+                      if (FocusScope.of(context).hasPrimaryFocus) {
                         FocusScope.of(context).unfocus();
                       }
+
                       /// TODO I will enable it when Im ready to test registration
                       if (formKey.currentState!.validate()) {
                         BlocProvider.of<SignInCubit>(context).signIn(

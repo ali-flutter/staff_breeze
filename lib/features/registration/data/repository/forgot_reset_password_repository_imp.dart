@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:injectable/injectable.dart';
 import 'package:staff_breeze/core/network_configration/handle_response.dart';
 import 'package:staff_breeze/core/network_configration/result.dart';

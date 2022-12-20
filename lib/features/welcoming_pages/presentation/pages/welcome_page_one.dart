@@ -24,7 +24,7 @@ class WelcomePage extends StatelessWidget {
       backgroundColor: const Color(0xffF1F0F2),
       body: SafeArea(
         child: SizedBox(
-            height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: SizedBox(
             width: double.infinity,
@@ -37,7 +37,6 @@ class WelcomePage extends StatelessWidget {
                       AppImages.shadowImage,
                       fit: BoxFit.cover,
                     )),
-
 
                 SizedBox(
                   height: MediaQuery.of(context).size.height,
@@ -65,16 +64,15 @@ class WelcomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(height: 76.h),
-
-                             Padding(
-                               padding:  EdgeInsets.only(left: 90.w,top: 20.h),
-                               child: SizedBox(
-                                      height: 238.h,
-                                      width: 238.w,
+                              Padding(
+                                padding: EdgeInsets.only(left: 90.w, top: 20.h),
+                                child: SizedBox(
+                                    height: 238.h,
+                                    width: 238.w,
                                     // the rippled logo of the app
-                                    child: ApplicationLogo()//const AppLogo()
-                               ),
-                             ),
+                                    child: ApplicationLogo() //const AppLogo()
+                                    ),
+                              ),
                               SizedBox(
                                 height: 8.h,
                               ),
@@ -98,7 +96,7 @@ class WelcomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                       // height:179.h,
+                        // height:179.h,
                         width: Sizer.w(context, 1),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -107,9 +105,7 @@ class WelcomePage extends StatelessWidget {
                             children: [
                               Column(
                                 children: [
-                                  SizedBox(
-                                    height: 111.h//Sizer.h(context, 0.13),
-                                  ),
+                                  SizedBox(height: 111.h),
                                   Row(
                                     children: [
                                       SizedBox(
@@ -122,16 +118,20 @@ class WelcomePage extends StatelessWidget {
                                             GestureDetector(
                                               onTap: () {
                                                 Scrollable.ensureVisible(
-                                                    secondViewKey.currentContext!);
+                                                    secondViewKey
+                                                        .currentContext!);
                                               },
                                               child: Container(
                                                 height: 56.h,
                                                 width: 118.w,
                                                 decoration: const BoxDecoration(
                                                   color: Color(0xff6D7EB4),
-                                                  borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(35),
-                                                    bottomLeft: Radius.circular(35),
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(35),
+                                                    bottomLeft:
+                                                        Radius.circular(35),
                                                   ),
                                                 ),
                                                 child: Row(
@@ -151,7 +151,8 @@ class WelcomePage extends StatelessWidget {
                                                       width: 10.w,
                                                     ),
                                                     Icon(
-                                                      Icons.arrow_forward_outlined,
+                                                      Icons
+                                                          .arrow_forward_outlined,
                                                       color: Colors.white,
                                                       size: 24.sp,
                                                     )
@@ -175,29 +176,34 @@ class WelcomePage extends StatelessWidget {
                                   ),
                                   Consumer(
                                       builder: (context, ref, _) => AppButtons(
-                                          buttonTextStyle:
-                                              AppTextStyle.buttonTextStyle.copyWith(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 12.sp),
-                                          buttonText: 'CUSTOMER',
-                                          buttonColor: const Color(0xff6D7EB4),
-                                          onPressed: () {
-                                            ref
-                                                .watch(signUpAccountTypeIdProvider
-                                                    .notifier)
-                                                .state = 0;
-                                            Navigator.pushNamed(context, REGISTER);
-                                          },
-                                          height: 49.h,
-                                          width: 216.w,)),
+                                            buttonTextStyle: AppTextStyle
+                                                .buttonTextStyle
+                                                .copyWith(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12.sp),
+                                            buttonText: 'CUSTOMER',
+                                            buttonColor:
+                                                const Color(0xff6D7EB4),
+                                            onPressed: () {
+                                              ref
+                                                  .watch(
+                                                      signUpAccountTypeIdProvider
+                                                          .notifier)
+                                                  .state = 1;
+                                              Navigator.pushNamed(
+                                                  context, REGISTER);
+                                            },
+                                            height: 49.h,
+                                            width: 216.w,
+                                          )),
                                   SizedBox(
                                     height: 12.h,
                                   ),
                                   Consumer(
                                     builder: (context, ref, _) => AppButtons(
-                                      buttonTextStyle: AppTextStyle.buttonTextStyle
-                                          .copyWith(
+                                      buttonTextStyle:
+                                          AppTextStyle.buttonTextStyle.copyWith(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 12.sp),
@@ -205,16 +211,18 @@ class WelcomePage extends StatelessWidget {
                                       buttonColor: const Color(0xff6D7EB4),
                                       onPressed: () {
                                         ref
-                                            .watch(
-                                                signUpAccountTypeIdProvider.notifier)
-                                            .state = 1;
+                                            .watch(signUpAccountTypeIdProvider
+                                                .notifier)
+                                            .state =2;
                                         Navigator.pushNamed(context, REGISTER);
                                       },
                                       height: 49.h,
                                       width: 216.w,
                                     ),
                                   ),
-                                  SizedBox(height: 12.h,)
+                                  SizedBox(
+                                    height: 12.h,
+                                  )
                                 ],
                               )
                             ],

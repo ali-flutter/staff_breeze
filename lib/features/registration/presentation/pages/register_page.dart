@@ -9,8 +9,8 @@ import 'package:staff_breeze/style/dimensions_controller.dart';
 import '../../../../injection_container/injection.dart';
 import '../../../../style/app_text_style.dart';
 import '../../../welcoming_pages/presentation/business_logic/register_simple_statie_controller/register_controller.dart';
-import '../cubit/sign_in_cubit.dart';
-import '../cubit/sign_up_cubit.dart';
+import '../business_logic/cubit/sign_in_cubit.dart';
+import '../business_logic/cubit/sign_up_cubit.dart';
 import '../widgets/sign_up.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -82,7 +82,8 @@ class RegisterPage extends StatelessWidget {
                         SizedBox(
                           width: 5.w,
                         ),
-                        Consumer(builder: (context, ref, _) {
+                        Consumer(
+                          builder: (context, ref, _) {
                           return ref.watch(isSignUp) == true
                               ? AppButtons(
                                   buttonText: 'SIGN UP',

@@ -13,7 +13,7 @@ class CompleteRegistrationTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
+       keyboardType: TextInputType.phone,
       textInputAction: textInputAction,
       decoration: InputDecoration(
         contentPadding:  EdgeInsets.symmetric(vertical: 8.h),
@@ -28,7 +28,7 @@ class CompleteRegistrationTextField extends StatelessWidget {
         ),
         border: UnderlineInputBorder(
             borderSide: BorderSide(
-                color:  Color(0xff707070),
+                color: const Color(0xff707070),
               width: 0.2.h
             )
         ),

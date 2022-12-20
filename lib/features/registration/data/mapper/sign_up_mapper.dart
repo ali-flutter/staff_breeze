@@ -5,11 +5,19 @@ import 'package:staff_breeze/features/registration/domain/entities/sign_up_entit
 class SignUpMapper{
   SignUpEntity mapper(SignUpModel model){
     return SignUpEntity(
+      code: model.code,
       message: model.message,
       data: dataModelToEntity(model.data)
     );
   }
   DataEntity dataModelToEntity(Data model){
-    return DataEntity(name: model.name, email: model.email, role:model.role, id:model. id, token:model. token);
+    return DataEntity(
+      name: model.name,
+       email: model.email,
+        role_id:model.role_id,
+         id:model. id,
+          token:model. token,
+          
+          );
   }
 }

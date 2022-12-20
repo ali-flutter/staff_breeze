@@ -44,5 +44,5 @@ abstract class AppImages {
 
   static const personalFillStar = 'assets/images/personal_fill_star.svg';
   static const personalEmptyStar = 'assets/images/personal_empty_star.svg';
-
+  static const placeholderImage = 'assets/images/placeholder.jpg';
 }

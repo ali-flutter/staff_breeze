@@ -6,8 +6,9 @@ import 'package:staff_breeze/features/registration/domain/entities/sign_in_entit
 class SignInMapper{
   SignInEntity mapper (SignInModel model){
     return SignInEntity(
-      accessToken: model.accessToken,
-      user: userModelToEntity(model.user)
+      code: model.code,
+      message: model.message,
+      data: userModelToEntity(model.data)
     );
   }
   UserEntity userModelToEntity (User model){
@@ -16,12 +17,16 @@ class SignInMapper{
         countryId:model. countryId,
         name: model.name,
         email: model.email,
-        emailVerifiedAt:model. emailVerifiedAt,
+        complete: model.complete,
+        location: model.location,
+        email_verified_at:model. email_verified_at,
         role_id:model. role_id,
         isMale:model. isMale,
         about: model.about,
         phoneNumber:model. phoneNumber,
         profileImage:model. profileImage,
-        deviceToken:model. deviceToken);
+        deviceToken:model. deviceToken,
+        accessToken: model.accessToken,
+        );
   }
 }

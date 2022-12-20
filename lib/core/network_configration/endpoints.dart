@@ -1,4 +1,12 @@
-const String signInEndpoint='/login';
-const String signUpEndpoint='/register';
-const String passwordResetEndPoint='/password/reset';
-const String  sendForgotPasswordEmailEndPoint='/password/email';
+const String signInEndpoint = '/login';
+const String signUpEndpoint = '/register';
+const String passwordResetEndPoint = '/password/reset';
+const String sendForgotPasswordEmailEndPoint = '/password/email';
+const String getAllAssistantsEndPoint = '/get-assistants';
+const String getUsedLanguagesEndPoint = '/get-used-languaged';
+const String getReviewsEndPoint = '/get-reviews';
+const String educationEndPoint = '/get-educations';
+const String countriesEndPoint = '/get-countries';
+const String languagesEndPoint = '/get-languages';
+const String editUserDetailsEndPoint = '/edit-user-details';
+const String getAssistantEndPoint = '/get-assistant';
