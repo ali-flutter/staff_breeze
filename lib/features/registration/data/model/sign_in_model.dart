@@ -8,7 +8,7 @@ part 'sign_in_model.g.dart';
 class SignInModel {
   SignInModel({required this.code, required this.message,required this.data});
   String code;
-  String message;
+  SignInMessageModel message;
   User data;
 
   factory SignInModel.fromJson(Map<String, dynamic> json) =>
@@ -18,35 +18,43 @@ class SignInModel {
 @JsonSerializable()
 class User {
   int? id;
-  int? cityId;
-  int? countryId;
+  int? city_id;
+  int? country_id;
   String? name;
   String? email;
   String? email_verified_at;
-  int? role_id;
-  int? isMale;
+  String? role_id;
+  int? is_male;
   String? about;
   String? location;
-  String? phoneNumber;
-  String? profileImage;
-  String? deviceToken;
+  String? phone_number;
+  String? profile_image;
+  String? device_token;
   int? complete;
-  String? accessToken;
+  String? token;
 
   User(
       {required this.id,
-      required this.cityId,
-      required this.countryId,
+      required this.city_id,
+      required this.country_id,
       required this.name,
       required this.email,
       required this.email_verified_at,
       required this.role_id,
-      required this.isMale,
+      required this.is_male,
       required this.about,
-      required this.phoneNumber,
-      required this.profileImage,
-      required this.deviceToken,
+      required this.phone_number,
+      required this.profile_image,
+      required this.device_token,
       required this.complete,
       required this.location});
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
+
+
+@JsonSerializable()
+class SignInMessageModel{
+  List<String>error;
+  SignInMessageModel({required this.error}) ;
+  factory SignInMessageModel.fromJson(Map<String,dynamic>json)=>_$SignInMessageModelFromJson(json);
 }

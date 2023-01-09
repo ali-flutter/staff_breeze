@@ -8,10 +8,12 @@ abstract class GetAssistantRepository {
     required int page,
     required int pageSize,
      int?  city,
-     int? language,
+     List<int>? language,
      double? rating,
      int? is_male,
-     int? education,
+     List<int>? education,
      String? search,
+     List<int>? services,
+    int? country,
   });
 }

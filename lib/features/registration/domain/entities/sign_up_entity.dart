@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 
 class SignUpEntity extends Equatable {
  final String? code;
-  String? message;
+  SignUpMessageEntity? message;
   DataEntity? data;
   SignUpEntity({required this.code,required this.message, required this.data});
   @override
@@ -26,4 +26,11 @@ class DataEntity extends Equatable {
       required this.token});
   @override
   List<Object?> get props => [name, email, role_id, id, token];
+}
+class SignUpMessageEntity extends Equatable{
+  final List<String> error;
+  const SignUpMessageEntity({required this.error});
+  @override
+  List<Object?> get props => [error];
+
 }

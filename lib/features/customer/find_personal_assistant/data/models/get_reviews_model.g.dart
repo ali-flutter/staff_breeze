@@ -39,14 +39,15 @@ Map<String, dynamic> _$MessageReviewsModelToJson(
 
 DataReviewsModel _$DataReviewsModelFromJson(Map<String, dynamic> json) =>
     DataReviewsModel(
-      id: json['id'] as int,
-      client_id: json['client_id'] as int,
-      client_name: json['client_name'] as String,
-      client_profile_image: json['client_profile_image'] as String,
-      body: json['body'] as String,
+      id: json['id'] as int?,
+      client_id: json['client_id'] as int?,
+      client_name: json['client_name'] as String?,
+      client_profile_image: json['client_profile_image'] as String?,
+      body: json['body'] as String?,
       is_read: json['is_read'] as int?,
       accepted: json['accepted'] as int?,
       created_at: json['created_at'] as String?,
+      rating: (json['rating'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$DataReviewsModelToJson(DataReviewsModel instance) =>
@@ -59,4 +60,5 @@ Map<String, dynamic> _$DataReviewsModelToJson(DataReviewsModel instance) =>
       'is_read': instance.is_read,
       'accepted': instance.accepted,
       'created_at': instance.created_at,
+      'rating': instance.rating,
     };

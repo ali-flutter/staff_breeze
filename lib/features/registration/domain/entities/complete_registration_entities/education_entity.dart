@@ -20,10 +20,10 @@ class EducationMessageEntity extends Equatable {
 
 class EducationDataEntity extends Equatable {
   final int id;
-  final String title;
+  final String name;
 
-  const EducationDataEntity({required this.id, required this.title});
+  const EducationDataEntity({required this.id, required this.name});
 
   @override
-  List<Object?> get props => [id, title];
+  List<Object?> get props => [id,name];
 }

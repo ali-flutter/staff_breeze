@@ -16,7 +16,7 @@ class EducationMapper {
   }
 
   EducationDataEntity educationDataMapper(EducationDataModel dataModel) {
-    return EducationDataEntity(id: dataModel.id, title: dataModel.title);
+    return EducationDataEntity(id: dataModel.id, name: dataModel.title);
   }
 
   EducationMessageEntity messagesMappers(

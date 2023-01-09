@@ -9,7 +9,7 @@ class GetAllAssistantsModel {
   //Message? message;
   List<DataModel>? data;
   GetAllAssistantsModel(
-      {required this.code, required this.data, /* required this.message */});
+      {/*required this.code,*/ required this.data, /* required this.message */});
   factory GetAllAssistantsModel.fromJson(Map<String, dynamic> json) =>
       _$GetAllAssistantsModelFromJson(json);
 }
@@ -31,7 +31,7 @@ class DataModel {
   String? email_verified_at;
   List<City>? city;
 List<Country>? country;
-  int? isMale;
+  int? is_male;
   String? about;
   String? phone_number;
   String? profile_image;
@@ -49,7 +49,7 @@ List<Country>? country;
     required this.email,
     required this.email_verified_at,
     required this.id,
-    required this.isMale,
+    required this.is_male,
     required this.languages,
     required this.name,
     required this.phone_number,

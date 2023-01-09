@@ -59,7 +59,20 @@ class RegisterPage extends StatelessWidget {
                                           fontSize: 12.sp,
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600,),)
-                              : GestureDetector(
+                              :AppButtons(
+                            buttonText: 'SIGN IN',
+                            buttonColor:ref.watch(isSignUp)==false?const Color(0xff6D7EB4):Colors.transparent,
+                            onPressed: () {
+                              ref.watch(isSignUp.notifier).state = false;
+                            },
+                            height: 42.h,
+                            width: 70.w,
+                            buttonTextFontFamily: 'montserrat',
+                            buttonTextStyle: AppTextStyle.buttonTextStyle
+                                .copyWith(
+                              fontSize: 12.sp,
+                              color:ref.watch(isSignUp)==false? Colors.white:const Color(0xff998FA2),
+                              fontWeight: FontWeight.w600,),); /*GestureDetector(
                                   onTap: () {
                                     ref.watch(isSignUp.notifier).state = false;
                                   },
@@ -77,7 +90,7 @@ class RegisterPage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                );
+                                );*/
                         }),
                         SizedBox(
                           width: 5.w,
@@ -99,7 +112,22 @@ class RegisterPage extends StatelessWidget {
                                           fontSize: 12.sp,
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600))
-                              : GestureDetector(
+                              : AppButtons(
+                              buttonText: 'SIGN UP',
+                              buttonColor:  ref.watch(isSignUp.notifier).state
+                                  ?const Color(0xff6D7EB4)
+                                  : Colors.transparent,
+                              onPressed: () {
+                                ref.watch(isSignUp.notifier).state = true;
+                              },
+                              height: 42.h,
+                              width: 70.w,
+                              buttonTextFontFamily: 'montserrat',
+                              buttonTextStyle: AppTextStyle.buttonTextStyle
+                                  .copyWith(
+                                  fontSize: 12.sp,
+                                  color: ref.watch(isSignUp)?Colors.white:const Color(0xff998FA2),
+                                  fontWeight: FontWeight.w600));/* GestureDetector(
                                   onTap: () {
                                     ref.watch(isSignUp.notifier).state = true;
                                   },
@@ -117,7 +145,7 @@ class RegisterPage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                );
+                                );*/
                         }),
                         SizedBox(
                           width: 55.w,

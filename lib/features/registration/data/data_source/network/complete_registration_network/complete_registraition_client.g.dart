@@ -91,7 +91,10 @@ class _CompleteRegistrationCleint implements CompleteRegistrationCleint {
 
   @override
   Future<EditUserDetailsModel> editDetails({
+    required content_type,
+    required bearer_token,
     user_id,
+    education_ids,
     email,
     is_male,
     city_id,
@@ -100,16 +103,28 @@ class _CompleteRegistrationCleint implements CompleteRegistrationCleint {
     phone_number,
     location,
     about,
+    service_ids,
+    language_ids,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'content-type': content_type,
+      r'Authorization': bearer_token,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = FormData();
     if (user_id != null) {
       _data.fields.add(MapEntry(
         'user_id',
         user_id.toString(),
+      ));
+    }
+    if (education_ids != null) {
+      _data.fields.add(MapEntry(
+        'education_ids',
+        education_ids,
       ));
     }
     if (email != null) {
@@ -127,7 +142,7 @@ class _CompleteRegistrationCleint implements CompleteRegistrationCleint {
     if (city_id != null) {
       _data.fields.add(MapEntry(
         'city_id',
-        city_id.toString(),
+        city_id,
       ));
     }
     if (country_id != null) {
@@ -160,6 +175,18 @@ class _CompleteRegistrationCleint implements CompleteRegistrationCleint {
         about,
       ));
     }
+    if (service_ids != null) {
+      _data.fields.add(MapEntry(
+        'service_ids',
+        service_ids,
+      ));
+    }
+    if (language_ids != null) {
+      _data.fields.add(MapEntry(
+        'language_ids',
+        language_ids,
+      ));
+    }
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<EditUserDetailsModel>(Options(
       method: 'POST',
@@ -175,6 +202,53 @@ class _CompleteRegistrationCleint implements CompleteRegistrationCleint {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EditUserDetailsModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GetAllServicesModel> getAllServices() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GetAllServicesModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/get-services',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GetAllServicesModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GetCitiesInCountryModel> getCitiesInCountry(
+      {required country_id}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'country_id': country_id};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GetCitiesInCountryModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/get-cities-in-country',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GetCitiesInCountryModel.fromJson(_result.data!);
     return value;
   }
 

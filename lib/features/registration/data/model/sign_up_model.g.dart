@@ -7,9 +7,11 @@ part of 'sign_up_model.dart';
 // **************************************************************************
 
 SignUpModel _$SignUpModelFromJson(Map<String, dynamic> json) => SignUpModel(
-      message: json['message'] as String?,
+      code: json['code'] as String,
+      message:
+          SignUpMessageModel.fromJson(json['message'] as Map<String, dynamic>),
       data: Data.fromJson(json['data'] as Map<String, dynamic>),
-    )..code = json['code'] as String?;
+    );
 
 Map<String, dynamic> _$SignUpModelToJson(SignUpModel instance) =>
     <String, dynamic>{
@@ -32,4 +34,14 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'role_id': instance.role_id,
       'id': instance.id,
       'token': instance.token,
+    };
+
+SignUpMessageModel _$SignUpMessageModelFromJson(Map<String, dynamic> json) =>
+    SignUpMessageModel(
+      error: (json['error'] as List<dynamic>).map((e) => e as String).toList(),
+    );
+
+Map<String, dynamic> _$SignUpMessageModelToJson(SignUpMessageModel instance) =>
+    <String, dynamic>{
+      'error': instance.error,
     };

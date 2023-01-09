@@ -14,7 +14,7 @@ class CustomDropdownWidget extends StatefulWidget {
       required this.hint,
       required this.onPressed,
       required this.selectedItem,
-
+required this. onEntireWidgetPressed,
     //  required this.selectedItemToRemove,
        required this.remover,
         required this.listToRemoveFrom,
@@ -23,7 +23,7 @@ class CustomDropdownWidget extends StatefulWidget {
   String hint;
   List selectedItem;
   void Function()? onPressed;
-
+  void Function()? onEntireWidgetPressed;
 //  String selectedItemToRemove;
   StateProvider<String> remover;
   StateProvider<List> listToRemoveFrom;
@@ -36,68 +36,77 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context,ref,_) {
-        return Column(
-          children: [
-            SizedBox(
-              height: 33.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  widget.selectedItem.isEmpty
-                      ? Text(
-                          widget.hint,
-                          style: AppTextStyle.appHintStyle,
-                        )
-                      : SizedBox(
-                          height: 29.h,
-                          width: 280.w,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(
-                                parent: AlwaysScrollableScrollPhysics()),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: widget.selectedItem.length,
-                            itemBuilder: (context, i) => Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5.w),
-                              child: Chip(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7.r),
-                                  side: const BorderSide(
-                                    color: Color(0xff707070),
+        return GestureDetector(
+          onTap: widget.onEntireWidgetPressed,
+          child: Container(
+            height: 40.h,
+            color: Colors.transparent,
+            width: double.infinity,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 33.h,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      widget.selectedItem.isEmpty
+                          ? Text(
+                              widget.hint,
+                              style: AppTextStyle.appHintStyle,
+                            )
+                          : SizedBox(
+                              height: 29.h,
+                              width: 280.w,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const BouncingScrollPhysics(
+                                    parent: AlwaysScrollableScrollPhysics()),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: widget.selectedItem.length,
+                                itemBuilder: (context, i) => Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                  child: Chip(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(7.r),
+                                      side: const BorderSide(
+                                        color: Color(0xff707070),
+                                      ),
+                                    ),
+                                    label: Text(widget.selectedItem[i]),
+                                    elevation: 0,
+                                    backgroundColor: AppColors.scaffoldBackgroundColor,
+                                    deleteIcon: SvgPicture.asset(AppImages.chipCancel),
+                                    onDeleted: (){
+                                      ref.watch(widget.remover.notifier).state=widget.selectedItem[i];
+                                      ref.watch(widget.listToRemoveFrom.notifier).state.remove(ref.watch(widget.remover));
+
+                                      /*ref.watch(selectedSingleEducation.notifier).state=ref.watch(selectedEducationList)[i];
+                                      ref.watch(selectedEducationList.notifier).state.remove(ref.watch(selectedSingleEducation ));
+                                      print(ref.watch(selectedSingleEducation));*/
+                                      setState(() {
+
+                                      });
+                                    }//onDeleted,
                                   ),
                                 ),
-                                label: Text(widget.selectedItem[i]),
-                                elevation: 0,
-                                backgroundColor: AppColors.scaffoldBackgroundColor,
-                                deleteIcon: SvgPicture.asset(AppImages.chipCancel),
-                                onDeleted: (){
-                                  ref.watch(widget.remover.notifier).state=widget.selectedItem[i];
-                                  ref.watch(widget.listToRemoveFrom.notifier).state.remove(ref.watch(widget.remover));
-                                  /*ref.watch(selectedSingleEducation.notifier).state=ref.watch(selectedEducationList)[i];
-                                  ref.watch(selectedEducationList.notifier).state.remove(ref.watch(selectedSingleEducation ));
-                                  print(ref.watch(selectedSingleEducation));*/
-                                  setState(() {
-
-                                  });
-                                }//onDeleted,
                               ),
                             ),
-                          ),
-                        ),
-                  IconButton(
-                      onPressed: widget.onPressed,
-                      icon: const Icon(
-                        Icons.arrow_drop_down_sharp,
-                        color: Color(0xff998FA2),
-                      ))
-                ],
-              ),
+                      IconButton(
+                          onPressed: widget.onPressed,
+                          icon: const Icon(
+                            Icons.arrow_drop_down_sharp,
+                            color: Color(0xff998FA2),
+                          ))
+                    ],
+                  ),
+                ),
+                Divider(
+                  color: const Color(0xffDDDDDD),
+                  height: 1.h,
+                ),
+              ],
             ),
-            Divider(
-              color: const Color(0xffDDDDDD),
-              height: 1.h,
-            ),
-          ],
+          ),
         );
       }
     );

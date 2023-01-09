@@ -3,11 +3,10 @@ import 'package:equatable/equatable.dart';
 class EditUserDetailsEntity extends Equatable{
  final  String code;
   final EditUserDetailsMessage message;
-  final List<EditUserDetailsDataEntity> data;
-  const EditUserDetailsEntity({required this.code, required this.message,required this.data});
+  const EditUserDetailsEntity({required this.code, required this.message});
   
   @override
-  List<Object?> get props => [code,message,data];
+  List<Object?> get props => [code,message];
 }
 
 class EditUserDetailsMessage extends Equatable{
@@ -18,9 +17,11 @@ class EditUserDetailsMessage extends Equatable{
   List<Object?> get props =>[error];
   
 }
+/*
 
 class EditUserDetailsDataEntity extends Equatable{
   @override
   List<Object?> get props =>[];
  
 }
+*/

@@ -8,14 +8,12 @@ class EditUserDetailsMapper {
     return EditUserDetailsEntity(
         code: model.code,
         message: messageMapper(model.message),
-        data:model.data.map((e) => dataMapper(e)).toList());
+    );
   }
 
   EditUserDetailsMessage messageMapper(EditUserDetailsMessageModel model) {
     return EditUserDetailsMessage(error: model.error);
   }
 
-  EditUserDetailsDataEntity dataMapper(EditUserDetailsDataModel model) {
-    return EditUserDetailsDataEntity();
-  }
+
 }

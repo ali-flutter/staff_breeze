@@ -1,18 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'edit_user_details_model.g.dart';
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class EditUserDetailsModel {
   final String code;
   final EditUserDetailsMessageModel message;
-  final List<EditUserDetailsDataModel> data;
+
 
   EditUserDetailsModel(
-      {required this.code, required this.data, required this.message});
+      {required this.code, required this.message});
   factory EditUserDetailsModel.fromJson(Map<String, dynamic> json) =>
       _$EditUserDetailsModelFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class EditUserDetailsMessageModel {
   List<String> error;
   EditUserDetailsMessageModel({required this.error});
@@ -20,9 +20,10 @@ class EditUserDetailsMessageModel {
       _$EditUserDetailsMessageModelFromJson(json);
 }
 
-@JsonSerializable()
+/*@JsonSerializable(createToJson: false)
 class EditUserDetailsDataModel {
+
   EditUserDetailsDataModel();
   factory EditUserDetailsDataModel.fromJson(Map<String, dynamic> json) =>
       _$EditUserDetailsDataModelFromJson(json);
-}
+}*/

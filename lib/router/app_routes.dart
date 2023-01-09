@@ -1,12 +1,14 @@
 // ignore_for_file: constant_identifier_names
 
-const String GET_STARTED = '/get'; // '/';
+import 'package:staff_breeze/core/helpers/shared_prefs_manager/user_role_id_saver.dart';
+
+const String GET_STARTED ='/get';
 
 const String WELCOME_PAGE = '/welcomePage';
 
 const String REGISTER = '/register';
 
-const String COMPLETE_REGISTRATION = '/complete';
+const String COMPLETE_REGISTRATION ='/complete';
 
 const String FORGOT_PASSWORD = '/forgotPassword';
 
@@ -25,7 +27,9 @@ const String SUMMARY_PAGE = "/summaryPage";
 
 const String PAYMENT_PAGE = "/paymentPage";
 
-const String PERSONAL_ASSISTANT_HOMEPAGE ='/';//" /personalAssistantHomePage";
+const String CUSTOMER_JOB_HISTORY_PAGE='/customer_job_history';
+
+const String PERSONAL_ASSISTANT_HOMEPAGE ="/personalAssistantHomePage";
 
 const String NOTIFICATIONS = '/notifications';
 

@@ -2,11 +2,13 @@ import 'package:injectable/injectable.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/data/models/get_all_assistant_model.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/domain/entities/get_assistant_entity.dart';
 
+import '../../../../personal_assistant/data/model/personal_assistant_home_page_model.dart';
+
 @injectable
 class GetAssistantsMapper {
   GetAssistantEntity mapper(GetAllAssistantsModel model) {
     return GetAssistantEntity(
-        code: model.code,
+       /* code: model.code,*/
         // message: messageMapper(model.message!),
         data: model.data!.map((e) => dataMapper(e)).toList());
   }
@@ -28,7 +30,7 @@ class GetAssistantsMapper {
         about: model.about,
         complete: model.complete,
         education: model.educations!.map((e) => educationMapper(e)).toList(),
-        isMale: model.isMale,
+        isMale: model.is_male,
         languages: model.languages!.map((e) => languageMapper(e)).toList(),
         phone_number: model.phone_number,
         profile_image: model.profile_image,

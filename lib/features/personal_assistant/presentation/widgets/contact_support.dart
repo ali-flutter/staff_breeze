@@ -12,103 +12,106 @@ class ContactSupportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Container(
-                  height: 269.h,
-                  width: 375.w,
-                  color:const Color(0xff343D58),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 72.h,
-                      ),
-                      Text(
-                        'Contact Support',
-                        style: AppTextStyle.whiteBold.copyWith(
-                          color: Colors.white,
-                          fontSize: 26.sp,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  color: Color(0xffF1F0F2),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 367.h,
-                      ),
-                      AppButtons(
-                        buttonText: 'SEND',
-                        buttonColor: AppColors.primaryColor,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        height: 52.h,
-                        width: 307.w,
-                        buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(
-                          color: Colors.white,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width*1,
-                        color:  Color(0xffF1F0F2),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height*1,
+          child: Stack(
+            children: [
+              Column(
                 children: [
-                  SizedBox(
-                    height: 140.h,
+                  Container(
+                    height: 269.h,
+                    width: 375.w,
+                    color:const Color(0xff343D58),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 72.h,
+                        ),
+                        Text(
+                          'Contact Support',
+                          style: AppTextStyle.whiteBold.copyWith(
+                            color: Colors.white,
+                            fontSize: 26.sp,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Container(
-                    height: 448.h,
-                    width: 327.w,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(50),
+                    color: Color(0xffF1F0F2),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 1,
+                          height: 367.h,
+                        ),
+                        AppButtons(
+                          buttonText: 'SEND',
+                          buttonColor: AppColors.primaryColor,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          height: 52.h,
+                          width: 307.w,
+                          buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(
+                            color: Colors.white,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),/*Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width*1,
+                          color:  Color(0xffF1F0F2),
+                        )*/
+                      ],
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 32.w),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 66.h,
-                          ),
-                          TextFieldWidget(hintText: 'Name'),
-                          SizedBox(
-                            height: 42.h,
-                          ),
-                          TextFieldWidget(hintText: 'Email'),
-                          SizedBox(
-                            height: 44.h,
-                          ),
-                          TextFieldWidget(hintText: 'Message',),
-                          TextFieldWidget(hintText: ''),
-                          TextFieldWidget(hintText: ''),
-                          TextFieldWidget(hintText: ''),
-                        ],
-                      ),
-                    ),
-                  ),
+                  )
                 ],
               ),
-            ),
-          ],
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 140.h,
+                    ),
+                    Container(
+                      height: 448.h,
+                      width: 327.w,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 32.w),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 66.h,
+                            ),
+                            TextFieldWidget(hintText: 'Name'),
+                            SizedBox(
+                              height: 42.h,
+                            ),
+                            TextFieldWidget(hintText: 'Email'),
+                            SizedBox(
+                              height: 44.h,
+                            ),
+                            TextFieldWidget(hintText: 'Message',),
+                            TextFieldWidget(hintText: ''),
+                            TextFieldWidget(hintText: ''),
+                            TextFieldWidget(hintText: ''),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

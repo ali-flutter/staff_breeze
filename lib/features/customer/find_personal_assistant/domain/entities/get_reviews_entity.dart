@@ -26,6 +26,7 @@ class DataReviewsEntity extends Equatable {
   final int isRead;
   final int accepted;
   final String createdAt;
+  final double rating;
 
   const DataReviewsEntity({
     required this.id,
@@ -36,8 +37,9 @@ class DataReviewsEntity extends Equatable {
     required this.isRead,
     required this.accepted,
     required this.createdAt,
+    required this.rating,
   });
   @override
   List<Object?> get props =>
-      [id, clientId, clientName, clientProfileImage, body, isRead, accepted,createdAt];
+      [id, clientId, clientName, clientProfileImage, body, isRead, accepted, createdAt,rating ];
 }

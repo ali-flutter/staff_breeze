@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>400335629937-hv8401rn4kcji8fu3gc5vhsb9vepb351.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.400335629937-hv8401rn4kcji8fu3gc5vhsb9vepb351</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>400335629937-36rolspm8rbant1t7imsdsnkl5m89r2h.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBYoHonyh7XhQoPc5bvxFu7XvU3sYxTNJ8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>400335629937</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.staffBreeze</string>
+	<key>PROJECT_ID</key>
+	<string>staff-breeze</string>
+	<key>STORAGE_BUCKET</key>
+	<string>staff-breeze.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:400335629937:ios:aa066176b0c7ddc69835d0</string>
+</dict>
+</plist>

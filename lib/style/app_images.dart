@@ -29,8 +29,7 @@ abstract class AppImages {
   static const hand_money = 'assets/images/hand_money.png';
   static const noti_icon = 'assets/images/noti.png';
   static const calen_icon = 'assets/images/cal_icon.png';
-  static const reviewer_one = 'assets/images/reviewer1.jpg';
-  static const reviewer_three = 'assets/images/reviewer3.jpg';
+
   static const personal = 'assets/images/personal.png';
 
   static const divide = 'assets/images/divid.svg';

@@ -8,12 +8,12 @@ class GetAssistantEntity extends Equatable {
   //MessageEntity? message;
   List<AssistantsDataEntity>? data;
   GetAssistantEntity({
-    required this.code,
+  /*  required this.code,*/
     required this.data,
     /* required this.message */
   });
   @override
-  List<Object?> get props => [code, /*  message, */ data];
+  List<Object?> get props => [/*code,*/ /*  message, */ data];
 }
 
 class MessageEntity extends Equatable {

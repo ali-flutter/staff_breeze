@@ -7,7 +7,7 @@ import 'package:staff_breeze/core/error/error_model.dart';
 class SignInEntity extends Equatable {
   UserEntity data;
   String? code;
-  String? message;
+  SignInMessageEntity? message;
 
   SignInEntity({required this.data, required this.code,required this.message});
   @override
@@ -21,7 +21,7 @@ class UserEntity extends Equatable {
   String? name;
   String? email;
   String? email_verified_at;
-  int? role_id;
+  String? role_id;
   int? isMale;
   String? location;
   String? about;
@@ -29,7 +29,7 @@ class UserEntity extends Equatable {
   String? profileImage;
   String? deviceToken;
   int? complete;
-  String? accessToken;
+  String? token;
 
   UserEntity({
     required this.id,
@@ -46,7 +46,7 @@ class UserEntity extends Equatable {
     required this.deviceToken,
     required this.complete,
     required this.location,
-    required this.accessToken,
+    required this.token,
   });
   @override
   List<Object?> get props => [
@@ -64,6 +64,16 @@ class UserEntity extends Equatable {
         deviceToken,
         complete,
         location,
-        accessToken,
+        token,
       ];
+}
+
+class SignInMessageEntity extends Equatable{
+
+  List<String>error;
+
+  SignInMessageEntity({required this.error});
+  @override
+  List<Object?> get props => [error];
+
 }

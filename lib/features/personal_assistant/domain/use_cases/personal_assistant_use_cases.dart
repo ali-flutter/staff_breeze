@@ -5,8 +5,7 @@ import 'package:staff_breeze/features/personal_assistant/domain/repository/perso
 
 @injectable
 class PersonalAssistantHomePageUseCases {
-  PersonalAssistantHomePageUseCases(
-      {required this.personalAssistantHomePageRepository});
+  PersonalAssistantHomePageUseCases({required this.personalAssistantHomePageRepository});
   PersonalAssistantHomePageRepository personalAssistantHomePageRepository;
 
   Future<Result<PersonalAssistantHomePageEntity>> getPersonalAssistant(

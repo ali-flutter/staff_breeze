@@ -17,13 +17,14 @@ class GetReviewsMapper {
 
   DataReviewsEntity dataMapper(DataReviewsModel model) {
     return DataReviewsEntity(
-        id: model.id,
-        clientId: model.client_id,
-        clientName: model.client_name,
-        clientProfileImage: model.client_profile_image,
-        body: model.body,
+        id: model.id??0,
+        clientId: model.client_id??0,
+        clientName: model.client_name??"Unknown",
+        clientProfileImage: model.client_profile_image??'',
+        body: model.body??'',
         isRead: model.is_read??0,
         accepted: model.accepted??0,
+        rating: model.rating??0,
         createdAt: model.created_at??'Unknown time'
         );
   }

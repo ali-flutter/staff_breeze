@@ -8,7 +8,8 @@ part of 'sign_in_model.dart';
 
 SignInModel _$SignInModelFromJson(Map<String, dynamic> json) => SignInModel(
       code: json['code'] as String,
-      message: json['message'] as String,
+      message:
+          SignInMessageModel.fromJson(json['message'] as Map<String, dynamic>),
       data: User.fromJson(json['data'] as Map<String, dynamic>),
     );
 
@@ -21,35 +22,45 @@ Map<String, dynamic> _$SignInModelToJson(SignInModel instance) =>
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
       id: json['id'] as int?,
-      cityId: json['cityId'] as int?,
-      countryId: json['countryId'] as int?,
+      city_id: json['city_id'] as int?,
+      country_id: json['country_id'] as int?,
       name: json['name'] as String?,
       email: json['email'] as String?,
       email_verified_at: json['email_verified_at'] as String?,
-      role_id: json['role_id'] as int?,
-      isMale: json['isMale'] as int?,
+      role_id: json['role_id'] as String?,
+      is_male: json['is_male'] as int?,
       about: json['about'] as String?,
-      phoneNumber: json['phoneNumber'] as String?,
-      profileImage: json['profileImage'] as String?,
-      deviceToken: json['deviceToken'] as String?,
+      phone_number: json['phone_number'] as String?,
+      profile_image: json['profile_image'] as String?,
+      device_token: json['device_token'] as String?,
       complete: json['complete'] as int?,
       location: json['location'] as String?,
-    )..accessToken = json['accessToken'] as String?;
+    )..token = json['token'] as String?;
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
-      'cityId': instance.cityId,
-      'countryId': instance.countryId,
+      'city_id': instance.city_id,
+      'country_id': instance.country_id,
       'name': instance.name,
       'email': instance.email,
       'email_verified_at': instance.email_verified_at,
       'role_id': instance.role_id,
-      'isMale': instance.isMale,
+      'is_male': instance.is_male,
       'about': instance.about,
       'location': instance.location,
-      'phoneNumber': instance.phoneNumber,
-      'profileImage': instance.profileImage,
-      'deviceToken': instance.deviceToken,
+      'phone_number': instance.phone_number,
+      'profile_image': instance.profile_image,
+      'device_token': instance.device_token,
       'complete': instance.complete,
-      'accessToken': instance.accessToken,
+      'token': instance.token,
+    };
+
+SignInMessageModel _$SignInMessageModelFromJson(Map<String, dynamic> json) =>
+    SignInMessageModel(
+      error: (json['error'] as List<dynamic>).map((e) => e as String).toList(),
+    );
+
+Map<String, dynamic> _$SignInMessageModelToJson(SignInMessageModel instance) =>
+    <String, dynamic>{
+      'error': instance.error,
     };

@@ -30,6 +30,8 @@ class _GetAllAssistantsClient implements GetAllAssistantsClient {
     education,
     language,
     rating,
+    services,
+    country,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -39,8 +41,10 @@ class _GetAllAssistantsClient implements GetAllAssistantsClient {
       r'city': city,
       r'is_male': ismale,
       r'education': education,
-      r'lang': language,
+      r'languages': language,
       r'rating': rating,
+      r'services': services,
+      r'country': country,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

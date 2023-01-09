@@ -27,15 +27,16 @@ class MessageReviewsModel {
 
 @JsonSerializable()
 class DataReviewsModel {
-  int id;
+  int? id;
 
-  int client_id;
-  String client_name;
-  String client_profile_image;
-  String body;
+  int? client_id;
+  String? client_name;
+  String? client_profile_image;
+  String? body;
   int? is_read;
   int? accepted;
   String? created_at;
+  double? rating;
 
   DataReviewsModel({
     required this.id,
@@ -46,6 +47,7 @@ class DataReviewsModel {
     required this.is_read,
     required this.accepted,
     required this.created_at,
+    required this.rating
   });
 
   factory DataReviewsModel.fromJson(Map<String, dynamic> json) =>

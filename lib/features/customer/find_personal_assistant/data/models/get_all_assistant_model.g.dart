@@ -9,11 +9,10 @@ part of 'get_all_assistant_model.dart';
 GetAllAssistantsModel _$GetAllAssistantsModelFromJson(
         Map<String, dynamic> json) =>
     GetAllAssistantsModel(
-      code: json['code'] as String?,
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => DataModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-    );
+    )..code = json['code'] as String?;
 
 Map<String, dynamic> _$GetAllAssistantsModelToJson(
         GetAllAssistantsModel instance) =>
@@ -45,7 +44,7 @@ DataModel _$DataModelFromJson(Map<String, dynamic> json) => DataModel(
       email: json['email'] as String?,
       email_verified_at: json['email_verified_at'] as String?,
       id: json['id'] as int?,
-      isMale: json['isMale'] as int?,
+      is_male: json['is_male'] as int?,
       languages: (json['languages'] as List<dynamic>?)
           ?.map((e) => LanguagesModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -62,7 +61,7 @@ Map<String, dynamic> _$DataModelToJson(DataModel instance) => <String, dynamic>{
       'email_verified_at': instance.email_verified_at,
       'city': instance.city,
       'country': instance.country,
-      'isMale': instance.isMale,
+      'is_male': instance.is_male,
       'about': instance.about,
       'phone_number': instance.phone_number,
       'profile_image': instance.profile_image,

@@ -10,8 +10,6 @@ PersonalAssistantHomePageModel _$PersonalAssistantHomePageModelFromJson(
         Map<String, dynamic> json) =>
     PersonalAssistantHomePageModel(
       code: json['code'] as String,
-      message: AssistantMessageModel.fromJson(
-          json['message'] as Map<String, dynamic>),
       data: AssistantDataModel.fromJson(json['data'] as Map<String, dynamic>),
     );
 
@@ -19,7 +17,6 @@ Map<String, dynamic> _$PersonalAssistantHomePageModelToJson(
         PersonalAssistantHomePageModel instance) =>
     <String, dynamic>{
       'code': instance.code,
-      'message': instance.message,
       'data': instance.data,
     };
 
@@ -28,29 +25,34 @@ AssistantDataModel _$AssistantDataModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as int,
       name: json['name'] as String,
       email: json['email'] as String,
-      email_verfied_at: json['email_verfied_at'] as String,
+      email_verfied_at: json['email_verfied_at'] as String?,
       role: (json['role'] as List<dynamic>)
           .map((e) => AssistantRoleModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      city: (json['city'] as List<dynamic>)
-          .map((e) => AssistantCityModel.fromJson(e as Map<String, dynamic>))
+      city: (json['city'] as List<dynamic>?)
+          ?.map((e) => AssistantCityModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      country: (json['country'] as List<dynamic>)
-          .map((e) => AssistantCountryModel.fromJson(e as Map<String, dynamic>))
+      country: (json['country'] as List<dynamic>?)
+          ?.map(
+              (e) => AssistantCountryModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      is_male: json['is_male'] as int,
-      about: json['about'] as String,
-      phone_number: json['phone_number'] as String,
-      profile_image: json['profile_image'] as String,
-      educations: (json['educations'] as List<dynamic>)
-          .map((e) =>
+      is_male: json['is_male'] as int?,
+      about: json['about'] as String?,
+      phone_number: json['phone_number'] as String?,
+      profile_image: json['profile_image'] as String?,
+      educations: (json['educations'] as List<dynamic>?)
+          ?.map((e) =>
               AssistantEducationModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      complete: json['complete'] as int,
-      rating_avrage: (json['rating_avrage'] as num).toDouble(),
-      languages: (json['languages'] as List<dynamic>)
-          .map((e) =>
+      complete: json['complete'] as int?,
+      rating_avrage: (json['rating_avrage'] as num?)?.toDouble(),
+      languages: (json['languages'] as List<dynamic>?)
+          ?.map((e) =>
               AssistantLanguagesModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      services: (json['services'] as List<dynamic>?)
+          ?.map(
+              (e) => AssistantServicesModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -63,6 +65,7 @@ Map<String, dynamic> _$AssistantDataModelToJson(AssistantDataModel instance) =>
       'role': instance.role,
       'city': instance.city,
       'country': instance.country,
+      'services': instance.services,
       'is_male': instance.is_male,
       'about': instance.about,
       'phone_number': instance.phone_number,
@@ -73,16 +76,18 @@ Map<String, dynamic> _$AssistantDataModelToJson(AssistantDataModel instance) =>
       'languages': instance.languages,
     };
 
-AssistantMessageModel _$AssistantMessageModelFromJson(
+AssistantServicesModel _$AssistantServicesModelFromJson(
         Map<String, dynamic> json) =>
-    AssistantMessageModel(
-      error: (json['error'] as List<dynamic>).map((e) => e as String).toList(),
+    AssistantServicesModel(
+      id: json['id'] as int,
+      title: json['title'] as String,
     );
 
-Map<String, dynamic> _$AssistantMessageModelToJson(
-        AssistantMessageModel instance) =>
+Map<String, dynamic> _$AssistantServicesModelToJson(
+        AssistantServicesModel instance) =>
     <String, dynamic>{
-      'error': instance.error,
+      'id': instance.id,
+      'title': instance.title,
     };
 
 AssistantRoleModel _$AssistantRoleModelFromJson(Map<String, dynamic> json) =>

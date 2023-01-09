@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:intl_phone_field/intl_phone_field.dart';
 import '../../../../style/app_text_style.dart';
+import '../business_logic/controller/complete_registration_state_controller.dart';
 
 class CompleteRegistrationTextField extends StatelessWidget {
-  const CompleteRegistrationTextField({Key? key,required this.hintText,this.textInputAction=TextInputAction.done,required this.onChanged,required this.validator}) : super(key: key);
- final String hintText;
-  final textInputAction;
+  const CompleteRegistrationTextField({Key? key}) : super(key: key);
 
-  final String? Function(String?)? validator;
-  final void Function(String)? onChanged;
+
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return Consumer(
+      builder: (context,ref,_) {
+        return IntlPhoneField(
+          initialCountryCode: 'AE',
+            decoration:const InputDecoration(
+             hintText: 'Phone Number',
+           ),
+          cursorColor:const Color(0xffD47FA6),
+          onChanged: (v){
+            ref
+                .watch(
+                phoneNumberCompleteRegistrationProvider
+                    .notifier)
+                .state =v.completeNumber;
+            print(ref.watch(phoneNumberCompleteRegistrationProvider   ));
+          },
+
+        );
+      }
+    ); /*TextFormField(
        keyboardType: TextInputType.phone,
       textInputAction: textInputAction,
       decoration: InputDecoration(
@@ -37,6 +55,6 @@ class CompleteRegistrationTextField extends StatelessWidget {
       ),cursorColor:const Color(0xffD47FA6),
       validator:validator ,
       onChanged:onChanged ,
-    );
+    );*/
   }
 }

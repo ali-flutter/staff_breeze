@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:staff_breeze/core/network_configration/result.dart';
 
 typedef Future Callback();
@@ -24,9 +25,11 @@ Future<Result<ResultType>> handleResponse<ResponseType, ResultType>(
   } on FormatException catch (e) {
     return Result.error("Bad response format: $e");
   } catch (e, stacktrace) {
-   /*  if (e.toString().contains("type")) {
+    debugPrint("error is $e");
+    debugPrint("stacktrace is $stacktrace");
+    /*  if (e.toString().contains("type")) {
       return Result.error('Invalid credentials');
     } */
-    return Result.error("Something went wrong - $e");
+    return const Result.error("Something went wrong ");
   }
 }

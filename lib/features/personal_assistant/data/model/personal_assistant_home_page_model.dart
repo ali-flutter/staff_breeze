@@ -6,11 +6,11 @@ part 'personal_assistant_home_page_model.g.dart';
 @JsonSerializable()
 class PersonalAssistantHomePageModel {
   String code;
-  AssistantMessageModel message;
+ // AssistantMessageModel message;
   AssistantDataModel data;
 
   PersonalAssistantHomePageModel(
-      {required this.code, required this.message, required this.data});
+      {required this.code, /* required this.message */ required this.data});
   factory PersonalAssistantHomePageModel.fromJson(Map<String, dynamic> json) =>
       _$PersonalAssistantHomePageModelFromJson(json);
 }
@@ -20,18 +20,19 @@ class AssistantDataModel {
   int id;
   String name;
   String email;
-  String email_verfied_at;
+  String? email_verfied_at;
   List<AssistantRoleModel> role;
-  List<AssistantCityModel> city;
-  List<AssistantCountryModel> country;
-  int is_male;
-  String about;
-  String phone_number;
-  String profile_image;
-  List<AssistantEducationModel> educations;
-  int complete;
-  double rating_avrage;
-  List<AssistantLanguagesModel> languages;
+  List<AssistantCityModel>? city;
+  List<AssistantCountryModel>? country;
+  List<AssistantServicesModel>?services;
+  int? is_male;
+  String? about;
+  String? phone_number;
+  String? profile_image;
+  List<AssistantEducationModel>? educations;
+  int? complete;
+  double? rating_avrage;
+  List<AssistantLanguagesModel>? languages;
   AssistantDataModel({
     required this.id,
     required this.name,
@@ -48,19 +49,26 @@ class AssistantDataModel {
     required this.complete,
     required this.rating_avrage,
     required this.languages,
+    required this.services
   });
   factory AssistantDataModel.fromJson(Map<String, dynamic> json) =>
       _$AssistantDataModelFromJson(json);
 }
 
-@JsonSerializable()
+/* @JsonSerializable()
 class AssistantMessageModel {
   List<String> error;
   AssistantMessageModel({required this.error});
   factory AssistantMessageModel.fromJson(Map<String, dynamic> json) =>
       _$AssistantMessageModelFromJson(json);
+} */
+@JsonSerializable()
+class AssistantServicesModel{
+  int id;
+  String title;
+  AssistantServicesModel({required this.id,required this.title});
+  factory AssistantServicesModel.fromJson(Map<String,dynamic>json)=>_$AssistantServicesModelFromJson(json);
 }
-
 @JsonSerializable()
 class AssistantRoleModel {
   int id;

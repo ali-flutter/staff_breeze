@@ -14,6 +14,10 @@ abstract class DioSetup {
     instance.interceptors.add(
       LogInterceptor(
         requestBody: true,
+        request: true,
+        error: true,
+        requestHeader: true,
+
         responseBody: true,
       ),
     );

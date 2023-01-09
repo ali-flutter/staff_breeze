@@ -6,7 +6,7 @@ class SignUpMapper{
   SignUpEntity mapper(SignUpModel model){
     return SignUpEntity(
       code: model.code,
-      message: model.message,
+      message:messageMapper(model.message),
       data: dataModelToEntity(model.data)
     );
   }
@@ -20,4 +20,7 @@ class SignUpMapper{
           
           );
   }
+   SignUpMessageEntity messageMapper(SignUpMessageModel model){
+    return SignUpMessageEntity(error: model.error)  ;
+  } 
 }

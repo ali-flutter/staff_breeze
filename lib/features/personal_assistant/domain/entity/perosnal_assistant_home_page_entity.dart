@@ -5,12 +5,12 @@ import 'package:equatable/equatable.dart';
 
 class PersonalAssistantHomePageEntity extends Equatable {
   String code;
-  AssistantMessageEntity message;
+  //AssistantMessageEntity message;
   AssistantDataEntity data;
   PersonalAssistantHomePageEntity(
-      {required this.code, required this.data, required this.message});
+      {required this.code, required this.data, /* required this.message */});
   @override
-  List<Object?> get props => [code, message, data];
+  List<Object?> get props => [code, /* message */ data];
 }
 
 class AssistantMessageEntity extends Equatable {
@@ -24,18 +24,19 @@ class AssistantDataEntity extends Equatable {
   int id;
   String name;
   String email;
-  String email_verfied_at;
+  String? email_verfied_at;
   List<AssistantRoleEntity> role;
   List<AssistantCityEntity> city;
   List<AssistantCountryEntity> country;
-  int is_male;
-  String about;
-  String phone_number;
-  String profile_image;
-  List<AssistantEducationEntity> educations;
-  int complete;
-  double rating_avrage;
-  List<AssistantLanguagesEntity> languages;
+  int? is_male;
+  String? about;
+  String? phone_number;
+  String? profile_image;
+  List<AssistantEducationEntity>? educations;
+  int? complete;
+  double? rating_avrage;
+  List<AssistantLanguagesEntity>? languages;
+  List<AssistantServicesEntity>? services;
   AssistantDataEntity({
     required this.id,
     required this.name,
@@ -52,6 +53,7 @@ class AssistantDataEntity extends Equatable {
     required this.complete,
     required this.rating_avrage,
     required this.languages,
+    required this.services
   });
 
   @override
@@ -70,9 +72,19 @@ class AssistantDataEntity extends Equatable {
         educations,
         complete,
         rating_avrage,
-        languages
+        languages,
+       services
       ];
 }
+
+  class AssistantServicesEntity extends Equatable{
+  int id;
+  String title;
+  AssistantServicesEntity({required this.id,required this.title});
+  @override
+  List<Object?> get props =>[id,title];
+
+  }
 
 class AssistantRoleEntity extends Equatable {
   final int id;

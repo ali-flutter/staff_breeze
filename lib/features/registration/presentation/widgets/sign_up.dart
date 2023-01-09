@@ -5,13 +5,24 @@ import 'package:flutter/physics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:injectable/injectable.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:staff_breeze/core/common_widgets/alert_dialog.dart';
 import 'package:staff_breeze/core/common_widgets/app_buttons.dart';
+import 'package:staff_breeze/core/helpers/shared_prefs_manager/bearer_token_saver.dart';
+import 'package:staff_breeze/core/helpers/shared_prefs_manager/device_token.dart';
+import 'package:staff_breeze/core/helpers/shared_prefs_manager/user_id_saver.dart';
+import 'package:staff_breeze/core/helpers/shared_prefs_manager/user_role_id_saver.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/pages/find_personal_assistant_page.dart';
+import 'package:staff_breeze/features/personal_assistant/presentation/business_logic/controller/personal_assistant_home_page_state_controller.dart';
+import 'package:staff_breeze/features/registration/domain/entities/add_device_token_entity.dart';
 import 'package:staff_breeze/features/registration/domain/entities/sign_up_entity.dart';
+import 'package:staff_breeze/features/registration/domain/use_cases/add_device_token_use_case.dart';
+import 'package:staff_breeze/features/registration/presentation/business_logic/controller/sign_in_state_controller.dart';
 import 'package:staff_breeze/features/registration/presentation/business_logic/controller/sign_up_state_controller.dart';
 import 'package:staff_breeze/features/registration/presentation/business_logic/controller/validators.dart';
+import 'package:staff_breeze/features/registration/presentation/business_logic/cubit/add_device_token_cubit.dart';
 import 'package:staff_breeze/features/registration/presentation/business_logic/cubit/sign_up_cubit.dart';
 import 'package:staff_breeze/features/registration/presentation/widgets/shaker.dart';
 import 'package:staff_breeze/features/registration/presentation/widgets/text_field_widget.dart';
@@ -19,6 +30,7 @@ import 'package:staff_breeze/injection_container/injection.dart';
 import 'package:staff_breeze/style/app_colors.dart';
 import 'package:staff_breeze/style/app_text_style.dart';
 import 'package:staff_breeze/style/dimensions_controller.dart';
+import '../../../../core/helpers/shared_prefs_manager/customer_data.dart';
 import '../../../../core/network_configration/result.dart';
 import '../../../../router/app_routes.dart';
 import '../../domain/entities/sign_in_entity.dart';
@@ -34,10 +46,12 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   late GlobalKey<FormState> formKey;
   late GlobalKey<ShakeWidgetState> firstNameShaker;
   late GlobalKey<ShakeWidgetState> lastNameShaker;
-  late GlobalKey<ShakeWidgetState> userNameShaker;
+
+  // late GlobalKey<ShakeWidgetState> userNameShaker;
   late GlobalKey<ShakeWidgetState> emailShaker;
   late GlobalKey<ShakeWidgetState> passwordShaker;
   late GlobalKey<ShakeWidgetState> confirmPasswordShaker;
+  late String deviceToken;
 
   @override
   void initState() {
@@ -45,10 +59,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     firstNameShaker = GlobalKey<ShakeWidgetState>();
     lastNameShaker = GlobalKey<ShakeWidgetState>();
     formKey = GlobalKey<FormState>();
-    userNameShaker = GlobalKey<ShakeWidgetState>();
+    // userNameShaker = GlobalKey<ShakeWidgetState>();
     emailShaker = GlobalKey<ShakeWidgetState>();
     passwordShaker = GlobalKey<ShakeWidgetState>();
     confirmPasswordShaker = GlobalKey<ShakeWidgetState>();
+    deviceTokenRetriever().then((value) => deviceToken = value ?? '');
   }
 
   @override
@@ -59,6 +74,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         key: formKey,
         child: Column(
           children: [
+            ///first name field
             Consumer(
               builder: (context, ref, _) => ShakeWidget(
                 key: firstNameShaker,
@@ -80,7 +96,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ),
               ),
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 20.h),
+
+            ///last name field
             Consumer(
               builder: (context, ref, _) => ShakeWidget(
                 key: lastNameShaker,
@@ -103,29 +121,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ),
               ),
             ),
-            SizedBox(height: 10.h),
-            Consumer(
-              builder: (context, ref, _) => ShakeWidget(
-                key: userNameShaker,
-                shakeOffset: 10,
-                child: TextFieldWidget(
-                  hintText: 'User name',
-                  validator: (userNameValue) {
-                    if (userNameValue != '') {
-                      return null;
-                    } else {
-                      userNameShaker.currentState!.animationController
-                          .forward();
-                      return 'User name field is required';
-                    }
-                  },
-                  onChanged: (userName) => ref
-                      .watch(signUpUserNameProvider.notifier)
-                      .state = userName,
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 20.h),
+
+            ///email field
             Consumer(
               builder: (context, ref, _) => ShakeWidget(
                 key: emailShaker,
@@ -145,7 +143,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ),
               ),
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 20.h),
+
+            /// password field
             Consumer(
               builder: (context, ref, _) => ShakeWidget(
                 key: passwordShaker,
@@ -178,7 +178,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ),
               ),
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 20.h),
+
+            ///confirm password field
             Consumer(
               builder: (context, ref, _) => ShakeWidget(
                 key: confirmPasswordShaker,
@@ -221,21 +223,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   state.when(() => null,
                       loading: () => null,
                       initial: () => null,
-                      error: (error, s) => QuickAlert.show(
-                          context: context,
-                          showCancelBtn: true,
-                          type: QuickAlertType.error,
-                          backgroundColor: AppColors.scaffoldBackgroundColor,
-                          cancelBtnText: 'Cancel',
-                          cancelBtnTextStyle: AppTextStyle.buttonTextStyle
-                              .copyWith(color: Colors.black45),
-                          onCancelBtnTap: () => Navigator.of(context).pop(),
-                          confirmBtnText: 'Retry',
-                          confirmBtnTextStyle: AppTextStyle.buttonTextStyle
-                              .copyWith(color: Colors.black45),
-                          text: error,
-                          confirmBtnColor: AppColors.scaffoldBackgroundColor,
-                          onConfirmBtnTap: () {
+                      error: (error, s) => AppDialogs.errorDialog(context,
+                              error: error ?? 'Something went wrong',
+                              onConfirmBtnTap: () {
                             BlocProvider.of<SignUpCubit>(context).signUp(
                                 name: '${ref.watch(signUpFirstNameProvider)}'
                                     ' ${ref.watch(signUpLastNameProvider)}',
@@ -248,15 +238,37 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             Navigator.pop(context);
                           }),
                       success: (response) {
-                        ref.watch(userIdProvider.notifier).state =
-                            response.data.id;
-                        print(ref.watch(userIdProvider));
-                        if (response.data.role_id == "1") {
-                          return Navigator.pushNamedAndRemoveUntil(context,
-                              FIND_PERSONAL_ASSISTANT, (route) => false);
-                        } else if (response.data.role_id == "2") {
-                          return Navigator.pushNamedAndRemoveUntil(context,
-                              PERSONAL_ASSISTANT_HOMEPAGE, (route) => false);
+                        if (response is SignUpEntity &&
+                            response.code == "422") {
+                          AppDialogs.errorDialog(context,
+                              error: response.message!.error[0],
+                              onConfirmBtnTap: () {});
+                        } else if (response is SignUpEntity &&
+                            response.code == "200" &&
+                            response.data != null) {
+                          ref.watch(isGuestProvider.notifier).state=false;
+                          customerNameSaver(name: response.data!.name??'');
+                          setUserId(id: response.data!.id ?? 0);
+                          userRoleIdSaver(
+                              roleId: response.data!.role_id ?? "0");
+                          ref.watch(userIdProvider.notifier).state =
+                              response.data!.id;
+                          userRoleIdRetriever().then((value) => print("user role id retriever $value"));
+                          ref.watch(bearerToken.notifier).state =
+                              response.data!.token ?? "";
+                          debugPrint('here goes');
+                          getIt<AddDeviceTokenCubit>().addDeviceToken(
+                              bearer_token: "Bearer ${response.data!.token}",
+                              device_token: deviceToken);
+                          debugPrint('here finishes');
+                          bearerTokenSaver(response.data!.token ?? '');
+                          if (response.data!.role_id == "2") {
+                            return Navigator.of(context).pushNamedAndRemoveUntil(
+                                    FIND_PERSONAL_ASSISTANT, (route) => false);
+                          } else if (response.data!.role_id == "1") {
+                            return Navigator.pushNamedAndRemoveUntil(context,
+                                COMPLETE_REGISTRATION, (route) => false);
+                          }
                         }
                       });
                 },
@@ -285,25 +297,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                         .watch(signUpConfirmPasswordProvider),
                                     role_id:
                                         ref.watch(signUpAccountTypeIdProvider));
-                                /*   if (ref.watch(signUpAccountTypeIdProvider) ==
-                                    0) {
-                                  Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      FIND_PERSONAL_ASSISTANT,
-                                      (route) => false);
-                                } else if (ref
-                                        .watch(signUpAccountTypeIdProvider) ==
-                                    1) {
-                                  Navigator.pushNamedAndRemoveUntil(context,
-                                      COMPLETE_REGISTRATION, (route) => false);
-                                } */
-                                /* BlocProvider.of<SignUpCubit>(context).signUp(
-                                  name: '${ref.watch(signUpFirstNameProvider)}'+' ${ref.watch(signUpLastNameProvider)}',
-                                  email: ref.watch(signUpEmailProvider),
-                                  password: ref.watch(signUpPasswordProvider),
-                                   password_confirmation: ref.watch(signUpConfirmPasswordProvider),
-                                   accountTypeId:ref.watch(signUpAccountTypeIdProvider)
-                              );*/
                               } else {}
                             },
                           )),

@@ -12,13 +12,16 @@ class GetAssistantUseCase {
   GetAssistantRepository getAssistantRepository;
   GetAssistantUseCase({required this.getAssistantRepository});
 
-  Future<Result<GetAssistantEntity>> call({required int page, required int pageSize,
+  Future <Result<GetAssistantEntity>> call({required int page, required int pageSize,
      int? city,
-     int? language,
+     List<int>? language,
      double? rating,
      int? is_male,
-     int? education,
-     String? search,}) {
+     List<int>? education,
+     String? search,
+      List<int>?services,
+    int? country,
+  }) {
     return getAssistantRepository.getAssistants(
       page: page,
     pageSize: pageSize,
@@ -28,6 +31,8 @@ class GetAssistantUseCase {
     search:search,
     rating: rating,
     language: language,
+      services: services,
+        country: country
    
     );
   }
