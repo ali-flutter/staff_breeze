@@ -23,6 +23,6 @@ abstract class InsertFreeDaysClient {
     @Part(name: "hourly_rate") required int hourly_rate,
     @Part(name: "start_at") required int start_at,
     @Part(name: "weeks") required int weeks,
-    @Part(name: "free_days") required List<String> free_days,
+    @Part(name: "free_days") required String free_days,
   });
 }

@@ -14,7 +14,7 @@ import '../../../registration/presentation/business_logic/controller/sign_in_sta
 import '../../../registration/presentation/business_logic/controller/sign_up_state_controller.dart';
 
 class CustomerInfoBar extends ConsumerStatefulWidget {
-  const CustomerInfoBar({super.key,required this.onPressed});
+  const CustomerInfoBar({super.key, required this.onPressed});
   final void Function()? onPressed;
 
   @override
@@ -22,93 +22,104 @@ class CustomerInfoBar extends ConsumerStatefulWidget {
 }
 
 class CustomerInfoBarState extends ConsumerState<CustomerInfoBar> {
-  String name ='';
-@override
+  String name = '';
+  @override
   void initState() {
-  customerNameRetriever().then((nameFromShard) {
-    if (nameFromShard==null){
-      setState(() {
-        name='';
-      });
-    }else{
-      setState(() {
-        name=nameFromShard;
-      });
-    }
-  });
-  customerPhotoRetriever().then((customerPhotoFromShared) {
-    if(customerPhotoFromShared!=null){
-      print('its not null ');
-       ref.watch(customerPhotoStateController.notifier).state=customerPhotoFromShared;
-      print(ref.watch(customerPhotoStateController));
-
-    }else{
-    }
-  });
-
-     super.initState();
-  }
-@override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context,ref,_) {
-        return Row(
-         mainAxisAlignment:ref.watch(isGuestProvider) ?MainAxisAlignment.start:MainAxisAlignment.spaceBetween,
-          children: [
-            !ref.watch(isGuestProvider)?Container(
-              height: 45.w,
-               width:45.w,
-              decoration:  BoxDecoration(
-                borderRadius:  BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30),
-                ),
-                //color:Colors.amber,// AppColors.scaffoldBackgroundColor,
-               // TODO : HERE I WANT TO ADD THE REAL IMAGE OF THE CUSTOMER
-
-                image: ref.watch(customerPhotoStateController)==''
-                    ?const DecorationImage(
-                  image:AssetImage(AppImages.placeholderImage),
-                fit: BoxFit.cover
-                ):DecorationImage(image: NetworkImage(imagesUrl+ref.watch(customerPhotoStateController)),
-                    fit: BoxFit.cover),
-              ),
-            ):Container(),
-            //SizedBox(width: 7.5.w),
-            Consumer(
-              builder: (context,ref,_) {
-                //TODO HERE I WANT TO DISPLAY THE FIRST NAME OF THE CUSTOMER
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                       ref.watch(isGuestProvider)==false?
-                    Text('Welcome ${name},',
-                    style: AppTextStyle.mediumGrey,
-                    ):Text(' Welcome Guest,',
-                      style: AppTextStyle.mediumGrey,
-                    ),
-                    SizedBox(height:Sizer.h(context, 0.002) ,),
-                    ref.watch(isGuestProvider)?Text(' Search for personal assistant',style:AppTextStyle.blackMedium ,):
-                    Text(' Search for personal assistant',style:AppTextStyle.blackMedium,),
-                  ],
-                );
-              }
-            ),
-          ref.watch(isGuestProvider)?SizedBox(width: 68.w,):Container(),
-          // SizedBox(width: Sizer.w(context,0.006),),
-            //TODO HERE I WANT TO ADD THE BILL IMAGE FUNCTIONALITY
-            // TODO IMAGE OF A BILL WITH A NOTIFICATION AND WITHOUT
-           GestureDetector(
-             onTap:widget.onPressed,
-           child: SizedBox(
-             height: 33.w,
-           width: 33.w,
-             child: SvgPicture.asset(AppImages.drawerIcon),
-           ),
-           ),
-          ],
-        );
+    customerNameRetriever().then((nameFromShard) {
+      if (nameFromShard == null) {
+        setState(() {
+          name = '';
+        });
+      } else {
+        setState(() {
+          name = nameFromShard;
+        });
       }
-    );
+    });
+    customerPhotoRetriever().then((customerPhotoFromShared) {
+      if (customerPhotoFromShared != null) {
+        print('its not null ');
+        ref.watch(customerPhotoStateController.notifier).state = customerPhotoFromShared;
+        print(ref.watch(customerPhotoStateController));
+      } else {}
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(builder: (context, ref, _) {
+      return Row(
+        mainAxisAlignment: ref.watch(isGuestProvider) ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
+        children: [
+          !ref.watch(isGuestProvider)
+              ? Container(
+            height: 45.w,
+            width: 45.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+              ),
+              //color:Colors.amber,// AppColors.scaffoldBackgroundColor,
+              // TODO : HERE I WANT TO ADD THE REAL IMAGE OF THE CUSTOMER
+
+              image: ref.watch(customerPhotoStateController) == ''
+                  ? const DecorationImage(image: AssetImage(AppImages.placeholderImage), fit: BoxFit.cover)
+                  : DecorationImage(image: NetworkImage(imagesUrl + ref.watch(customerPhotoStateController)), fit: BoxFit.cover),
+            ),
+          )
+              : Container(),
+          //SizedBox(width: 7.5.w),
+          Consumer(builder: (context, ref, _) {
+            //TODO HERE I WANT TO DISPLAY THE FIRST NAME OF THE CUSTOMER
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ref.watch(isGuestProvider) == false
+                    ? Text(
+                  'Welcome ${name},',
+                  style: AppTextStyle.mediumGrey,
+                )
+                    : Text(
+                  ' Welcome Guest,',
+                  style: AppTextStyle.mediumGrey,
+                ),
+                SizedBox(
+                  height: Sizer.h(context, 0.002),
+                ),
+                ref.watch(isGuestProvider)
+                    ? Text(
+                  ' Search for personal assistant',
+                  style: AppTextStyle.blackMedium.copyWith(fontSize: 15.sp),
+                )
+                    : Text(
+                  ' Search for personal assistant',
+                  style: AppTextStyle.blackMedium.copyWith(fontSize: 15.sp),
+                ),
+              ],
+            );
+          }),
+          // ref.watch(isGuestProvider)
+          //     ? SizedBox(
+          //         width: 68.w,
+          //       )
+          //     : Container(),
+          // SizedBox(width: Sizer.w(context,0.006),),
+          //TODO HERE I WANT TO ADD THE BILL IMAGE FUNCTIONALITY
+          // TODO IMAGE OF A BILL WITH A NOTIFICATION AND WITHOUT
+          Spacer(),
+          GestureDetector(
+            onTap: widget.onPressed,
+            child: SizedBox(
+              height: 33.w,
+              width: 33.w,
+              child: SvgPicture.asset(AppImages.drawerIcon),
+            ),
+          ),
+        ],
+      );
+    });
   }
 }

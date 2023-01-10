@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'insert_free_days_client.dart';
+part of 'summary_page_client.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'insert_free_days_client.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _InsertFreeDaysClient implements InsertFreeDaysClient {
-  _InsertFreeDaysClient(
+class _SummaryPageClient implements SummaryPageClient {
+  _SummaryPageClient(
     this._dio, {
     this.baseUrl,
   }) {
@@ -21,59 +21,30 @@ class _InsertFreeDaysClient implements InsertFreeDaysClient {
   String? baseUrl;
 
   @override
-  Future<InsertFreeDaysModel> enterFreeDays({
+  Future<SummaryPageModel> getTotalPayment({
     required bearer,
+    required customer_id,
     required assistant_id,
-    required hours,
-    required hourly_rate,
-    required start_at,
-    required weeks,
-    required free_days,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': bearer};
     _headers.removeWhere((k, v) => v == null);
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'assistant_id',
-      assistant_id.toString(),
-    ));
-    _data.fields.add(MapEntry(
-      'hours',
-      hours.toString(),
-    ));
-    _data.fields.add(MapEntry(
-      'hourly_rate',
-      hourly_rate.toString(),
-    ));
-    _data.fields.add(MapEntry(
-      'start_at',
-      start_at.toString(),
-    ));
-    _data.fields.add(MapEntry(
-      'weeks',
-      weeks.toString(),
-    ));
-    _data.fields.add(MapEntry(
-      'free_days',
-      free_days,
-    ));
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<InsertFreeDaysModel>(Options(
-      method: 'POST',
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<SummaryPageModel>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
-      contentType: 'multipart/form-data',
     )
             .compose(
               _dio.options,
-              '/insert-free-days',
+              '/get-total-payment/${customer_id}/${assistant_id}',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = InsertFreeDaysModel.fromJson(_result.data!);
+    final value = SummaryPageModel.fromJson(_result.data!);
     return value;
   }
 

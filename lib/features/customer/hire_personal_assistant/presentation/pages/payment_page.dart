@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:staff_breeze/core/common_widgets/app_buttons.dart';
+import 'package:staff_breeze/features/customer/hire_personal_assistant/presentation/pages/summary_page.dart';
 import 'package:staff_breeze/features/registration/presentation/widgets/text_field_widget.dart';
 import 'package:staff_breeze/router/app_routes.dart';
 import 'package:staff_breeze/style/app_colors.dart';
@@ -9,6 +10,7 @@ import 'package:staff_breeze/style/app_text_style.dart';
 import 'package:staff_breeze/style/dimensions_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:status_alert/status_alert.dart';
 
 import '../business_logic/payment_state_controller.dart';
 
@@ -71,11 +73,15 @@ class PaymentPage extends StatelessWidget {
                   SizedBox(
                     width: 4.w,
                   ),
-                  Text(
-                    '0000',
-                    style: AppTextStyle.whiteBold.copyWith(
-                      fontSize: 34.sp,
-                    ),
+                  Consumer(
+                    builder: (context,ref,_) {
+                      return Text(
+                        '${ref.watch(totalAmmountProvider)}',
+                        style: AppTextStyle.whiteBold.copyWith(
+                          fontSize: 34.sp,
+                        ),
+                      );
+                    }
                   )
                 ],
               ),
@@ -271,169 +277,182 @@ class PaymentPage extends StatelessWidget {
               SizedBox(
                 height: 20.h,
               ),
-              AppButtons(
-                buttonText: 'Add Card',
-                buttonColor: AppColors.primaryColor,
-                onPressed: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        height: 361.h,
-                        width: MediaQuery.of(context).size.width * 1,
-                        color: AppColors.scaffoldBackgroundColor,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 24.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              SizedBox(
-                                height: 39.h,
-                              ),
-                              SizedBox(
-                                width: Sizer.w(context, 1),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 26.w,
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        'CANCEL',
-                                        style: AppTextStyle.appHintStyle
-                                            .copyWith(
-                                                color: const Color(0xffC1BAC6),
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 69.w,
-                                    ),
-                                    TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        'REVIEW',
-                                        style: AppTextStyle.appHintStyle
-                                            .copyWith(
-                                                color: AppColors.primaryColor,
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              Container(
-                                height: 150.h,
-                                width: 327.w,
-                                decoration: BoxDecoration(
-                                    color: const Color(0xffEBEBEB),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 26.h),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: Sizer.h(context, 0.05),
-                                      ),
-                                      SizedBox(
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'AMOUNT',
-                                              style: AppTextStyle.appHintStyle
-                                                  .copyWith(
-                                                color: const Color(0xffA3A1A4),
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 75.w,
-                                            ),
-                                            Text(
-                                              r'$0000',
-                                              style: TextStyle(
-                                                  color: AppColors.primaryColor,
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: Sizer.h(context, 0.05),
-                                      ),
-                                      SizedBox(
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'CREDIT CARD',
-                                              style: AppTextStyle.appHintStyle
-                                                  .copyWith(
-                                                color: const Color(0xffA3A1A4),
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 45.w,
-                                            ),
-                                            Text(
-                                              r'ONE FINANCE ****',
-                                              style: TextStyle(
-                                                  color: AppColors.primaryColor,
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+              Consumer(
+                builder: (context,ref,_) {
+                  return AppButtons(
+                    buttonText: 'Add Card',
+                    buttonColor: AppColors.primaryColor,
+                    onPressed: () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            height: 361.h,
+                            width: MediaQuery.of(context).size.width * 1,
+                            color: AppColors.scaffoldBackgroundColor,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 24.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 39.h,
                                   ),
-                                ),
+                                  SizedBox(
+                                    width: Sizer.w(context, 1),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 26.w,
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            
+                                          },
+                                          child: Text(
+                                            'CANCEL',
+                                            style: AppTextStyle.appHintStyle
+                                                .copyWith(
+                                                    color: const Color(0xffC1BAC6),
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 69.w,
+                                        ),
+                                        TextButton(
+                                          onPressed: () {},
+                                          child: Text(
+                                            'REVIEW',
+                                            style: AppTextStyle.appHintStyle
+                                                .copyWith(
+                                                    color: AppColors.primaryColor,
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  Container(
+                                    height: 150.h,
+                                    width: 327.w,
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xffEBEBEB),
+                                        borderRadius: BorderRadius.circular(20)),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 26.h),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: Sizer.h(context, 0.05),
+                                          ),
+                                          SizedBox(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'AMOUNT',
+                                                  style: AppTextStyle.appHintStyle
+                                                      .copyWith(
+                                                    color: const Color(0xffA3A1A4),
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 75.w,
+                                                ),
+                                                Text(
+                                                  '${ref.watch(totalAmmountProvider)} \$',
+                                                  style: TextStyle(
+                                                      color: AppColors.primaryColor,
+                                                      fontSize: 13.sp,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: Sizer.h(context, 0.05),
+                                          ),
+                                          SizedBox(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'CREDIT CARD',
+                                                  style: AppTextStyle.appHintStyle
+                                                      .copyWith(
+                                                    color: const Color(0xffA3A1A4),
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 45.w,
+                                                ),
+                                                Text(
+                                                  r'ONE FINANCE ****',
+                                                  style: TextStyle(
+                                                      color: AppColors.primaryColor,
+                                                      fontSize: 13.sp,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 19.h),
+                                  AppButtons(
+                                    buttonText: 'COMPLETE PAYMENT',
+                                    buttonColor: AppColors.primaryColor,
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      StatusAlert.show(context,
+                                      configuration: IconConfiguration(icon: Icons.done),
+                                        title: 'Thank you',
+                                        duration: Duration(milliseconds: 1000),
+                                      );
+                                    Future.delayed(Duration(milliseconds: 1000),()=>  Navigator.pushNamedAndRemoveUntil(context, FIND_PERSONAL_ASSISTANT,
+                                            (route) => false));
+                                     /* Navigator.of(context).pushNamed(
+                                          CONTACT_WITH_PERSONAL_ASSISTANT);*/
+                                    },
+                                    height: 52.h,
+                                    width: 300.w,
+                                    buttonTextStyle:
+                                        AppTextStyle.buttonTextStyle.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  )
+                                ],
                               ),
-                              SizedBox(height: 19.h),
-                              AppButtons(
-                                buttonText: 'COMPLETE PAYMENT',
-                                buttonColor: AppColors.primaryColor,
-                                onPressed: () {
-                                  Navigator.of(context).pushNamed(
-                                      CONTACT_WITH_PERSONAL_ASSISTANT);
-                                },
-                                height: 52.h,
-                                width: 300.w,
-                                buttonTextStyle:
-                                    AppTextStyle.buttonTextStyle.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        },
                       );
                     },
+                    height: 52.h,
+                    width: 300.w,
+                    buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(
+                      color: Colors.white,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   );
-                },
-                height: 52.h,
-                width: 300.w,
-                buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(
-                  color: Colors.white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                }
               ),
             ],
           ),

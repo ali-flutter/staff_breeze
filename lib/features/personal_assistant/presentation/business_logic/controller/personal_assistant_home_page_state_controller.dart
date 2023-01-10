@@ -20,3 +20,4 @@ final personalDrawerName=StateProvider<String>((ref) => '');
 final personalDrawerPhoto=StateProvider<String>((ref) => '');
 
 final personalAssistantEducationIdsList=StateProvider<List<int>?>((ref) => []);
+final loading=StateProvider((ref)=>false);

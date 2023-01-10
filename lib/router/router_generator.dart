@@ -5,10 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:staff_breeze/features/customer/domain/use_case/edit_name_profile_image_use.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/cubit/add_about_cubit.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/cubit/add_review_cubit.dart';
+import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/cubit/create_reservation_cubit.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/cubit/get_reviews_cubit.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/cubit/get_used_languages_cubit.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/pages/find_personal_assistant_page.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/pages/personal_assistant_profile.dart';
+import 'package:staff_breeze/features/customer/hire_personal_assistant/presentation/business_logic/summary_payment_cubit.dart';
 import 'package:staff_breeze/features/customer/hire_personal_assistant/presentation/pages/contact_personal_asistant.dart';
 import 'package:staff_breeze/features/customer/hire_personal_assistant/presentation/pages/payment_page.dart';
 import 'package:staff_breeze/features/customer/hire_personal_assistant/presentation/pages/pick_a_date.dart';
@@ -124,12 +126,20 @@ class RouteGenerator {
                 child:const PersonalAssistantProfile()
             ));
       case PICK_A_DATE:
-        return MaterialPageRoute(builder: (context) => BlocProvider(
-          create: (context) =>getIt<GetFreeDaysCubit>(),
+        return MaterialPageRoute(builder: (context) => MultiBlocProvider(
+          providers:[
+            BlocProvider(create:(context) =>getIt<GetFreeDaysCubit>()),
+            BlocProvider(create:(context)=>getIt<CreateReservationCubit>()),
+          ],
+
             child: const PickDatePage(),
         ));
       case SUMMARY_PAGE:
-        return MaterialPageRoute(builder: (context) => const SummaryPage());
+        return MaterialPageRoute(builder: (context) => BlocProvider(
+          create: (context) =>getIt<SummaryPaymentCubit>(),
+            child: const SummaryPage(),
+
+        ));
       case PAYMENT_PAGE:
         return MaterialPageRoute(builder: (context) => PaymentPage());
       case CUSTOMER_JOB_HISTORY_PAGE:

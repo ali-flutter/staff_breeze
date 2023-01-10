@@ -337,7 +337,16 @@ class SearchFiltersAndPersonalAssistantListState extends ConsumerState<SearchFil
                       ),
                       GestureDetector(
                         onTap: () {
-                          BlocProvider.of<GetAssistantsCubit>(context).getAllAssistants(pageSize: 100, page: 1, search: ref.watch(searchForAPersonalAssistantProvider));
+                          if( ref.watch(searchForAPersonalAssistantProvider)==''||ref.watch(searchForAPersonalAssistantProvider)==null) {
+
+                          }else{
+                            BlocProvider.of<GetAssistantsCubit>(context)
+                                .getAllAssistants(
+                                pageSize: 100,
+                                page: 1,
+                                search: ref.watch(
+                                    searchForAPersonalAssistantProvider));
+                          }
                         },
                         child: Container(
                           height: 33.w,

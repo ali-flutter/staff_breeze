@@ -126,12 +126,8 @@ class _SignInWidgetState extends State<SignInWidget> {
                          /// TODO  FIND A SOLUTION FOR THE RETRY BUTTON
 
                           if(response is SignInEntity && response.code =="422"){
-                            return AppDialogs.errorDialog(context, error:response.message!.error[0],
-                                onConfirmBtnTap: (){
-                                 /* BlocProvider.of<SignInCubit>(context).signIn(
-                                      email: ref.watch(signInEmailProvider),
-                                      password: ref.watch(singInPasswordProvider));*/
-                                });
+                            return AppDialogs.errorDialogWithOutConfirmButton(context, error:response.message!.error[0]);
+
                           }
                           else if (response is SignInEntity && response.code=="200") {
                             ref.watch(isGuestProvider.notifier).state=false;

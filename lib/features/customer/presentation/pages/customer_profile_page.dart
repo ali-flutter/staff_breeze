@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,23 +28,23 @@ import '../../../../core/network_configration/result.dart';
 import '../../../../core/network_configration/result.dart';
 import '../../../../router/app_routes.dart';
 import '../../../../style/app_images.dart';
+import '../../../personal_assistant/presentation/business_logic/controller/personal_assistant_home_page_state_controller.dart';
 import '../../../registration/presentation/business_logic/controller/uploading_image_functionality.dart';
 import '../../find_personal_assistant/presentation/business_logic/statecontroller/find personal_assistant_state_controller.dart';
 import '../../find_personal_assistant/presentation/business_logic/statecontroller/personal_assistant_profile_state_controller.dart';
 import '../business_logic/controller/customer_homepage_state.dart';
 
-class CustomerProfilePage extends StatefulWidget {
+class CustomerProfilePage extends ConsumerStatefulWidget {
   const CustomerProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<CustomerProfilePage> createState() => _CustomerProfilePageState();
+  CustomerProfilePageState createState() => CustomerProfilePageState();
 }
 
-class _CustomerProfilePageState extends State<CustomerProfilePage> {
+class CustomerProfilePageState extends ConsumerState<CustomerProfilePage> {
   @override
   void initState() {
-    getUserId().then((value) => BlocProvider.of<GetCustomerInfoCubit>(context)
-        .getCustomerInfo(user_id: value ?? 0));
+    getUserId().then((value) => BlocProvider.of<GetCustomerInfoCubit>(context).getCustomerInfo(user_id: value ?? 0));
     super.initState();
   }
 
@@ -52,8 +53,7 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
     duration: const Duration(seconds: 1),
     content: Text(
       'About Me added successfully',
-      style: AppTextStyle.whiteBold
-          .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+      style: AppTextStyle.whiteBold.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
     ),
   );
 
@@ -62,7 +62,7 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
     return Scaffold(
       body: BlocBuilder<GetCustomerInfoCubit, Result<GetCustomerInfoEntity>>(
         builder: (context, state) => state.when(
-          () => Container(),
+              () => Container(),
           loading: () => const Center(child: CircularProgressIndicator()),
           initial: () => Container(),
           error: (e, s) => Center(
@@ -78,73 +78,68 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    Consumer(
-                      builder: (context,ref,_) {
-                        return Container(
-                          height: MediaQuery.of(context).padding.top * 10.4,
-                          width: 375.w,
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            image: success.data.profileImage == "" ||
-                                    success.data.profileImage == null
-                                ? const DecorationImage(
-                                    image: AssetImage(AppImages.placeholderImage),
-                                    fit: BoxFit.cover)
-                               /* : ref.watch(customerUploadedImageProvider)!=null&&ref.watch(customerUploadedImageProvider)!=''
+                    Consumer(builder: (context, ref, _) {
+                      return Container(
+                        height: MediaQuery.of(context).padding.top * 10.4,
+                        width: 375.w,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          image: success.data.profileImage == "" || success.data.profileImage == null
+                              ? const DecorationImage(image: AssetImage(AppImages.placeholderImage), fit: BoxFit.cover)
+                          /* : ref.watch(customerUploadedImageProvider)!=null&&ref.watch(customerUploadedImageProvider)!=''
                                 ''?DecorationImage(
                                     image: NetworkImage(
                                         imagesUrl + ref.watch(customerUploadedImageProvider)!),
-                                    fit: BoxFit.cover)*/:DecorationImage(image: NetworkImage(imagesUrl+success.data.profileImage!)),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 174.w,
-                                    height: 53.h,
-                                    child: Text(
-                                      success.data.name ?? 'customer',
-                                      style: AppTextStyle.whiteBold.copyWith(
-                                        fontSize: 30.sp,
-                                      ),
+                                    fit: BoxFit.cover)*/
+                              : DecorationImage(image: NetworkImage(imagesUrl + success.data.profileImage!), fit: BoxFit.cover),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 174.w,
+                                  height: 53.h,
+                                  child: Text(
+                                    success.data.name ?? 'customer',
+                                    style: AppTextStyle.whiteBold.copyWith(
+                                      fontSize: 30.sp,
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 100.w,
-                                  ),
-                                  Consumer(builder: (context, ref, _) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        _showMyDialog(
-                                            ref) /*.then((value) =>getUserId().then((id) => BlocProvider.of<GetCustomerInfoCubit>(context).getCustomerInfo(user_id: id??0)))*/;
-                                      },
-                                      child: Container(
-                                        height: 24.h,
-                                        width: 24.w,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xff343D58),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: SvgPicture.asset(AppImages.pen),
-                                        ),
+                                ),
+                                SizedBox(
+                                  width: 100.w,
+                                ),
+                                Consumer(builder: (context, ref, _) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      _showMyDialog(ref) /*.then((value) =>getUserId().then((id) => BlocProvider.of<GetCustomerInfoCubit>(context).getCustomerInfo(user_id: id??0)))*/;
+                                    },
+                                    child: Container(
+                                      height: 40.h,
+                                      width: 40.w,
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xff343D58),
+                                        shape: BoxShape.circle,
                                       ),
-                                    );
-                                  }),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 26.h,
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    ),
+                                      child: Center(
+                                        child: SvgPicture.asset(AppImages.pen),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 26.h,
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
                     Container(
                       width: 375.w,
                       height: 497.5.h,
@@ -163,19 +158,14 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20.w, vertical: 4.h),
+                              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
                               child: AppButtons(
                                 width: 158.w,
                                 height: 36.h,
                                 onPressed: () {},
                                 buttonColor: AppColors.primaryColor,
                                 buttonText: 'ABOUT ME',
-                                buttonTextStyle: AppTextStyle.buttonTextStyle
-                                    .copyWith(
-                                        color: Colors.white,
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.bold),
+                                buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
@@ -185,9 +175,7 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
                           Container(
                             height: (285.88).h,
                             width: 344.w,
-                            decoration: BoxDecoration(
-                                color: const Color(0xff515A75),
-                                borderRadius: BorderRadius.circular(50)),
+                            decoration: BoxDecoration(color: const Color(0xff515A75), borderRadius: BorderRadius.circular(50)),
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 29.w),
                               child: Column(
@@ -202,8 +190,7 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
                                       ),
                                       Text(
                                         'About Me',
-                                        style:
-                                            AppTextStyle.appHintStyle.copyWith(
+                                        style: AppTextStyle.appHintStyle.copyWith(
                                           color: Colors.white,
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
@@ -228,37 +215,20 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
                                       //: 316.w,
                                       child: Center(
                                         child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 25.w),
-                                          child: Consumer(
-                                              builder: (context, ref, _) {
+                                          padding: EdgeInsets.symmetric(horizontal: 25.w),
+                                          child: Consumer(builder: (context, ref, _) {
                                             return TextFormField(
-                                              style: AppTextStyle.appHintStyle
-                                                  .copyWith(
+                                              style: AppTextStyle.appHintStyle.copyWith(
                                                 color: Colors.white,
                                               ),
                                               decoration: InputDecoration(
-                                                hintStyle: AppTextStyle
-                                                    .appHintStyle
-                                                    .copyWith(
-                                                        color: Colors.white),
-                                                hintText:
-                                                    success.data.about ?? '',
-                                                focusedBorder:
-                                                    const UnderlineInputBorder(
-                                                        borderSide:
-                                                            BorderSide.none),
-                                                border:
-                                                    const UnderlineInputBorder(
-                                                        borderSide:
-                                                            BorderSide.none),
+                                                hintStyle: AppTextStyle.appHintStyle.copyWith(color: Colors.white),
+                                                hintText: success.data.about ?? '',
+                                                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide.none),
+                                                border: const UnderlineInputBorder(borderSide: BorderSide.none),
                                               ),
                                               onChanged: (aboutV) {
-                                                ref
-                                                    .watch(
-                                                        customerAboutMeProvider
-                                                            .notifier)
-                                                    .state = aboutV;
+                                                ref.watch(customerAboutMeProvider.notifier).state = aboutV;
                                               },
                                             );
                                           }),
@@ -270,33 +240,15 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
                                     height: 15.h,
                                   ),
                                   Consumer(builder: (context, ref, _) {
-                                    return BlocConsumer<AddAboutCubit,
-                                            Result<AddAboutEntity>>(
-                                        listener: (context, state) => state.when(
-                                            () => null,
+                                    return BlocConsumer<AddAboutCubit, Result<AddAboutEntity>>(
+                                        listener: (context, state) => state.when(() => null,
                                             loading: () => null,
                                             initial: () => null,
-                                            error: (error, s) =>
-                                                AppDialogs.errorDialog(context,
-                                                    error: error ??
-                                                        'Something went wrong',
-                                                    onConfirmBtnTap: () {
-                                                  bearerTokenRetreiver().then(
-                                                      (bearer) => getUserId().then(
-                                                          (id) => BlocProvider
-                                                                  .of<AddAboutCubit>(
-                                                                      context)
-                                                              .addAbout(
-                                                                  bearer_token:
-                                                                      "Bearer $bearer",
-                                                                  user_id:
-                                                                      id ?? 0,
-                                                                  about: ref.watch(
-                                                                      customerAboutMeProvider))));
-                                                }),
-                                            success: (response) =>
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(snackBar)),
+                                            error: (error, s) => AppDialogs.errorDialog(context, error: error ?? 'Something went wrong', onConfirmBtnTap: () {
+                                              bearerTokenRetreiver().then((bearer) => getUserId().then((id) =>
+                                                  BlocProvider.of<AddAboutCubit>(context).addAbout(bearer_token: "Bearer $bearer", user_id: id ?? 0, about: ref.watch(customerAboutMeProvider))));
+                                            }),
+                                            success: (response) => ScaffoldMessenger.of(context).showSnackBar(snackBar)),
                                         builder: (context, state) {
                                           if (state is Loading) {
                                             return const CircularProgressIndicator(
@@ -305,36 +257,18 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
                                           } else {
                                             return AppButtons(
                                               buttonText: 'SAVE CHANGES',
-                                              buttonColor:
-                                                  AppColors.primaryColor,
+                                              buttonColor: AppColors.primaryColor,
                                               onPressed: () {
                                                 ref.watch(isGuestProvider)
-                                                    ? AppDialogs.warningDialog(
-                                                        context,
-                                                        warning: "Please, you should register first",
-                                                        onConfirmBtnTapped: () {
-                                                        Navigator.pushNamed(
-                                                            context, REGISTER);
-                                                      })
-                                                    : bearerTokenRetreiver().then((value) =>
-                                                        getUserId().then((id) =>
-                                                            BlocProvider.of<AddAboutCubit>(context).addAbout(
-                                                                bearer_token:
-                                                                    "Bearer $value",
-                                                                user_id:
-                                                                    id ?? 0,
-                                                                about: ref.watch(
-                                                                    customerAboutMeProvider))));
+                                                    ? AppDialogs.warningDialog(context, warning: "Please, you should register first", onConfirmBtnTapped: () {
+                                                  Navigator.pushNamed(context, REGISTER);
+                                                })
+                                                    : bearerTokenRetreiver().then((value) => getUserId().then((id) =>
+                                                    BlocProvider.of<AddAboutCubit>(context).addAbout(bearer_token: "Bearer $value", user_id: id ?? 0, about: ref.watch(customerAboutMeProvider))));
                                               },
                                               height: 36.h,
                                               width: 158.w,
-                                              buttonTextStyle: AppTextStyle
-                                                  .buttonTextStyle
-                                                  .copyWith(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 12.sp),
+                                              buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.sp),
                                             );
                                           }
                                         });
@@ -367,208 +301,189 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
         return BlocProvider<EditNameProfileImageCubit>.value(
-            value: getIt<EditNameProfileImageCubit>(),
-            child: AlertDialog(
-              backgroundColor: AppColors.primaryColor.withOpacity(.91),
-              title: const Text(
-                'Edit your Details',
-                style: TextStyle(color: Colors.white),
-              ),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    const Text(
-                      'Edit your name',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Card(
-                      color: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: BorderSide(
-                          color: Colors.white,
-                        ),
+          value: getIt<EditNameProfileImageCubit>(),
+          child: AlertDialog(
+            backgroundColor: AppColors.primaryColor.withOpacity(.91),
+            title: const Text(
+              'Edit your Details',
+              style: TextStyle(color: Colors.white),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  const Text(
+                    'Edit your name',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Card(
+                    color: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(
+                        color: Colors.white,
                       ),
-                      elevation: 0,
-                      child: SizedBox(
-                        height: 40.h,
-                        //: 316.w,
-                        child: Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 25.w),
-                            child: Consumer(builder: (context, ref, _) {
-                              return TextFormField(
-                                style: AppTextStyle.appHintStyle.copyWith(
-                                  color: Colors.white,
-                                ),
-                                decoration: const InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide.none),
-                                  border: UnderlineInputBorder(
-                                      borderSide: BorderSide.none),
-                                ),
-                                onChanged: (newName) {
-                                  ref
-                                      .watch(customerNewNameProvider.notifier)
-                                      .state = newName;
-                                },
-                              );
-                            }),
-                          ),
+                    ),
+                    elevation: 0,
+                    child: SizedBox(
+                      height: 40.h,
+                      //: 316.w,
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 25.w),
+                          child: Consumer(builder: (context, ref, _) {
+                            return TextFormField(
+                              style: AppTextStyle.appHintStyle.copyWith(
+                                color: Colors.white,
+                              ),
+                              decoration: const InputDecoration(
+                                focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
+                                border: UnderlineInputBorder(borderSide: BorderSide.none),
+                              ),
+                              onChanged: (newName) {
+                                ref.watch(customerNewNameProvider.notifier).state = newName;
+                              },
+                            );
+                          }),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Consumer(builder: (context, ref, _) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            ref.watch(uploadingAnImageStatus),
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                elevation: MaterialStateProperty.all(0),
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.white),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                    side: BorderSide(
-                                      width: 1.h,
-                                      color: const Color(0xff707070),
-                                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Consumer(builder: (context, ref, _) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          ref.watch(uploadingAnImageStatus),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(0),
+                              backgroundColor: MaterialStateProperty.all(Colors.white),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                  side: BorderSide(
+                                    width: 1.h,
+                                    color: const Color(0xff707070),
                                   ),
-                                )),
-                            onPressed: () async {
-                              ref
-                                  .watch(customerUploadedImageProvider.notifier)
-                                  .state = await UploadingAnImage.pickImage(
-                                      source: ImageSource.gallery) ??
-                                  '';
-                              ref.watch(customerUploadedImageProvider) !=
-                                          null &&
-                                      ref.watch(
-                                              customerUploadedImageProvider) !=
-                                          ''
-                                  ? ref
-                                      .watch(uploadingAnImageStatus.notifier)
-                                      .state = 'Uploaded ✓'
-                                  : "Upload a photo";
-
-                              print('pressed');
-                            },
-
-                            child: SizedBox(
-                              height: 22.h,
-                              width: 59.w,
-                              child: Center(
-                                child: Text(
-                                  'SELECT FILE',
-                                  style: AppTextStyle.appHintStyle.copyWith(
-                                      color: const Color(0xff352641),
-                                      fontSize: 6.sp,
-                                      fontWeight: FontWeight.w400),
                                 ),
+                              )),
+                          onPressed: () async {
+                            ref.watch(customerUploadedImageProvider.notifier).state = await UploadingAnImage.pickImage(source: ImageSource.gallery) ?? '';
+                            ref.watch(customerUploadedImageProvider) != null && ref.watch(customerUploadedImageProvider) != ''
+                                ? ref.watch(uploadingAnImageStatus.notifier).state = 'Uploaded ✓'
+                                : "Upload a photo";
+
+                            print('pressed');
+                          },
+                          child: SizedBox(
+                            height: 22.h,
+                            width: 59.w,
+                            child: Center(
+                              child: Text(
+                                'SELECT FILE',
+                                style: AppTextStyle.appHintStyle.copyWith(color: const Color(0xff352641), fontSize: 6.sp, fontWeight: FontWeight.w400),
                               ),
                             ),
                           ),
-                        ],
-                      );
-                    }),
-                  ],
-                ),
+                        ),
+                      ],
+                    );
+                  }),
+                ],
               ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.white),
                 ),
-                BlocConsumer<EditNameProfileImageCubit,
-                        Result<EditNameProfileImageEntity>>(
-                    listener: (context, state) => state.when(() => null,
-                        loading: () => null,
-                        initial: () => null,
-                        error: (e, s) => AppDialogs.errorDialog(context,
-                            error: e ?? 'Something went wrong',
-                            onConfirmBtnTap: () {}),
-                        success: (response) {
-                         print('successss');
-                          Navigator.of(context).pop();
-                           Navigator.popAndPushNamed(context, PERSONAL_ASSISTANT_PICKED_FROM_LIST);
-                          /*if (response is EditNameProfileImageEntity &&
-                              response.code == "200") {
-                            customerPhotoSaver(
-                                customerPhoto:
-                                response.data.profile_image ?? '');
-                            ref
-                                .watch(customerUploadedImageProvider.notifier)
-                                .state = response.data.profile_image;
-                            ref.watch(customerNewNameProvider.notifier).state =
-                                response.data.name;
-                            Navigator.of(context).pop();
-                            return Navigator.popAndPushNamed(context, PERSONAL_ASSISTANT_PICKED_FROM_LIST);
-                          } else {
-                            Navigator.pop(context);
-
-                          }*/
-                        }),
-                    builder: (context, state) {
-                      if (state is Loading) {
-                        return const CircularProgressIndicator(
-                          color: Colors.white,
-                        );
-                      } else {
-                        return /*ref.watch(isGuestProvider)
-                            ? TextButton(
-                                child: const Text('Edit',
-                                    style: TextStyle(color: Colors.white)),
-                                onPressed: () {
-                                  AppDialogs.warningDialog(context,
-                                      warning:
-                                          "Please, you should register first",
-                                      onConfirmBtnTapped: () {
-                                    Navigator.pushNamed(context, REGISTER);
-                                  });
-                                },
-                              )
-                            :*/ TextButton(
-                                child: const Text('Edit',
-                                    style: TextStyle(color: Colors.white)),
-                                onPressed: () async {
-                                  getUserId().then(
-                                    (id) => bearerTokenRetreiver().then(
-                                      (value) => BlocProvider.of<EditNameProfileImageCubit>(
-                                              context)
-                                          .editNameProfileImage(
-                                        bearer_token: "Bearer $value",
-                                        user_id: id ?? 0,
-                                        name:
-                                            ref.watch(customerNewNameProvider),
-                                        profile_image: ref.watch(
-                                            customerUploadedImageProvider),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                      }
-                    }),
-              ],
-            ));
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ref.watch(loading) == true
+                  ? CircularProgressIndicator()
+                  : TextButton(
+                child: const Text('Edit', style: TextStyle(color: Colors.white)),
+                onPressed: () async {
+                  dynamic x = await changeNameAndImage();
+                  if (x == '200') {
+                    Navigator.pop(context);
+                    Navigator.pushReplacementNamed(context, CUSTOMER_PROFILE);
+                  }
+                },
+              )
+            ],
+          ),
+        );
       },
     );
+  }
+
+  final Dio _dio = Dio();
+
+  Future changeNameAndImage() async {
+    print('asasasdasd');
+    ref.watch(loading.notifier).state = true;
+
+    dynamic userID = await getUserId();
+    dynamic token = await bearerTokenRetreiver();
+    _dio.options.headers["Authorization"] = "Bearer ${token}";
+    try {
+      Response response = await _dio.post(
+        'https://staffbreeze.aratech.co/api/edit-image-name',
+        data: {
+          'user_id': '$userID',
+          'name': ref.watch(customerNewNameProvider) ?? '-',
+          'profile_image': ref.watch(customerUploadedImageProvider),
+        },
+      );
+      print('response: ${response.data}');
+      // setState(() {
+      //   status = 'done';
+      // });
+      ref.watch(loading.notifier).state = false;
+
+      var x = response.data['code'];
+      print(x.toString());
+      if (x == '200')
+        return '200';
+      else
+        return AppDialogs.warningDialog(context, warning: 'Error Happened', onConfirmBtnTapped: () {
+          Navigator.pop(context);
+        });
+      //   print(customerModel.name);
+    } on DioError catch (e) {
+      ref.watch(loading.notifier).state = false;
+
+      // if (e.error is SocketException) {
+      //   return AppDialogs.errorDialog(context, error: 'An error happened', onConfirmBtnTap: () {
+      //     print('ok');
+      //   });
+      // }
+      if (e.response != null) {
+        print('Dio error!');
+        print('STATUS: ${e.response?.statusCode}');
+        print('DATA: ${e.response?.data}');
+        print('HEADERS: ${e.response?.headers}');
+      } else {
+        // Error due to setting up or sending the request
+        print('Error sending request!');
+        print(e.message);
+        return AppDialogs.errorDialogWithOutConfirmButton(
+          context,
+          error: 'An error happened',
+        );
+      }
+    }
   }
 }

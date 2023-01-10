@@ -12,6 +12,6 @@ abstract class InsertFreeDaysRepository {
     required int hourly_rate,
     required int start_at,
     required int weeks,
-    required List<String> free_days,
+    required String free_days,
   });
 }

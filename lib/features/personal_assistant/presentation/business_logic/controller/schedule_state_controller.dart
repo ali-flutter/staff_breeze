@@ -13,3 +13,5 @@ final selectedFreeDays=StateProvider<List<String>>((ref)=>[]);
 final selectedFreeDaysForReservation=StateProvider<List<DateTime?>>((ref) => []);
 
 final selectedFreeDaysForSecondMonth=StateProvider<List<DateTime?>>((ref) => []);
+
+final totalSelectedDays=StateProvider<List<String>>((ref) => []);

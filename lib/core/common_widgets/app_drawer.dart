@@ -236,7 +236,7 @@ class AppDrawer extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, NEW_PASSWORD);
+                         // Navigator.pushNamed(context, NEW_PASSWORD);
                         },
                         child: Text(
                           'Change Password',

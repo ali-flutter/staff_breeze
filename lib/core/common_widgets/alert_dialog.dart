@@ -54,4 +54,17 @@ class AppDialogs {
         onCancelBtnTap: ()=>Navigator.of(context).pop(),
         onConfirmBtnTap: onConfirmBtnTapped);
   }
+  static Future<void> success(BuildContext context,
+      {required String warning, required void Function()? onConfirmBtnTapped}) {
+    return QuickAlert.show(
+        context: context,
+        backgroundColor: AppColors.scaffoldBackgroundColor,
+        type: QuickAlertType.success,
+        title: warning,
+        confirmBtnTextStyle: AppTextStyle.buttonTextStyle.copyWith(color: Colors.black45) ,
+        confirmBtnColor: AppColors.scaffoldBackgroundColor,
+        showCancelBtn: false,
+
+        onConfirmBtnTap: onConfirmBtnTapped);
+  }
 }

@@ -120,46 +120,133 @@ class _FiltersWidgetState extends State<FiltersWidget> {
                       borderRadius: BorderRadius.circular(10.r),
                       color: AppColors.primaryColor.withOpacity(.91),
                     ),
-                    child: ListView(
-                      physics: const BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics(),
-                      ),
-                      children: genders
-                          .map((gender) => GestureDetector(
-                        onTap: () {
-                          ref.watch(showGenderFilterProvider.notifier).state = false;
-                        },
-                        child: SizedBox(
-                          width: 80.w,
-                          height: 25.h,
-                          child: Center(
-                            child: InkWell(
-                              onTap: () {
-                                if (gender == 'Male') {
-                                  ref.watch(selectedGenderFilterProvider.notifier).state = 1;
-                                  BlocProvider.of<GetAssistantsCubit>(context)
-                                      .getAllAssistants(page: 1, pageSize: 10, language: ref.watch(selectedLanguagesList), is_male: ref.watch(selectedGenderFilterProvider));
-                                  ref.watch(showGenderFilterProvider.notifier).state = false;
-                                } else {
-                                  ref.watch(selectedGenderFilterProvider.notifier).state = 0;
-                                  BlocProvider.of<GetAssistantsCubit>(context)
-                                      .getAllAssistants(page: 1, pageSize: 10, language: ref.watch(selectedLanguagesList), is_male: ref.watch(selectedGenderFilterProvider));
-                                  ref.watch(showGenderFilterProvider.notifier).state = false;
-                                }
-                                print(ref.watch(selectedGenderFilterProvider));
-                              },
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            ref.watch(showGenderFilterProvider.notifier).state = false;
+                            print('pressed\n\n\n\n\n\n\n\n');
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 6.r),
+                            margin: EdgeInsets.only(top: 10.h),
+                            decoration: BoxDecoration(
+                                color: ref.watch(selectedGenderFilterProvider) == 1 ? const Color(0xff515A75) : null,
+                                // borderRadius: i == 0 ? BorderRadius.circular(10) : BorderRadius.circular(0),
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: SizedBox(
+                              width: 80.w,
+                              height: 25.h,
                               child: Center(
-                                child: Text(
-                                  gender,
-                                  style: AppTextStyle.whiteBold.copyWith(fontSize: 13.sp, fontWeight: FontWeight.w500),
+                                child: InkWell(
+                                  onTap: () {
+                                    ref.watch(selectedGenderFilterProvider.notifier).state = 1;
+                                    BlocProvider.of<GetAssistantsCubit>(context)
+                                        .getAllAssistants(page: 1, pageSize: 10, language: ref.watch(selectedLanguagesList), is_male: ref.watch(selectedGenderFilterProvider));
+                                    ref.watch(showGenderFilterProvider.notifier).state = false;
+
+                                    print(ref.watch(selectedGenderFilterProvider));
+                                  },
+                                  child: Center(
+                                    child: Text(
+                                      'Male',
+                                      style: AppTextStyle.whiteBold.copyWith(fontSize: 13.sp, fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ))
-                          .toList(),
+                        GestureDetector(
+                          onTap: () {
+                            ref.watch(showGenderFilterProvider.notifier).state = false;
+                            print('pressed\n\n\n\n\n\n\n\n');
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 6.r),
+                            margin: EdgeInsets.only(top: 10.h),
+                            decoration: BoxDecoration(
+                                color: ref.watch(selectedGenderFilterProvider) == 0 ? const Color(0xff515A75) : null,
+                                // borderRadius: i == 0 ? BorderRadius.circular(10) : BorderRadius.circular(0),
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: SizedBox(
+                              width: 80.w,
+                              height: 25.h,
+                              child: Center(
+                                child: InkWell(
+                                  onTap: () {
+                                    ref.watch(selectedGenderFilterProvider.notifier).state = 0;
+                                    BlocProvider.of<GetAssistantsCubit>(context)
+                                        .getAllAssistants(page: 1, pageSize: 10, language: ref.watch(selectedLanguagesList), is_male: ref.watch(selectedGenderFilterProvider));
+                                    ref.watch(showGenderFilterProvider.notifier).state = false;
+
+                                    print(ref.watch(selectedGenderFilterProvider));
+                                  },
+                                  child: Center(
+                                    child: Text(
+                                      "Female",
+                                      style: AppTextStyle.whiteBold.copyWith(fontSize: 13.sp, fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    // child: ListView(
+                    //   physics: const BouncingScrollPhysics(
+                    //     parent: AlwaysScrollableScrollPhysics(),
+                    //   ),
+                    //   children: genders
+                    //       .map(
+                    //         (gender) => GestureDetector(
+                    //           onTap: () {
+                    //             ref.watch(showGenderFilterProvider.notifier).state = false;
+                    //             print('pressed\n\n\n\n\n\n\n\n');
+                    //           },
+                    //           child: Container(
+                    //             // padding: EdgeInsets.symmetric(horizontal: 6.r),
+                    //             // margin: EdgeInsets.only(top: 10.h),
+                    //             // decoration: BoxDecoration(
+                    //             //     color: gender == 'Male' ? const Color(0xff515A75) : null,
+                    //             //     // borderRadius: i == 0 ? BorderRadius.circular(10) : BorderRadius.circular(0),
+                    //             //     borderRadius: BorderRadius.circular(10.r)),
+                    //             child: SizedBox(
+                    //               width: 80.w,
+                    //               height: 25.h,
+                    //               child: Center(
+                    //                 child: InkWell(
+                    //                   onTap: () {
+                    //                     if (gender == 'Male') {
+                    //                       ref.watch(selectedGenderFilterProvider.notifier).state = 1;
+                    //                       BlocProvider.of<GetAssistantsCubit>(context)
+                    //                           .getAllAssistants(page: 1, pageSize: 10, language: ref.watch(selectedLanguagesList), is_male: ref.watch(selectedGenderFilterProvider));
+                    //                       ref.watch(showGenderFilterProvider.notifier).state = false;
+                    //                     } else {
+                    //                       ref.watch(selectedGenderFilterProvider.notifier).state = 0;
+                    //                       BlocProvider.of<GetAssistantsCubit>(context)
+                    //                           .getAllAssistants(page: 1, pageSize: 10, language: ref.watch(selectedLanguagesList), is_male: ref.watch(selectedGenderFilterProvider));
+                    //                       ref.watch(showGenderFilterProvider.notifier).state = false;
+                    //                     }
+                    //                     print(ref.watch(selectedGenderFilterProvider));
+                    //                   },
+                    //                   child: Center(
+                    //                     child: Text(
+                    //                       gender,
+                    //                       style: AppTextStyle.whiteBold.copyWith(fontSize: 13.sp, fontWeight: FontWeight.w500),
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       )
+                    //       .toList(),
+                    // ),
                   )
                       : Container();
                 })

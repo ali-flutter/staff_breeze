@@ -74,7 +74,7 @@ class AboutMeWidget extends StatelessWidget {
               SizedBox(
                 height: 10.h,
               ),
-              Row(
+          /*    Row(
                 children: [
                   SectionTitle(title: 'Gender'), //TODO add gender
                   SizedBox(
@@ -99,7 +99,7 @@ class AboutMeWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 10.h),*/
               Row(
                 children: [
                   SectionTitle(title: 'Education'),

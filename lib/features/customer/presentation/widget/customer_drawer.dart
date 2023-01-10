@@ -149,7 +149,7 @@ class CustomerDrawerState extends ConsumerState<CustomerDrawer> {
                               Padding(
                                 padding: EdgeInsets.only(left: 70.w),
                                 child: Text(
-                                  response.data.name,
+                                '',
                                   style: AppTextStyle.appHintStyle.copyWith(
                                       color: const Color(0xff707070),
                                       fontSize: 14.sp,
@@ -280,7 +280,7 @@ class CustomerDrawerState extends ConsumerState<CustomerDrawer> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, NEW_PASSWORD);
+                               // Navigator.pushNamed(context, NEW_PASSWORD);
                               },
                               child: Text(
                                 'Change Password',

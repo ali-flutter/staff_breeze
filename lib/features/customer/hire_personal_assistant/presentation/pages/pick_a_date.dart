@@ -71,46 +71,129 @@ class PickDatePageState extends ConsumerState<PickDatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          //();
-          Navigator.pushNamed(context, SUMMARY_PAGE);
-        },
-        child: Container(
-          height: 82.h,
-          width: 82.w,
-          decoration: const BoxDecoration(
-            color: AppColors.scaffoldBackgroundColor,
-            shape: BoxShape.circle,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xff6D7EB4).withOpacity(0.65),
-                    offset: const Offset(4, 10),
-                    blurRadius: 20,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Center(
-                child: SizedBox(
-                  height: (23.1).h,
-                  width: 20.w,
-                  child: const Icon(
-                    Icons.arrow_forward_ios_sharp,
-                    color: Colors.white,
+      floatingActionButton: BlocConsumer<CreateReservationCubit,Result<CreateReservationEntity>>(
+         listener: (context,state)=>state.when(
+                 () => null,
+             loading: ()=>null,
+             initial: ()=>null,
+             error: (error,s)=>StatusAlert.show(
+               context,
+               configuration: IconConfiguration(icon:Icons.error_outline_rounded),
+               title:"Error Proceeding your Reservation",
+   //            subtitle: 'An Error occurred while proceeding your reservation process, please try again later. '
+             ),
+             success: (success) {
+               StatusAlert.show(
+                 context,
+                 duration:const Duration(milliseconds: 1000),
+                 configuration: IconConfiguration(icon:Icons.done),
+                 title:"Reservation created successfully",
+                 //subtitle: 'Your reservation was created successfully'
+             );
+              Future.delayed(Duration(milliseconds: 1000),()=>Navigator.pushNamed(context, SUMMARY_PAGE));
+
+             },),
+          builder: (context,state) {
+            if(state is Loading){
+              return Container(
+                height: 82.h,
+                width: 82.w,
+                decoration: const BoxDecoration(
+                  color: AppColors.scaffoldBackgroundColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.primaryColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xff6D7EB4).withOpacity(0.65),
+                          offset: const Offset(4, 10),
+                          blurRadius: 20,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-        ),
+              );
+            }else{
+              return GestureDetector(
+
+                onTap:ref.watch(selectedFreeDaysForReservation).isNotEmpty||
+                    ref.watch(selectedFreeDaysForSecondMonth).isNotEmpty? () {
+                  ref.watch(totalSelectedDays.notifier).state=ref.watch(selectedFreeDaysForReservation).map((e) => formatter.format(e!)).toList();
+                   for(var i in ref.watch(selectedFreeDaysForSecondMonth)){
+                     var formatedItem=formatter.format(i!);
+                     ref.watch(totalSelectedDays.notifier).state.add(formatedItem);
+                   }
+                   print(ref.watch(totalSelectedDays));
+                  getUserId().then((id)=>bearerTokenRetreiver().then((bearer)=>
+                      BlocProvider.of<CreateReservationCubit>(context).
+                      createReservation(bearer_token: "Bearer $bearer",
+                          customer_id:id??0,
+                          assistant_id: ref.watch(chosenAssistantIdProvider)!,
+                          reservations_dates: ref.watch(totalSelectedDays))));
+                  /* ref.watch(selectedFreeDaysForReservation).map((e) =>
+                       ref.watch(totalSelectedDays.notifier).state.add(formatter.format(e!)));
+                   ref.watch(selectedFreeDaysForSecondMonth).map((e) =>
+                       ref.watch(totalSelectedDays.notifier).state.add(formatter.format(e!)));
+
+                   print(  ref.watch(totalSelectedDays));*/
+                  /*getUserId().then((id)=>bearerTokenRetreiver().then((bearer)=>
+                       BlocProvider.of<CreateReservationCubit>(context).
+                       createReservation(bearer_token: "Bearer $bearer",
+                           customer_id:id??0,
+                           assistant_id: ref.watch(chosenAssistantIdProvider)!,
+                           reservations_dates: reservations_dates)));*/
+                }:null,
+                child: Container(
+                  height: 82.h,
+                  width: 82.w,
+                  decoration: const BoxDecoration(
+                    color: AppColors.scaffoldBackgroundColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child:Padding (
+                    padding: const EdgeInsets.all(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: ref.watch(selectedFreeDaysForReservation).isNotEmpty||
+                            ref.watch(selectedFreeDaysForSecondMonth).isNotEmpty? AppColors.primaryColor:AppColors.primaryColor.withOpacity(.71),
+                        boxShadow: [
+                      BoxShadow(
+                            color:const Color(0xff6D7EB4).withOpacity(0.65),
+                            offset: const Offset(4, 10),
+                            blurRadius: 20,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: SizedBox(
+                          height: (23.1).h,
+                          width: 20.w,
+                          child: const Icon(
+                            Icons.arrow_forward_ios_sharp,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+        }
       ),
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
@@ -223,12 +306,12 @@ class PickDatePageState extends ConsumerState<PickDatePage> {
                                     },
                                     onValueChanged: (d) {
                                       print('afjsdkl');
+                                      ref.watch(selectedFreeDaysForReservation.notifier).state=d;
 
                                       print(d);
-                                      ref.watch(selectedFreeDaysForReservation.notifier).state=d;
-                                      print('this is selectedFreeDaysForReservation ${ref
+    /*                                  print('this is selectedFreeDaysForReservation ${ref
                                           .watch(
-                                          selectedFreeDaysForReservation)}');
+                                          selectedFreeDaysForReservation)}');*/
                                       /*print(d);
                                       print(d.last!.isBefore(DateTime.now()));
                                       setState(() {
@@ -248,6 +331,7 @@ class PickDatePageState extends ConsumerState<PickDatePage> {
                                         DateTime.now().month,
                                         30),
                                     initialValues: [
+                                      ...ref.watch(selectedFreeDaysForReservation)!
                                       /*...response.data.free_days!
                                           .map((e) => DateTime.parse(
                                               '${e.substring(6)}-${e.substring(0, 2)}-${e.substring(3, 5)}')).where((element) => element.isAfter(DateTime.now()))
@@ -373,7 +457,9 @@ class PickDatePageState extends ConsumerState<PickDatePage> {
                                             ? 1
                                             : DateTime.now().month + 1,
                                       DateTime.parse(response.data.second_month_dates!.last).day),
-                                    initialValues: [],
+                                    initialValues: [...ref
+                                        .watch(
+                                        selectedFreeDaysForSecondMonth)],
 
                                   );
                                 } else {

@@ -5,7 +5,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:staff_breeze/core/common_widgets/alert_dialog.dart';
 import 'package:staff_breeze/core/common_widgets/app_drawer.dart';
+import 'package:staff_breeze/core/helpers/shared_prefs_manager/bearer_token_saver.dart';
 import 'package:staff_breeze/core/helpers/shared_prefs_manager/user_id_saver.dart';
 import 'package:staff_breeze/core/network_configration/result.dart';
 import 'package:staff_breeze/features/customer/find_personal_assistant/presentation/business_logic/cubit/get_reviews_cubit.dart';
@@ -18,6 +20,7 @@ import 'package:staff_breeze/features/personal_assistant/presentation/widgets/pe
 import 'package:staff_breeze/features/registration/presentation/business_logic/controller/sign_up_state_controller.dart';
 import 'package:staff_breeze/features/registration/presentation/business_logic/cubit/complete_registration_cubit.dart';
 import 'package:staff_breeze/injection_container/injection.dart';
+import 'package:staff_breeze/router/app_routes.dart';
 import 'package:staff_breeze/style/app_colors.dart';
 import '../../../../core/network_configration/base_network_config.dart';
 import '../../../../style/app_images.dart';
@@ -27,13 +30,10 @@ class PersonalAssistantHomePage extends ConsumerStatefulWidget {
   const PersonalAssistantHomePage({Key? key}) : super(key: key);
 
   @override
-  PersonalAssistantHomePageState createState() =>
-      PersonalAssistantHomePageState();
+  PersonalAssistantHomePageState createState() => PersonalAssistantHomePageState();
 }
 
-class PersonalAssistantHomePageState
-    extends ConsumerState<PersonalAssistantHomePage>
-    with TickerProviderStateMixin {
+class PersonalAssistantHomePageState extends ConsumerState<PersonalAssistantHomePage> with TickerProviderStateMixin {
   TextEditingController dialogFieldController = TextEditingController();
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
@@ -49,8 +49,7 @@ class PersonalAssistantHomePageState
         return null;
       }
       userId = value;
-      return BlocProvider.of<PersonalAssistantHomePageCubit>(context)
-          .getPersonalAssistant(id: value);
+      return BlocProvider.of<PersonalAssistantHomePageCubit>(context).getPersonalAssistant(id: value);
     });
   }
 
@@ -61,65 +60,61 @@ class PersonalAssistantHomePageState
       drawerEnableOpenDragGesture: false,
       key: _key,
       drawer: AppDrawer(
-         name: ref.watch(personalDrawerName),
+        name: ref.watch(personalDrawerName),
         profileImage: ref.watch(personalDrawerPhoto),
       ),
       body: Column(
         children: [
-          BlocConsumer<PersonalAssistantHomePageCubit,
-              Result<PersonalAssistantHomePageEntity>>(
-            listener: (context,state)=>state.when(() => null, loading: ()=>null,
-                initial: ()=>null,
-                error: (e,s)=>null,
-                success: (success){
-              if(success is PersonalAssistantHomePageEntity){
-                ref.watch(personalDrawerName.notifier).state=success.data.name??"Personal Assistant";
-                ref.watch(personalDrawerPhoto.notifier).state=success.data.profile_image??'';
-              }
+          BlocConsumer<PersonalAssistantHomePageCubit, Result<PersonalAssistantHomePageEntity>>(
+            listener: (context, state) => state.when(() => null,
+                loading: () => null,
+                initial: () => null,
+                error: (e, s) => null,
+                success: (success) {
+                  if (success is PersonalAssistantHomePageEntity) {
+                    ref.watch(personalDrawerName.notifier).state = success.data.name ?? "Personal Assistant";
+                    ref.watch(personalDrawerPhoto.notifier).state = success.data.profile_image ?? '';
+                  }
                 }),
             builder: (context, state) => state.when(() => Container(),
                 loading: () => Container(
-                      color: AppColors.primaryColor,
-                      height: MediaQuery.of(context).padding.top + 300.h,
-                      width: MediaQuery.of(context).size.width * 1,
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                      ),
+                  color: AppColors.primaryColor,
+                  height: MediaQuery.of(context).padding.top + 300.h,
+                  width: MediaQuery.of(context).size.width * 1,
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
                     ),
+                  ),
+                ),
                 initial: () => Container(),
                 error: (message, code) => Container(
-                      color: AppColors.primaryColor,
-                      height: MediaQuery.of(context).padding.top + 300.h,
-                      width: MediaQuery.of(context).size.width * 1,
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              message!,
-                              style: AppTextStyle.whiteBold.copyWith(
-                                  fontSize: 18.sp, fontWeight: FontWeight.w400),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            ElevatedButton(
-                              child: const Text('Retry'),
-                              onPressed: () {
-                                BlocProvider.of<PersonalAssistantHomePageCubit>(
-                                        context)
-                                    .getPersonalAssistant(id: userId!);
-                              },
-                            )
-                          ],
+                  color: AppColors.primaryColor,
+                  height: MediaQuery.of(context).padding.top + 300.h,
+                  width: MediaQuery.of(context).size.width * 1,
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          message!,
+                          style: AppTextStyle.whiteBold.copyWith(fontSize: 18.sp, fontWeight: FontWeight.w400),
                         ),
-                      ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        ElevatedButton(
+                          child: const Text('Retry'),
+                          onPressed: () {
+                            BlocProvider.of<PersonalAssistantHomePageCubit>(context).getPersonalAssistant(id: userId!);
+                          },
+                        )
+                      ],
                     ),
+                  ),
+                ),
                 success: (response) {
                   if (response is PersonalAssistantHomePageEntity) {
-
                     return Stack(
                       children: [
                         Container(
@@ -128,13 +123,13 @@ class PersonalAssistantHomePageState
                           width: MediaQuery.of(context).size.width * 1,
                           child: response.data.profile_image != null
                               ? Image.network(
-                                  imagesUrl+response.data.profile_image!.trim(),
-                                  fit: BoxFit.cover,
-                                )
+                            imagesUrl + response.data.profile_image!.trim(),
+                            fit: BoxFit.cover,
+                          )
                               : Image.asset(
-                                  AppImages.placeholderImage,
-                                  fit: BoxFit.cover,
-                                ),
+                            AppImages.placeholderImage,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         Container(
                           height: MediaQuery.of(context).padding.top + 300.h,
@@ -150,8 +145,7 @@ class PersonalAssistantHomePageState
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     IconButton(
-                                      icon: SvgPicture.asset(
-                                          AppImages.edit_profile_icon),
+                                      icon: SvgPicture.asset(AppImages.edit_profile_icon),
                                       onPressed: () {
                                         _key.currentState!.openDrawer();
                                       },
@@ -161,32 +155,21 @@ class PersonalAssistantHomePageState
 
                                 SizedBox(height: 130.h),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Consumer(builder: (context, ref, _) {
-                                      return BlocBuilder<PersonalAssistantHomePageCubit,
-                                          Result<
-                                              PersonalAssistantHomePageEntity>>(
-                                        builder: (context, state) => state.when(
-                                            () => Container(),
+                                      return BlocBuilder<PersonalAssistantHomePageCubit, Result<PersonalAssistantHomePageEntity>>(
+                                        builder: (context, state) => state.when(() => Container(),
                                             loading: () => Container(),
                                             initial: () => Container(),
                                             error: (error, s) => Container(),
                                             success: (response) {
-                                              if (response
-                                                  is PersonalAssistantHomePageEntity) {
+                                              if (response is PersonalAssistantHomePageEntity) {
                                                 return Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 9.w),
+                                                  padding: EdgeInsets.only(left: 9.w),
                                                   child: Text(
-                                                    response.data.name.isEmpty
-                                                        ? 'Personal Assistant'
-                                                        : response.data.name,
-                                                    style: AppTextStyle
-                                                        .whiteBold
-                                                        .copyWith(
-                                                            fontSize: 24.sp),
+                                                    response.data.name.isEmpty ? 'Personal Assistant' : response.data.name,
+                                                    style: AppTextStyle.whiteBold.copyWith(fontSize: 24.sp),
                                                   ),
                                                 );
                                               } else {
@@ -204,8 +187,7 @@ class PersonalAssistantHomePageState
                                         child: SizedBox(
                                           height: 27.w,
                                           width: 27.w,
-                                          child: SvgPicture.asset(
-                                              'assets/images/edit.svg'),
+                                          child: SvgPicture.asset('assets/images/edit.svg'),
                                         ),
                                       ),
                                     ),
@@ -220,29 +202,16 @@ class PersonalAssistantHomePageState
                                     padding: EdgeInsets.only(left: 8.0.w),
                                     child: RatingBar(
                                       itemSize: 16.h,
-                                      initialRating:
-                                          response.data.rating_avrage ?? 0.0,
+                                      initialRating: response.data.rating_avrage ?? 0.0,
                                       direction: Axis.horizontal,
                                       itemCount: 5,
                                       maxRating: 5,
                                       itemPadding: EdgeInsets.only(right: 5.w),
                                       allowHalfRating: true,
                                       ratingWidget: RatingWidget(
-                                        empty: SizedBox(
-                                            height: 16.h,
-                                            width: 13.w,
-                                            child: SvgPicture.asset(
-                                                AppImages.personalEmptyStar)),
-                                        full: SizedBox(
-                                            height: 16.h,
-                                            width: 13.w,
-                                            child: SvgPicture.asset(
-                                                AppImages.personalFillStar)),
-                                        half: SizedBox(
-                                            height: 16.h,
-                                            width: 13.w,
-                                            child: SvgPicture.asset(
-                                                AppImages.personalEmptyStar)),
+                                        empty: SizedBox(height: 16.h, width: 13.w, child: SvgPicture.asset(AppImages.personalEmptyStar)),
+                                        full: SizedBox(height: 16.h, width: 13.w, child: SvgPicture.asset(AppImages.personalFillStar)),
+                                        half: SizedBox(height: 16.h, width: 13.w, child: SvgPicture.asset(AppImages.personalEmptyStar)),
                                       ),
                                       onRatingUpdate: (value) {
                                         print(value);
@@ -274,15 +243,13 @@ class PersonalAssistantHomePageState
                 removeTop: true,
                 child: ListView(
                   controller: scrollController,
-                  physics: const BouncingScrollPhysics(
-                      parent: NeverScrollableScrollPhysics()),
+                  physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
                   children: [
                     // notification and calendar section
                     const NotificationSchedule(),
                     const AboutMeSection(),
                     BlocProvider(
-                      create: (context) => getIt<GetReviewsCubit>()
-                        ..getReviews(assistantId: userId!),
+                      create: (context) => getIt<GetReviewsCubit>()..getReviews(assistantId: userId!),
                       child: const ReviewsSection(),
                     )
                   ],
@@ -326,24 +293,86 @@ class PersonalAssistantHomePageState
                   Navigator.of(context).pop();
                 },
               ),
-              TextButton(
+              ref.watch(loading) == false
+                  ? TextButton(
                 style: TextButton.styleFrom(
                   textStyle: Theme.of(context).textTheme.labelLarge,
                 ),
                 child: const Text('Confirm'),
                 onPressed: () async {
-
-                  ref.watch(signUpUserNameProvider.notifier).state =
-                      dialogFieldController.text;
-                  dialogFieldController.clear();
-                  print(ref.watch(signUpUserNameProvider));
-                  Navigator.of(context).pop();
+                  //  ref.watch(loading.notifier).state = true;
+                  dynamic x = await changeName();
+                  if (x == '200') {
+                    Navigator.pop(context);
+                    Navigator.pushReplacementNamed(context, PERSONAL_ASSISTANT_HOMEPAGE);
+                  }
+                  // ref.watch(signUpUserNameProvider.notifier).state =
+                  //     dialogFieldController.text;
+                  // dialogFieldController.clear();
+                  // print(ref.watch(signUpUserNameProvider));
+                  // Navigator.of(context).pop();
                 },
-              ),
+              )
+                  : CircularProgressIndicator()
             ],
           );
         });
       },
     );
+  }
+
+  final Dio _dio = Dio();
+  String status = 'success';
+
+  Future changeName() async {
+    print('asasasdasd');
+    ref.watch(loading.notifier).state = true;
+
+    dynamic userID = await getUserId();
+    dynamic token = await bearerTokenRetreiver();
+    _dio.options.headers["Authorization"] = "Bearer ${token}";
+    try {
+      Response response = await _dio.post(
+        'https://staffbreeze.aratech.co/api/edit-name',
+        data: {'user_id': '$userID', 'name': dialogFieldController.text},
+      );
+      print('response: ${response.data}');
+      // setState(() {
+      //   status = 'done';
+      // });
+      ref.watch(loading.notifier).state = false;
+
+      var x = response.data['code'];
+      print(x.toString());
+      if (x == '200')
+        return '200';
+      else
+        return AppDialogs.warningDialog(context, warning: 'Error Happened', onConfirmBtnTapped: () {
+          Navigator.pop(context);
+        });
+      //   print(customerModel.name);
+    } on DioError catch (e) {
+      ref.watch(loading.notifier).state = false;
+
+      // if (e.error is SocketException) {
+      //   return AppDialogs.errorDialog(context, error: 'An error happened', onConfirmBtnTap: () {
+      //     print('ok');
+      //   });
+      // }
+      if (e.response != null) {
+        print('Dio error!');
+        print('STATUS: ${e.response?.statusCode}');
+        print('DATA: ${e.response?.data}');
+        print('HEADERS: ${e.response?.headers}');
+      } else {
+        // Error due to setting up or sending the request
+        print('Error sending request!');
+        print(e.message);
+        return AppDialogs.errorDialogWithOutConfirmButton(
+          context,
+          error: 'An error happened',
+        );
+      }
+    }
   }
 }
